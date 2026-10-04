@@ -1,20 +1,12 @@
-# Thrive v3 — Student Money Planner
+# Thrive 4.0 — Student Money Planner
 
-## Included
-- Responsive premium dashboard
-- Budget + income tracking
-- Savings goals and contributions
-- Transactions with categories
-- Spending analytics and 7-day chart
-- Smart spending insights
-- Custom categories
-- JSON backup export
-- Local browser persistence
-- Installable PWA
-- Offline caching
+Premium student budgeting and savings PWA. Local-first and installable.
 
-## Run
-Open `index.html` in a browser. For full PWA installation/offline behavior, serve the folder over HTTPS or localhost.
+## Deploy
+Upload the files to the root of your GitHub Pages repository. Keep `index.html`, `manifest.webmanifest`, `sw.js`, and `icons/` together.
 
-## TrebEdit
-Open/import the project folder in TrebEdit and preview `index.html`.
+## Update
+Replace the existing files with this version and commit to the publishing branch. GitHub Pages will redeploy the site.
+
+## Data
+Thrive stores data locally in the browser under `thrive_v4`. Use Settings → Export JSON for backups.
