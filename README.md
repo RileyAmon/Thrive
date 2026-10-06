@@ -1,12 +1,17 @@
-# Thrive 4.0 — Student Money Planner
+# Thrive 5 Premium
+A premium mobile-first student money planner PWA.
 
-Premium student budgeting and savings PWA. Local-first and installable.
+Core controls:
+- Editable monthly income
+- Editable total spending budget
+- Editable category budgets
+- Live safe-to-spend calculations
+- Transactions: income/expense, search, filter, delete
+- Savings goals with contributions and progress
+- Insights, spending breakdown and Thrive Score
+- Full Settings page accessible on desktop and mobile
+- Currency selection
+- JSON backup/restore/reset
+- Premium responsive UI, animations and PWA shell
 
-## Deploy
-Upload the files to the root of your GitHub Pages repository. Keep `index.html`, `manifest.webmanifest`, `sw.js`, and `icons/` together.
-
-## Update
-Replace the existing files with this version and commit to the publishing branch. GitHub Pages will redeploy the site.
-
-## Data
-Thrive stores data locally in the browser under `thrive_v4`. Use Settings → Export JSON for backups.
+Open index.html for testing. GitHub Pages can host the PWA.
