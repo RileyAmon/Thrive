@@ -470,6 +470,20 @@ a{color:inherit;text-decoration:none}
 .ledger .cell>.num,.ledger .cell>b{font-size:clamp(1rem,1.5vw,1.25rem);white-space:nowrap;overflow-wrap:normal}
 .ledger small{display:block}
 .rail-user b{color:var(--ink)}
+/* blur strength + liquid glass */
+:root{--blur:24px}
+.tabs{backdrop-filter:blur(var(--blur)) saturate(1.6);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.6)}
+.rail{backdrop-filter:blur(var(--blur)) saturate(1.4);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.4)}
+.scrim{backdrop-filter:blur(calc(var(--blur)*.35));-webkit-backdrop-filter:blur(calc(var(--blur)*.35))}
+html[data-card=glass] .panel{backdrop-filter:blur(var(--blur)) saturate(1.7);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.7)}
+html[data-card=liquid] .aura::before,html[data-card=liquid] .aura::after{opacity:.95;animation:drift 20s ease-in-out infinite alternate}
+html[data-card=liquid] .aura::after{animation-delay:-9s}
+html[data-card=liquid] .panel{background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.2) 55%,rgba(255,255,255,.34));border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(var(--blur)) saturate(2) brightness(1.04);-webkit-backdrop-filter:blur(var(--blur)) saturate(2) brightness(1.04);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.95),inset 0 -1.5px 1px rgba(255,255,255,.3),inset 0 0 26px rgba(255,255,255,.28),0 22px 44px -20px rgba(16,35,28,.32)}
+html[data-card=liquid] .panel::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 55% at 12% -8%,rgba(255,255,255,.55),transparent 55%),radial-gradient(60% 40% at 100% 110%,rgba(255,255,255,.25),transparent 70%)}
+html[data-theme=dark][data-card=liquid] .panel{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 55%,rgba(255,255,255,.09));border-color:rgba(255,255,255,.2);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.35),inset 0 -1px 1px rgba(255,255,255,.08),inset 0 0 26px rgba(255,255,255,.05),0 24px 50px -20px rgba(0,0,0,.7)}
+html[data-theme=dark][data-card=liquid] .panel::before{background:radial-gradient(120% 55% at 12% -8%,rgba(255,255,255,.2),transparent 55%)}
+html[data-card=liquid] .tabs,html[data-card=liquid] .sheet,html[data-card=liquid] .dlg,html[data-card=liquid] .pal,html[data-card=liquid] .cyc{background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 70%,transparent),color-mix(in srgb,var(--surface) 38%,transparent));backdrop-filter:blur(var(--blur)) saturate(2);-webkit-backdrop-filter:blur(var(--blur)) saturate(2);border-color:rgba(255,255,255,.4);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.7),var(--shadow-m)}
+html[data-card=liquid] .btn:not(.pri):not(.danger.fill){background:color-mix(in srgb,var(--surface) 45%,transparent);backdrop-filter:blur(calc(var(--blur)*.5));border-color:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
 
 </style>
 </head>
@@ -479,7 +493,7 @@ a{color:inherit;text-decoration:none}
   <aside class="rail" aria-label="Main">
     <div class="brand"><span class="mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11"/><path d="M12 15q0-6-6-6 0 6 6 6z"/><path d="M12 12q0-6 6-6 0 6-6 6z"/></svg></span>Thrive</div>
     <nav class="nav" id="nav" aria-label="Pages"></nav>
-    <div class="rail-foot"><button class="btn pri block" data-act="add">New transaction<span class="kbd" style="margin-left:auto;background:rgba(0,0,0,.12);border:0;color:inherit">N</span></button>
+    <div class="rail-foot"><button class="btn block" id="installRail" data-act="install" hidden>Install app</button><button class="btn pri block" data-act="add">New transaction<span class="kbd" style="margin-left:auto;background:rgba(0,0,0,.12);border:0;color:inherit">N</span></button>
       <a class="rail-user" href="#settings"><span class="avatar">T</span><span class="grow"><b id="sideName" style="display:block;font-size:.88rem">Your Thrive</b><span id="sideSub" class="muted xs">Saved on this device</span></span></a></div>
   </aside>
   <div class="shell">
@@ -545,7 +559,7 @@ const defWallets = () => [
 const defaults = () => ({
   v: 7, firstRun: true, demo: false,
   name: '', currency: 'GHS', symbolStyle: 'symbol', decimals: true,
-  theme: 'system', accent: 'emerald', customAccent: '#14B884', card: 'soft', density: 'comfortable', textSize: 100,
+  theme: 'system', accent: 'emerald', customAccent: '#14B884', card: 'soft', blur: 24, density: 'comfortable', textSize: 100,
   animations: true, reduceMotion: false, followSystemMotion: true, countUp: true, pageFx: true, haptics: true, confetti: true,
   hideAmounts: false,
   income: 0, budget: 0, cycleDay: 1, alertAt: 80, rollover: false,
@@ -592,6 +606,8 @@ function sanitize(s) {
   s.income = Math.max(0, num(s.income)); s.budget = Math.max(0, num(s.budget));
   s.cycleDay = clamp(Math.round(num(s.cycleDay)) || 1, 1, 28);
   s.alertAt = clamp(Math.round(num(s.alertAt)) || 80, 50, 100);
+  s.blur = clamp(Math.round(num(s.blur)), 0, 48);
+  if (!['soft','glass','liquid','solid','outline'].includes(s.card)) s.card = 'soft';
   s.textSize = [90, 100, 112].includes(s.textSize) ? s.textSize : 100;
   if (!Array.isArray(s.cats) || !s.cats.length) s.cats = defCats();
   s.cats = s.cats.map((c, i) => ({ id: String(c.id || 'c' + uid()), name: String(c.name || 'Category'), icon: c.icon || '✨', budget: Math.max(0, num(c.budget)), color: c.color || COLORS[i % COLORS.length] }));
@@ -856,7 +872,7 @@ function applyTheme() {
   const dark = S.theme === 'dark' || (S.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   const h = document.documentElement, [c, on] = accentPair();
   h.dataset.theme = dark ? 'dark' : 'light'; h.dataset.card = S.card; h.dataset.density = S.density;
-  h.style.setProperty('--fs', S.textSize / 100);
+  h.style.setProperty('--fs', S.textSize / 100); h.style.setProperty('--blur', S.blur + 'px');
   h.style.setProperty('--accent', c); h.style.setProperty('--on-accent', on);
   h.classList.toggle('reduce', !motionOn());
   h.classList.toggle('hide-amt', !!S.hideAmounts);
@@ -1017,6 +1033,7 @@ function renderChrome() {
   $$('.avatar').forEach(a => a.textContent = initial());
   const n = typeof alertList === 'function' ? alertList().length : 0;
   $('#bellDot').innerHTML = n ? `<span class="dot">${n > 9 ? '9+' : n}</span>` : '';
+  const ib = $('#installRail'); if (ib) ib.hidden = !window.__bip;
   $('#eyeBtn').innerHTML = ic(S.hideAmounts ? 'eyeoff' : 'eye', 20);
   $('#eyeBtn').setAttribute('aria-pressed', S.hideAmounts ? 'true' : 'false');
   $('#eyeBtn').setAttribute('aria-label', S.hideAmounts ? 'Show amounts' : 'Hide amounts');
@@ -1348,7 +1365,8 @@ PAGES.settings = () => {
   ${sSec('sparkles', 'Appearance',
     sRow('Theme', 'System follows your device.', seg([['system', 'System', 'monitor'], ['light', 'Light', 'sun'], ['dark', 'Dark', 'moon']], S.theme, 's-theme', { sm: true, label: 'Theme' }), { stack: 1 }) +
     sRow('Accent colour', 'Buttons, highlights and charts.', `<div class="swatches">${Object.entries(ACCENTS).map(([k, v]) => swatch(k, v[0], v[1])).join('')}<label class="sw custom ${S.accent === 'custom' ? 'on' : ''}" style="--c:${S.customAccent};--on:#fff" aria-label="Custom accent colour"><input type="color" value="${S.customAccent}" data-ch="s-custom"></label></div>`, { stack: 1 }) +
-    sRow('Card style', 'How panels look: soft shadows, frosted glass, flat or outlined.', seg([['soft', 'Soft'], ['glass', 'Glass'], ['solid', 'Solid'], ['outline', 'Outline']], S.card, 's-card', { sm: true, label: 'Card style' }), { stack: 1 }) +
+    sRow('Card style', 'How panels look: soft, frosted glass, liquid glass, flat or outlined.', seg([['soft', 'Soft'], ['glass', 'Glass'], ['liquid', 'Liquid'], ['solid', 'Solid'], ['outline', 'Outline']], S.card, 's-card', { sm: true, label: 'Card style' }), { stack: 1 }) +
+    sRow('Blur strength', 'How frosted glass, the tab bar, sheets and menus look. 0 turns blur off.', `<div class="range"><input type="range" min="0" max="48" step="2" value="${S.blur}" data-in="s-blur" aria-label="Blur strength"><b class="num" id="blurV">${S.blur}</b></div>`, { kw: 'frosted glass backdrop' }) +
     sRow('Layout density', 'Comfortable has more air. Compact fits more on screen.', seg([['comfortable', 'Comfortable'], ['compact', 'Compact']], S.density, 's-density', { sm: true, label: 'Density' }), { stack: 1 }) +
     sRow('Text size', '', seg([['90', 'Small'], ['100', 'Default'], ['112', 'Large']], String(S.textSize), 's-text', { sm: true, label: 'Text size' }), { stack: 1 }))}
   ${sSec('bolt', 'Motion & feel',
@@ -1378,7 +1396,7 @@ PAGES.settings = () => {
     (S.demo ? sRow('Sample data', 'You’re viewing sample data.', `<button class="btn sm" data-act="demo-clear">Clear it</button>`) : (S.tx.length === 0 ? sRow('Sample data', 'See how Thrive looks with a few weeks of activity. You can clear it any time.', `<button class="btn sm" data-act="demo-load">${ic('sparkles', 15)}Load sample</button>`) : '')) +
     sRow('Reset Thrive', 'Erase everything on this device and start from zero.', `<button class="btn sm danger" data-act="reset">Reset</button>`, { kw: 'erase delete' }))}
   ${sSec('phone', 'App',
-    ((window.__bip || (isIOS() && !isStandalone())) ? sRow('Install Thrive', isIOS() && !window.__bip ? 'In Safari tap Share, then Add to Home Screen.' : 'Add it to your home screen. It opens fast and works offline.', window.__bip ? `<button class="btn sm pri" data-act="install">Install</button>` : '') : '') +
+    (isStandalone() ? sRow('Install Thrive', 'Thrive is installed on this device.', `<span class="tag good">${ic('check', 12)}Installed</span>`) : sRow('Install Thrive', window.__bip ? 'Add it to your home screen. It opens fast and works offline.' : isIOS() ? 'In Safari tap Share, then Add to Home Screen.' : 'Open your browser menu and choose Install app or Add to Home screen.', window.__bip ? `<button class="btn sm pri" data-act="install">${ic('download', 15)}Install</button>` : `<button class="btn sm" data-act="install">How</button>`, { kw: 'home screen pwa app' })) +
     sRow('Connection', navigator.onLine ? 'Thrive works fully offline.' : 'You’re offline. Everything still works.', `<span class="tag ${navigator.onLine ? 'good' : 'warn'}" id="netTag">${navigator.onLine ? 'Online' : 'Offline'}</span>`) +
     sRow('Updates', 'Version ' + VERSION, `<button class="btn sm" data-act="update">${ic('refresh', 15)}Check</button>`) +
     sRow('Tutorial', 'Replay the welcome tour. Your data stays as it is.', `<button class="btn sm" data-act="tour">${ic('play', 14)}Replay</button>`, { kw: 'onboarding welcome' }) +
@@ -1411,6 +1429,8 @@ CHG['s-cur'] = v => { S.currency = v; persist(); const p = $('#curPrev'); if (p)
 CHG['s-cycle'] = v => { S.cycleDay = +v; UI.off = 0; persist(); toast(+v === 1 ? 'Cycle follows the calendar month' : `Cycle now starts on the ${ordinal(+v)}`, { tone: 'good' }); };
 INP['s-alert'] = v => { S.alertAt = +v; $('#alertV').textContent = v + '%'; memo.clear(); persist(); renderChrome(); };
 CHG['s-lockafter'] = v => { S.lock.after = +v; persist(); };
+
+INP['s-blur'] = v => { S.blur = +v; $('#blurV').textContent = v; document.documentElement.style.setProperty('--blur', v + 'px'); persist(); };
 
 /* ============================================================
    Thrive 7 — sheets & forms
@@ -1733,7 +1753,7 @@ ACT['alert-x'] = (k, el) => { S.dismissed.push(k); persist(); el.closest('.alert
 ACT['alerts-clear'] = () => { alertList().forEach(a => S.dismissed.push(a.key)); persist(); renderChrome(); ACT.bell(); };
 
 /* menu (mobile avatar) */
-ACT.menu = () => openSheet(`${sheetHead('Menu')}<div class="sheet-body"><div class="rows hov"><a class="r" href="#insights" data-act="sheet-close"><span class="tile sm">${ic('chart', 18)}</span><span class="grow t">Insights</span>${ic('chevR', 18)}</a><a class="r" href="#settings" data-act="sheet-close"><span class="tile sm">${ic('sliders', 18)}</span><span class="grow t">Settings</span>${ic('chevR', 18)}</a><button class="r" data-act="wallets"><span class="tile sm">${ic('wallet', 18)}</span><span class="grow t">Wallets</span>${ic('chevR', 18)}</button><button class="r" data-act="palette"><span class="tile sm">${ic('search', 18)}</span><span class="grow t">Search and commands</span>${ic('chevR', 18)}</button>${S.lock.on ? `<button class="r" data-act="lock-now"><span class="tile sm">${ic('lock', 18)}</span><span class="grow t">Lock now</span></button>` : ''}</div>${seg([['system', 'System', 'monitor'], ['light', 'Light', 'sun'], ['dark', 'Dark', 'moon']], S.theme, 's-theme', { sm: true, label: 'Theme' })}</div>`, { label: 'Menu' });
+ACT.menu = () => openSheet(`${sheetHead('Menu')}<div class="sheet-body"><div class="rows hov"><a class="r" href="#insights" data-act="sheet-close"><span class="tile sm">${ic('chart', 18)}</span><span class="grow t">Insights</span>${ic('chevR', 18)}</a><a class="r" href="#settings" data-act="sheet-close"><span class="tile sm">${ic('sliders', 18)}</span><span class="grow t">Settings</span>${ic('chevR', 18)}</a><button class="r" data-act="wallets"><span class="tile sm">${ic('wallet', 18)}</span><span class="grow t">Wallets</span>${ic('chevR', 18)}</button>${window.__bip ? `<button class="r" data-act="install"><span class="tile sm">${ic('download', 18)}</span><span class="grow t">Install app</span></button>` : ''}<button class="r" data-act="palette"><span class="tile sm">${ic('search', 18)}</span><span class="grow t">Search and commands</span>${ic('chevR', 18)}</button>${S.lock.on ? `<button class="r" data-act="lock-now"><span class="tile sm">${ic('lock', 18)}</span><span class="grow t">Lock now</span></button>` : ''}</div>${seg([['system', 'System', 'monitor'], ['light', 'Light', 'sun'], ['dark', 'Dark', 'moon']], S.theme, 's-theme', { sm: true, label: 'Theme' })}</div>`, { label: 'Menu' });
 
 /* ---------- command palette ---------- */
 let palSel = 0, palItems = [];
@@ -1845,9 +1865,9 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* ---------- PWA ---------- */
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__bip = e; if (UI.route === 'settings') render(); });
-window.addEventListener('appinstalled', () => { window.__bip = null; toast('Thrive installed', { tone: 'good' }); if (UI.route === 'settings') render(); });
-ACT.install = async () => { const e = window.__bip; if (!e) return; e.prompt(); await e.userChoice; window.__bip = null; render(); };
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); window.__bip = e; renderChrome(); if (UI.route === 'settings') render(); if (!S.firstRun && !sessionStorage.getItem('ip')) { sessionStorage.setItem('ip', 1); setTimeout(() => toast('Install Thrive on your phone', { action: 'Install', ms: 9000, fn: ACT.install }), 2500); } });
+window.addEventListener('appinstalled', () => { window.__bip = null; renderChrome(); toast('Thrive installed', { tone: 'good' }); if (UI.route === 'settings') render(); });
+ACT.install = async () => { const e = window.__bip; if (!e) { return toast(isIOS() ? 'Tap Share, then Add to Home Screen' : 'Use your browser menu: Install app or Add to Home screen', { ms: 6000 }); } e.prompt(); const r = await e.userChoice; if (r.outcome === 'accepted') window.__bip = null; render(); };
 window.addEventListener('online', () => { toast('Back online', { tone: 'good', ms: 1800 }); const t = $('#netTag'); if (t) { t.textContent = 'Online'; t.className = 'tag good'; } });
 window.addEventListener('offline', () => { toast('You’re offline. Thrive keeps working.', { tone: 'warn' }); const t = $('#netTag'); if (t) { t.textContent = 'Offline'; t.className = 'tag warn'; } });
 let swReg = null;
