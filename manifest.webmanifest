@@ -1,1 +1,23 @@
-{"name":"Thrive — Student Money Planner","short_name":"Thrive","start_url":".","display":"standalone","background_color":"#f6f8fb","theme_color":"#16b982","description":"Premium student money planner","icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}]}
+{
+  "id": "./",
+  "name": "Thrive",
+  "short_name": "Thrive",
+  "description": "Know what you can spend today. A private, offline money planner.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09110F",
+  "theme_color": "#14B884",
+  "categories": ["finance", "productivity"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Add transaction", "short_name": "Add", "url": "./#add", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Budget", "url": "./#budget", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Goals", "url": "./#goals", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
+  ]
+}
