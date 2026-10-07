@@ -498,6 +498,27 @@ h1,h2,h3{font-weight:800}
 .ledger .cell>.num,.ledger .cell>b{font-weight:800}
 .sec-h h2{font-size:1.18rem}
 html[data-theme=dark] .panel{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 92%,#fff),var(--surface))}
+/* ===== iOS 26 style liquid glass ===== */
+html[data-round=sharp]{--r-m:10px;--r-l:14px;--r-xl:20px}
+html[data-round=round]{--r-m:22px;--r-l:34px;--r-xl:44px}
+html[data-card=glass]{--g:var(--gloss,.7);--gbase:color-mix(in srgb,color-mix(in srgb,var(--surface) 38%,transparent),var(--accent) calc(var(--tint)*.22%));--grim:inset 0 0 0 1px rgba(255,255,255,calc(.16 + .3*var(--g))),inset 2px 2px 1.5px -1px rgba(255,255,255,calc(.35 + .6*var(--g))),inset -2px -2px 1.5px -1.5px rgba(255,255,255,calc(.5*var(--g))),inset 0 0 36px rgba(255,255,255,calc(.14*var(--g)))}
+html[data-theme=dark][data-card=glass]{--gbase:color-mix(in srgb,rgba(255,255,255,.07),var(--accent) calc(var(--tint)*.2%))}
+html[data-card=glass] .panel,html[data-card=glass] .tabs,html[data-card=glass] .sheet,html[data-card=glass] .dlg,html[data-card=glass] .pal,html[data-card=glass] .cyc,html[data-card=glass] .rail-user{
+ background:linear-gradient(155deg,rgba(255,255,255,calc(.12 + .5*var(--g))) 0%,rgba(255,255,255,.06) 34%,rgba(255,255,255,0) 58%,rgba(255,255,255,calc(.22*var(--g))) 100%),var(--gbase);
+ backdrop-filter:blur(var(--blur)) saturate(1.9) brightness(1.07);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.9) brightness(1.07);
+ border:1px solid rgba(255,255,255,calc(.2 + .3*var(--g)));box-shadow:var(--grim),0 24px 48px -22px rgba(0,0,0,.45)}
+html[data-card=glass] .panel::before{background:radial-gradient(130% 48% at 18% -12%,rgba(255,255,255,calc(.7*var(--g))),transparent 62%),radial-gradient(70% 45% at 105% 112%,rgba(255,255,255,calc(.3*var(--g))),transparent 70%);opacity:1}
+html[data-card=glass] .tabs{border-radius:999px;box-shadow:var(--grim),0 18px 40px -14px rgba(0,0,0,.5)}
+html[data-card=glass] .tab-pill::before{background:linear-gradient(180deg,rgba(255,255,255,calc(.35*var(--g))),rgba(255,255,255,.06)),var(--accent-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,calc(.8*var(--g))),inset 0 0 0 1px rgba(255,255,255,.2);border-radius:999px}
+html[data-card=glass] .ibtn,html[data-card=glass] .btn:not(.pri):not(.danger.fill):not(.glass):not(.ghost),html[data-card=glass] .chip:not(.on),html[data-card=glass] .search-btn,html[data-card=glass] .seg{background:linear-gradient(160deg,rgba(255,255,255,calc(.1 + .4*var(--g))),rgba(255,255,255,.04)),color-mix(in srgb,var(--surface) 30%,transparent);backdrop-filter:blur(calc(var(--blur)*.6)) saturate(1.7);-webkit-backdrop-filter:blur(calc(var(--blur)*.6)) saturate(1.7);border:1px solid rgba(255,255,255,calc(.18 + .25*var(--g)));box-shadow:inset 1.5px 1.5px 1px -.5px rgba(255,255,255,calc(.3 + .5*var(--g))),inset -1px -1px 1px -.5px rgba(255,255,255,calc(.3*var(--g))),0 8px 18px -10px rgba(0,0,0,.4)}
+html[data-card=glass] .btn.pri,html[data-card=glass] .fab{background:linear-gradient(180deg,rgba(255,255,255,calc(.55*var(--g))) 0%,rgba(255,255,255,0) 52%),var(--accent);box-shadow:inset 0 1.5px 0 rgba(255,255,255,calc(.4 + .55*var(--g))),inset 0 -2px 5px rgba(0,0,0,.2),0 12px 26px -8px var(--accent)}
+html[data-card=glass] .seg::before{background:linear-gradient(180deg,rgba(255,255,255,calc(.7*var(--g))),rgba(255,255,255,.2));filter:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 4px 12px -4px rgba(0,0,0,.3)}
+html[data-theme=dark][data-card=glass] .seg::before{background:linear-gradient(180deg,rgba(255,255,255,calc(.28*var(--g))),rgba(255,255,255,.08))}
+html[data-card=glass] .hero{box-shadow:var(--grim),0 34px 70px -34px color-mix(in oklab,var(--accent) 70%,#000)}
+html[data-card=glass] .aura::before,html[data-card=glass] .aura::after{opacity:1}
+html[data-transp=reduced] .panel,html[data-transp=reduced] .tabs,html[data-transp=reduced] .sheet,html[data-transp=reduced] .dlg,html[data-transp=reduced] .pal,html[data-transp=reduced] .cyc,html[data-transp=reduced] .rail,html[data-transp=reduced] .ibtn,html[data-transp=reduced] .btn,html[data-transp=reduced] .chip,html[data-transp=reduced] .seg,html[data-transp=reduced] .search-btn{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-transp=reduced][data-card=glass] .panel,html[data-transp=reduced][data-card=glass] .tabs,html[data-transp=reduced][data-card=glass] .sheet,html[data-transp=reduced][data-card=glass] .dlg,html[data-transp=reduced][data-card=glass] .pal,html[data-transp=reduced][data-card=glass] .cyc{background:var(--surface)!important}
+html[data-transp=reduced] .aura{display:none}
 
 </style>
 </head>
@@ -573,7 +594,7 @@ const defWallets = () => [
 const defaults = () => ({
   v: 7, firstRun: true, demo: false,
   name: '', currency: 'GHS', symbolStyle: 'symbol', decimals: true,
-  theme: 'dark', accent: 'emerald', customAccent: '#14B884', card: 'soft', blur: 24, density: 'comfortable', textSize: 100,
+  theme: 'dark', accent: 'emerald', customAccent: '#14B884', card: 'soft', blur: 24, gloss: 70, tint: 30, round: 'default', reduceTrans: false, startPage: 'dashboard', density: 'comfortable', textSize: 100,
   animations: true, reduceMotion: false, followSystemMotion: true, countUp: true, pageFx: true, haptics: true, confetti: true,
   hideAmounts: false,
   income: 0, budget: 0, cycleDay: 1, alertAt: 80, rollover: false,
@@ -620,6 +641,9 @@ function sanitize(s) {
   s.income = Math.max(0, num(s.income)); s.budget = Math.max(0, num(s.budget));
   s.cycleDay = clamp(Math.round(num(s.cycleDay)) || 1, 1, 28);
   s.alertAt = clamp(Math.round(num(s.alertAt)) || 80, 50, 100);
+  s.gloss = clamp(Math.round(num(s.gloss)), 0, 100); s.tint = clamp(Math.round(num(s.tint)), 0, 100);
+  if (!['sharp','default','round'].includes(s.round)) s.round = 'default';
+  if (!['dashboard','transactions','budget','goals','insights'].includes(s.startPage)) s.startPage = 'dashboard';
   s.blur = clamp(Math.round(num(s.blur)), 0, 48);
   if (s.card === 'liquid') s.card = 'glass';
   if (!['soft','glass','solid','outline'].includes(s.card)) s.card = 'soft';
@@ -888,7 +912,7 @@ function applyTheme() {
   const dark = S.theme === 'dark' || (S.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   const h = document.documentElement, [c, on] = accentPair();
   h.dataset.theme = dark ? 'dark' : 'light'; h.dataset.card = S.card; h.dataset.density = S.density;
-  h.style.setProperty('--fs', S.textSize / 100); h.style.setProperty('--blur', S.blur + 'px');
+  h.style.setProperty('--fs', S.textSize / 100); h.style.setProperty('--blur', S.blur + 'px'); h.style.setProperty('--gloss', S.gloss / 100); h.style.setProperty('--tint', S.tint); h.dataset.round = S.round; h.dataset.transp = S.reduceTrans ? 'reduced' : 'normal';
   h.style.setProperty('--accent', c); h.style.setProperty('--on-accent', on);
   h.classList.toggle('reduce', !motionOn());
   h.classList.toggle('hide-amt', !!S.hideAmounts);
@@ -1386,6 +1410,11 @@ PAGES.settings = () => {
     sRow('Accent colour', 'Buttons, highlights and charts.', `<div class="swatches">${Object.entries(ACCENTS).map(([k, v]) => swatch(k, v[0], v[1])).join('')}<label class="sw custom ${S.accent === 'custom' ? 'on' : ''}" style="--c:${S.customAccent};--on:#fff" aria-label="Custom accent colour"><input type="color" value="${S.customAccent}" data-ch="s-custom"></label></div>`, { stack: 1 }) +
     sRow('Card style', 'How panels look: soft, liquid glass, flat or outlined.', seg([['soft', 'Soft'], ['glass', 'Glass'], ['solid', 'Solid'], ['outline', 'Outline']], S.card, 's-card', { sm: true, label: 'Card style' }), { stack: 1 }) +
     sRow('Blur strength', 'How frosted glass, the tab bar, sheets and menus look. 0 turns blur off.', `<div class="range"><input type="range" min="0" max="48" step="2" value="${S.blur}" data-in="s-blur" aria-label="Blur strength"><b class="num" id="blurV">${S.blur}</b></div>`, { kw: 'frosted glass backdrop' }) +
+    sRow('Glass gloss', 'How shiny the glass edges and highlights are (Glass style).', `<div class="range"><input type="range" min="0" max="100" step="5" value="${S.gloss}" data-in="s-gloss" aria-label="Glass gloss"><b class="num" id="glossV">${S.gloss}</b></div>`, { kw: 'shine liquid glass ios' }) +
+    sRow('Glass tint', 'Tints the glass with your accent colour.', `<div class="range"><input type="range" min="0" max="100" step="5" value="${S.tint}" data-in="s-tint" aria-label="Glass tint"><b class="num" id="tintV">${S.tint}</b></div>`, { kw: 'colour color' }) +
+    sRow('Reduce transparency', 'Makes glass solid. Easier to read, lighter on older phones.', sw(S.reduceTrans, 's-tog', 'reduceTrans', 'Reduce transparency'), { kw: 'solid performance accessibility' }) +
+    sRow('Corner roundness', 'Sharp, default or extra round.', seg([['sharp', 'Sharp'], ['default', 'Default'], ['round', 'Round']], S.round, 's-round', { sm: true, label: 'Roundness' }), { stack: 1 }) +
+    sRow('Open Thrive on', 'Which screen you land on when the app starts.', `<select class="select" data-ch="s-start" aria-label="Start screen">${[['dashboard', 'Home'], ['transactions', 'Activity'], ['budget', 'Budget'], ['goals', 'Goals'], ['insights', 'Insights']].map(o => `<option value="${o[0]}" ${S.startPage === o[0] ? 'selected' : ''}>${o[1]}</option>`).join('')}</select>`) +
     sRow('Layout density', 'Comfortable has more air. Compact fits more on screen.', seg([['comfortable', 'Comfortable'], ['compact', 'Compact']], S.density, 's-density', { sm: true, label: 'Density' }), { stack: 1 }) +
     sRow('Text size', '', seg([['90', 'Small'], ['100', 'Default'], ['112', 'Large']], String(S.textSize), 's-text', { sm: true, label: 'Text size' }), { stack: 1 }))}
   ${sSec('bolt', 'Motion & feel',
@@ -1450,6 +1479,11 @@ INP['s-alert'] = v => { S.alertAt = +v; $('#alertV').textContent = v + '%'; memo
 CHG['s-lockafter'] = v => { S.lock.after = +v; persist(); };
 
 INP['s-blur'] = v => { S.blur = +v; $('#blurV').textContent = v; document.documentElement.style.setProperty('--blur', v + 'px'); persist(); };
+
+INP['s-gloss'] = v => { S.gloss = +v; $('#glossV').textContent = v; document.documentElement.style.setProperty('--gloss', v / 100); persist(); };
+INP['s-tint'] = v => { S.tint = +v; $('#tintV').textContent = v; document.documentElement.style.setProperty('--tint', v); persist(); };
+ACT['s-round'] = (a, el) => { S.round = a; segSet(el, segIdx(el)); persist(); applyTheme(); };
+CHG['s-start'] = v => { S.startPage = v; persist(); toast('Thrive will open on ' + { dashboard: 'Home', transactions: 'Activity', budget: 'Budget', goals: 'Goals', insights: 'Insights' }[v], { tone: 'good', ms: 2000 }); };
 
 /* ============================================================
    Thrive 7 — sheets & forms
@@ -1904,7 +1938,7 @@ function registerSW() {
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (S.theme === 'system') { applyTheme(); } });
   const posted = runRecurring(); if (posted) persist();
   document.documentElement.classList.add('boot'); setTimeout(() => document.documentElement.classList.remove('boot'), 1000);
-  let h = location.hash.slice(1); UI.route = ROUTES.includes(h) ? h : 'dashboard';
+  let h = location.hash.slice(1); UI.route = ROUTES.includes(h) ? h : (S.startPage || 'dashboard');
   UI.first = false; render();
   if (h === 'add') { history.replaceState(null, '', '#' + UI.route); openTx(); }
   if (S.lock.on) lockNow(); else if (S.firstRun) startTour();
