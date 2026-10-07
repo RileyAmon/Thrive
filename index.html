@@ -298,7 +298,7 @@ html[data-theme=dark] .toast-act{color:color-mix(in srgb,var(--accent) 60%,#000)
 
 /* onboarding */
 .ob{position:absolute;inset:0;overflow:auto;display:grid;place-items:center;padding:20px;color:#EAF6F0;background:#06100D;isolation:isolate}
-.ob::before,.ob::after{content:'';position:absolute;border-radius:50%;filter:blur(80px);z-index:-1;animation:drift 18s ease-in-out infinite alternate}
+.ob::before,.ob::after{content:'';position:absolute;border-radius:50%;filter:blur(80px);z-index:-1;}
 .ob::before{width:70vmax;height:70vmax;left:-25vmax;top:-30vmax;background:color-mix(in srgb,var(--accent) 38%,transparent)}
 .ob::after{width:60vmax;height:60vmax;right:-22vmax;bottom:-28vmax;background:rgba(116,87,255,.32);animation-delay:-8s}
 @keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
@@ -324,7 +324,7 @@ html[data-theme=dark] .toast-act{color:color-mix(in srgb,var(--accent) 60%,#000)
 .ob-dots{display:flex;gap:6px;margin-right:auto}
 .ob-dots i{width:7px;height:7px;border-radius:9px;background:rgba(255,255,255,.28);transition:width .5s var(--ease),background-color .3s}
 .ob-dots i.on{width:24px;background:var(--accent)}
-.ob-hero-mark{width:74px;height:74px;border-radius:25px;display:grid;place-items:center;color:var(--on-accent);background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 75%,#fff),var(--accent) 55%,color-mix(in srgb,var(--accent) 70%,#000));box-shadow:0 18px 50px -10px var(--accent),inset 0 1px 0 rgba(255,255,255,.4);animation:float 5s ease-in-out infinite}
+.ob-hero-mark{width:74px;height:74px;border-radius:25px;display:grid;place-items:center;color:var(--on-accent);background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 75%,#fff),var(--accent) 55%,color-mix(in srgb,var(--accent) 70%,#000));box-shadow:0 18px 50px -10px var(--accent),inset 0 1px 0 rgba(255,255,255,.4);}
 @keyframes float{50%{transform:translateY(-7px) rotate(-3deg)}}
 .ob-points{display:grid;gap:12px}
 .ob-points div{display:flex;align-items:center;gap:13px;color:#CFE0D8}
@@ -357,7 +357,9 @@ html[data-theme=dark] .toast-act{color:color-mix(in srgb,var(--accent) 60%,#000)
 /* ---------- motion ---------- */
 html.boot [data-r]{animation:rise .9s var(--ease) backwards;animation-delay:calc(var(--r,0)*80ms)}
 @keyframes rise{from{opacity:0;transform:translateY(22px) scale(.985)}}
-#view{view-transition-name:view}
+#view{view-transition-name:none}
+.route-in{animation:routeIn .4s var(--ease)}
+@keyframes routeIn{from{opacity:0;transform:translateY(12px)}}
 ::view-transition-group(root){animation:none}
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 ::view-transition-old(view){animation:vtOut .16s ease both}
@@ -384,7 +386,7 @@ box-shadow:0 34px 70px -34px color-mix(in oklab,var(--accent) 70%,#000),inset 0 
 .hero::after{content:'';position:absolute;inset:0;z-index:-1;opacity:.09;mix-blend-mode:overlay;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .hero-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .hero-chip{display:inline-flex;align-items:center;min-height:28px;padding:0 12px;border-radius:99px;font-weight:700;font-size:.78rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16)}
-.hero-chip.on::before,.hero-chip.ahead::before,.hero-chip.over::before{content:'';width:7px;height:7px;border-radius:50%;margin-right:8px;background:var(--accent);animation:pulse 2s infinite}
+.hero-chip.on::before,.hero-chip.ahead::before,.hero-chip.over::before{content:'';width:7px;height:7px;border-radius:50%;margin-right:8px;background:var(--accent);}
 .hero-chip.ahead::before{background:#FFC155}.hero-chip.over::before{background:#FF7078}
 .hero-day{font-size:.8rem;opacity:.7;font-weight:600}
 .hero-lbl{font-weight:600;opacity:.75;font-size:.95rem}
@@ -421,7 +423,7 @@ box-shadow:0 34px 70px -34px color-mix(in oklab,var(--accent) 70%,#000),inset 0 
 .donut,.ringw{position:relative;width:var(--s);height:var(--s);flex:none}.donut svg,.ringw svg{width:100%;height:100%;display:block}
 .donut-c{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:0}
 .donut-c b{font:800 1.15rem var(--font-d);letter-spacing:-.03em}.donut-c small{color:var(--muted);font-size:.72rem}
-.seg{transition:stroke-dasharray 1.3s var(--ease)}.enter .seg{stroke-dasharray:0 400!important;transition:none}
+.arc{transition:stroke-dasharray 1.3s var(--ease)}.enter .arc{stroke-dasharray:0 400!important;transition:none}
 .r.lg{padding:9px 0}.dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}.pc{width:38px;text-align:right;color:var(--muted);font-size:.8rem;font-weight:650}
 .tx-main,.cat .grow,.gl-i .grow{display:grid;gap:2px;min-width:0}
 .ic-s{display:inline-flex;align-items:center}
@@ -453,7 +455,7 @@ box-shadow:0 34px 70px -34px color-mix(in oklab,var(--accent) 70%,#000),inset 0 
 .gbars{display:flex;gap:10px;align-items:flex-end}.g{flex:1;display:grid;gap:8px;justify-items:center}.gb{display:flex;gap:4px;align-items:flex-end;height:130px;width:100%;justify-content:center}
 .gb i{flex:1;max-width:26px;height:var(--h);min-height:2px;border-radius:7px 7px 3px 3px;background:var(--c);transform-origin:bottom;transition:transform .9s var(--ease) calc(var(--i)*70ms)}.enter .gb i{transform:scaleY(0);transition:none}
 .g span{font-size:.74rem;color:var(--muted);font-weight:650}.g.cur span{color:var(--ink);font-weight:800}.wd .g:not(.cur) .gb i{opacity:.45}
-.key{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:.76rem;color:var(--muted);font-weight:650}.key i{width:9px;height:9px;border-radius:3px;background:var(--c)}
+.lkey{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:.76rem;color:var(--muted);font-weight:650}.lkey i{width:9px;height:9px;border-radius:3px;background:var(--c)}
 .sp .bar-t{margin:6px 0 4px}.tip .t{font-weight:700}.tip{align-items:flex-start;padding:12px 0}
 /* settings */
 .setting{display:flex;align-items:center;gap:16px;padding:14px 0}.setting+.setting{border-top:1px solid var(--line)}.setting b{font-weight:700}.setting p{font-size:.82rem;color:var(--muted);margin-top:2px}
@@ -476,14 +478,26 @@ a{color:inherit;text-decoration:none}
 .rail{backdrop-filter:blur(var(--blur)) saturate(1.4);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.4)}
 .scrim{backdrop-filter:blur(calc(var(--blur)*.35));-webkit-backdrop-filter:blur(calc(var(--blur)*.35))}
 html[data-card=glass] .panel{backdrop-filter:blur(var(--blur)) saturate(1.7);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.7)}
-html[data-card=liquid] .aura::before,html[data-card=liquid] .aura::after{opacity:.95;animation:drift 20s ease-in-out infinite alternate}
-html[data-card=liquid] .aura::after{animation-delay:-9s}
-html[data-card=liquid] .panel{background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.2) 55%,rgba(255,255,255,.34));border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(var(--blur)) saturate(2) brightness(1.04);-webkit-backdrop-filter:blur(var(--blur)) saturate(2) brightness(1.04);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.95),inset 0 -1.5px 1px rgba(255,255,255,.3),inset 0 0 26px rgba(255,255,255,.28),0 22px 44px -20px rgba(16,35,28,.32)}
-html[data-card=liquid] .panel::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 55% at 12% -8%,rgba(255,255,255,.55),transparent 55%),radial-gradient(60% 40% at 100% 110%,rgba(255,255,255,.25),transparent 70%)}
-html[data-theme=dark][data-card=liquid] .panel{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 55%,rgba(255,255,255,.09));border-color:rgba(255,255,255,.2);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.35),inset 0 -1px 1px rgba(255,255,255,.08),inset 0 0 26px rgba(255,255,255,.05),0 24px 50px -20px rgba(0,0,0,.7)}
-html[data-theme=dark][data-card=liquid] .panel::before{background:radial-gradient(120% 55% at 12% -8%,rgba(255,255,255,.2),transparent 55%)}
-html[data-card=liquid] .tabs,html[data-card=liquid] .sheet,html[data-card=liquid] .dlg,html[data-card=liquid] .pal,html[data-card=liquid] .cyc{background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 70%,transparent),color-mix(in srgb,var(--surface) 38%,transparent));backdrop-filter:blur(var(--blur)) saturate(2);-webkit-backdrop-filter:blur(var(--blur)) saturate(2);border-color:rgba(255,255,255,.4);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.7),var(--shadow-m)}
-html[data-card=liquid] .btn:not(.pri):not(.danger.fill){background:color-mix(in srgb,var(--surface) 45%,transparent);backdrop-filter:blur(calc(var(--blur)*.5));border-color:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+html[data-card=glass] .aura::before,html[data-card=glass] .aura::after{opacity:.95;animation:none}
+
+html[data-card=glass] .panel{background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.2) 55%,rgba(255,255,255,.34));border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(var(--blur)) saturate(2) brightness(1.04);-webkit-backdrop-filter:blur(var(--blur)) saturate(2) brightness(1.04);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.95),inset 0 -1.5px 1px rgba(255,255,255,.3),inset 0 0 26px rgba(255,255,255,.28),0 22px 44px -20px rgba(16,35,28,.32)}
+html[data-card=glass] .panel::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 55% at 12% -8%,rgba(255,255,255,.55),transparent 55%),radial-gradient(60% 40% at 100% 110%,rgba(255,255,255,.25),transparent 70%)}
+html[data-theme=dark][data-card=glass] .panel{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 55%,rgba(255,255,255,.09));border-color:rgba(255,255,255,.2);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.35),inset 0 -1px 1px rgba(255,255,255,.08),inset 0 0 26px rgba(255,255,255,.05),0 24px 50px -20px rgba(0,0,0,.7)}
+html[data-theme=dark][data-card=glass] .panel::before{background:radial-gradient(120% 55% at 12% -8%,rgba(255,255,255,.2),transparent 55%)}
+html[data-card=glass] .tabs,html[data-card=glass] .sheet,html[data-card=glass] .dlg,html[data-card=glass] .pal,html[data-card=glass] .cyc{background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 70%,transparent),color-mix(in srgb,var(--surface) 38%,transparent));backdrop-filter:blur(var(--blur)) saturate(2);-webkit-backdrop-filter:blur(var(--blur)) saturate(2);border-color:rgba(255,255,255,.4);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.7),var(--shadow-m)}
+html[data-card=glass] .btn:not(.pri):not(.danger.fill){background:color-mix(in srgb,var(--surface) 45%,transparent);backdrop-filter:blur(calc(var(--blur)*.5));border-color:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+/* heavier, richer look */
+:root{--bg:#D5DFD9;--surface:#F7FAF8;--surface2:#E6EDE9;--surface3:#CCD8D2;--ink:#07120E;--ink2:#1D3128;--muted:#445850;--line:rgba(7,18,14,.14);--line2:rgba(7,18,14,.26);
+--shadow-s:0 1px 2px rgba(7,18,14,.12),0 10px 24px -8px rgba(7,18,14,.2);--shadow-m:0 3px 8px rgba(7,18,14,.12),0 28px 56px -18px rgba(7,18,14,.34)}
+html[data-theme=dark]{--bg:#040A08;--surface:#0D1714;--surface2:#12201B;--surface3:#1A2B25;--ink:#F1F8F4;--ink2:#CFDDD6;--muted:#93AAA0;--line:rgba(241,248,244,.11);--line2:rgba(241,248,244,.22);
+--shadow-s:0 1px 2px rgba(0,0,0,.6),0 12px 28px -10px rgba(0,0,0,.75);--shadow-m:0 4px 10px rgba(0,0,0,.6),0 32px 64px -18px rgba(0,0,0,.85)}
+body{font-weight:500}
+h1,h2,h3{font-weight:800}
+.btn{font-weight:750}.chip{font-weight:700}.r .t{font-weight:700}.setting b{font-weight:800}.lbl,.ledger .lbl{font-weight:700}
+.panel{border-width:1.5px}
+.ledger .cell>.num,.ledger .cell>b{font-weight:800}
+.sec-h h2{font-size:1.18rem}
+html[data-theme=dark] .panel{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 92%,#fff),var(--surface))}
 
 </style>
 </head>
@@ -559,7 +573,7 @@ const defWallets = () => [
 const defaults = () => ({
   v: 7, firstRun: true, demo: false,
   name: '', currency: 'GHS', symbolStyle: 'symbol', decimals: true,
-  theme: 'system', accent: 'emerald', customAccent: '#14B884', card: 'soft', blur: 24, density: 'comfortable', textSize: 100,
+  theme: 'dark', accent: 'emerald', customAccent: '#14B884', card: 'soft', blur: 24, density: 'comfortable', textSize: 100,
   animations: true, reduceMotion: false, followSystemMotion: true, countUp: true, pageFx: true, haptics: true, confetti: true,
   hideAmounts: false,
   income: 0, budget: 0, cycleDay: 1, alertAt: 80, rollover: false,
@@ -607,7 +621,9 @@ function sanitize(s) {
   s.cycleDay = clamp(Math.round(num(s.cycleDay)) || 1, 1, 28);
   s.alertAt = clamp(Math.round(num(s.alertAt)) || 80, 50, 100);
   s.blur = clamp(Math.round(num(s.blur)), 0, 48);
-  if (!['soft','glass','liquid','solid','outline'].includes(s.card)) s.card = 'soft';
+  if (s.card === 'liquid') s.card = 'glass';
+  if (!['soft','glass','solid','outline'].includes(s.card)) s.card = 'soft';
+  if (!s.heavy) { s.heavy = 1; s.theme = 'dark'; }
   s.textSize = [90, 100, 112].includes(s.textSize) ? s.textSize : 100;
   if (!Array.isArray(s.cats) || !s.cats.length) s.cats = defCats();
   s.cats = s.cats.map((c, i) => ({ id: String(c.id || 'c' + uid()), name: String(c.name || 'Category'), icon: c.icon || '✨', budget: Math.max(0, num(c.budget)), color: c.color || COLORS[i % COLORS.length] }));
@@ -1023,9 +1039,12 @@ function renderChrome() {
   $('#nav').innerHTML = NAV.map(([id, i, l]) => `<a class="nav-i ${r === id ? 'on' : ''}" href="#${id}" ${r === id ? 'aria-current="page"' : ''}>${ic(i, 20)}<span>${l}</span></a>`).join('');
   const T = [['dashboard', 'home', 'Home'], ['transactions', 'swap', 'Activity'], ['add'], ['budget', 'pie', 'Budget'], ['goals', 'target', 'Goals']];
   const idx = T.findIndex(t => t[0] === r);
-  $('#tabs').innerHTML = `<i class="tab-pill ${idx < 0 ? 'off' : ''}" style="--i:${Math.max(0, idx)}"></i>` + T.map(t => t[0] === 'add'
+  const tb = $('#tabs');
+  if (!$('.tab-pill', tb)) tb.innerHTML = `<i class="tab-pill"></i>` + T.map(t => t[0] === 'add'
     ? `<button class="tab" data-act="add" aria-label="Add transaction"><span class="fab">${ic('plus', 26, 2.5)}</span></button>`
-    : `<a class="tab ${r === t[0] ? 'on' : ''}" href="#${t[0]}" ${r === t[0] ? 'aria-current="page"' : ''}>${ic(t[1], 22)}<span>${t[2]}</span></a>`).join('');
+    : `<a class="tab" data-t="${t[0]}" href="#${t[0]}">${ic(t[1], 22)}<span>${t[2]}</span></a>`).join('');
+  const pill = $('.tab-pill', tb); pill.classList.toggle('off', idx < 0); if (idx >= 0) pill.style.setProperty('--i', idx);
+  $$('.tab[data-t]', tb).forEach(a => { const on = a.dataset.t === r; a.classList.toggle('on', on); on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
   $('#pageTitle').textContent = title; $('#pageSub').textContent = sub;
   document.title = (r === 'dashboard' ? 'Thrive' : title + ' — Thrive');
   $('#sideName').textContent = S.name || 'Your Thrive';
@@ -1064,7 +1083,7 @@ function onHash() {
   if (h === UI.route && !UI.first) return;
   const apply = () => { UI.route = h; UI.fresh = true; window.scrollTo(0, 0); render(); };
   closeSheet(true);
-  if (document.startViewTransition && motionOn() && S.pageFx && !UI.first) document.startViewTransition(apply); else apply();
+  apply(); if (motionOn() && S.pageFx && !UI.first) { const v = $('#view'); v.classList.remove('route-in'); void v.offsetWidth; v.classList.add('route-in'); setTimeout(() => v.classList.remove('route-in'), 450); }
   UI.first = false;
 }
 window.addEventListener('hashchange', onHash);
@@ -1084,12 +1103,12 @@ const sw = (on, act, arg, label) => `<button type="button" class="switch" role="
 function donut(segs, o = {}) {
   const size = o.size || 150, total = segs.reduce((a, s) => a + s.v, 0), C = 2 * Math.PI * 38; let acc = 0;
   const live = segs.filter(s => s.v > 0);
-  const arcs = total > 0 ? live.map(s => { const len = s.v / total * C, gap = live.length > 1 ? Math.min(2.4, len * .35) : 0; const r = `<circle class="seg" cx="50" cy="50" r="38" fill="none" stroke="${s.c}" stroke-width="13" style="stroke-dasharray:${Math.max(.01, len - gap).toFixed(2)} ${C.toFixed(2)};stroke-dashoffset:${(-acc).toFixed(2)}"/>`; acc += len; return r; }).join('') : '';
+  const arcs = total > 0 ? live.map(s => { const len = s.v / total * C, gap = live.length > 1 ? Math.min(2.4, len * .35) : 0; const r = `<circle class="arc" cx="50" cy="50" r="38" fill="none" stroke="${s.c}" stroke-width="13" style="stroke-dasharray:${Math.max(.01, len - gap).toFixed(2)} ${C.toFixed(2)};stroke-dashoffset:${(-acc).toFixed(2)}"/>`; acc += len; return r; }).join('') : '';
   return `<div class="donut" style="--s:${size}px"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="38" fill="none" stroke="var(--surface3)" stroke-width="13"/><g transform="rotate(-90 50 50)">${arcs}</g></svg><div class="donut-c">${o.center || ''}</div></div>`;
 }
 function ring(p, o = {}) {
   const C = 2 * Math.PI * 40, size = o.size || 64, sw_ = o.sw || 10;
-  return `<div class="ringw" style="--s:${size}px"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--surface3)" stroke-width="${sw_}"/><g transform="rotate(-90 50 50)"><circle class="seg" cx="50" cy="50" r="40" fill="none" stroke="${o.c || 'var(--accent)'}" stroke-width="${sw_}" stroke-linecap="round" style="stroke-dasharray:${(clamp(p, 0, 100) / 100 * C).toFixed(2)} ${C.toFixed(2)}"/></g></svg><div class="donut-c">${o.center || ''}</div></div>`;
+  return `<div class="ringw" style="--s:${size}px"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--surface3)" stroke-width="${sw_}"/><g transform="rotate(-90 50 50)"><circle class="arc" cx="50" cy="50" r="40" fill="none" stroke="${o.c || 'var(--accent)'}" stroke-width="${sw_}" stroke-linecap="round" style="stroke-dasharray:${(clamp(p, 0, 100) / 100 * C).toFixed(2)} ${C.toFixed(2)}"/></g></svg><div class="donut-c">${o.center || ''}</div></div>`;
 }
 const bar = (p, o = {}) => `<div class="bar-t ${o.lg ? 'lg' : ''} ${o.cls || ''}" ${o.c ? `style="--c:${o.c}"` : ''}><i style="--w:${clamp(p, 0, 100).toFixed(1)}%"></i></div>`;
 const toneFor = (spent, budget) => budget <= 0 ? '' : spent > budget ? 'bad' : spent >= budget * S.alertAt / 100 ? 'warn' : '';
@@ -1335,7 +1354,7 @@ PAGES.insights = () => {
   <section class="panel" data-r="2" style="order:2"><div class="sec-h"><h2>Spending pace</h2>${p.budget > 0 ? `<span class="tag ${p.status === 'over' ? 'bad' : p.status === 'ahead' ? 'warn' : 'good'}">${{ on: 'On track', ahead: 'Ahead of pace', over: 'Over budget', none: '' }[p.status]}</span>` : ''}</div>${pacePlot(p, c)}${p.budget > 0 ? `<p class="muted sm" style="margin-top:10px">The dashed line is an even pace to your budget. Stay under it and you’re ahead of plan.</p>` : ''}</section>
   <section class="panel" data-r="3" style="order:3"><div class="sec-h"><h2>By category</h2></div>${cats.length ? `<div class="split">${donut(cats.map(x => ({ v: x.v, c: x.k.color })), { size: 168, center: `<b class="amt num">${money(p.spent, { d: 0 })}</b><small>${cats.length} categories</small>` })}<div class="legend rows">${cats.map(x => `<div class="r lg"><i class="dot" style="--c:${x.k.color}"></i><span class="grow t">${esc(x.k.name)}</span><span class="num amt">${money(x.v)}</span><span class="pc num">${Math.round(x.v / p.spent * 100)}%</span></div>`).join('')}</div></div>` : noData('No spending in this cycle', 'Categories appear once you log an expense.')}</section>
   <section class="panel" data-r="4" style="order:4"><div class="sec-h"><h2>Day by day</h2></div><div class="bars" style="--n:${p.len}">${p.byDay.map((v, i) => `<i class="${p.isCurrent && i === p.elapsed - 1 ? 'today' : ''} ${p.isCurrent && i >= p.elapsed ? 'fut' : ''}" style="--h:${Math.max(v > 0 ? 3 : 0, v / mx * 100).toFixed(1)}%;--i:${i}" title="${esc(fmtDate(addDays(c.s, i)) + ': ' + money(v))}"></i>`).join('')}${dailyB > 0 ? `<span class="bline" style="bottom:${(dailyB / mx * 100).toFixed(1)}%"><em>Daily budget</em></span>` : ''}</div><div class="axis"><span>${esc(fmtDate(c.s, { day: 'numeric', month: 'short' }))}</span><span>${esc(fmtDate(c.e, { day: 'numeric', month: 'short' }))}</span></div></section>
-  <section class="panel" data-r="5" style="order:5"><div class="sec-h"><h2>Last 6 cycles</h2><span class="key"><i style="--c:var(--accent)"></i>Income <i style="--c:#7457FF"></i>Spent</span></div><div class="gbars">${tr.map((x, i) => `<div class="g ${i === tr.length - 1 ? 'cur' : ''}"><div class="gb"><i style="--h:${(x.inc / tmx * 100).toFixed(1)}%;--c:var(--accent);--i:${i}" title="Income ${esc(money(x.inc))}"></i><i style="--h:${(x.spent / tmx * 100).toFixed(1)}%;--c:#7457FF;--i:${i}" title="Spent ${esc(money(x.spent))}"></i></div><span>${esc(x.c.start.toLocaleDateString(undefined, { month: 'short' }))}</span></div>`).join('')}</div></section>
+  <section class="panel" data-r="5" style="order:5"><div class="sec-h"><h2>Last 6 cycles</h2><span class="lkey"><i style="--c:var(--accent)"></i>Income <i style="--c:#7457FF"></i>Spent</span></div><div class="gbars">${tr.map((x, i) => `<div class="g ${i === tr.length - 1 ? 'cur' : ''}"><div class="gb"><i style="--h:${(x.inc / tmx * 100).toFixed(1)}%;--c:var(--accent);--i:${i}" title="Income ${esc(money(x.inc))}"></i><i style="--h:${(x.spent / tmx * 100).toFixed(1)}%;--c:#7457FF;--i:${i}" title="Spent ${esc(money(x.spent))}"></i></div><span>${esc(x.c.start.toLocaleDateString(undefined, { month: 'short' }))}</span></div>`).join('')}</div></section>
   <section class="panel" data-r="6" style="order:6"><div class="sec-h"><h2>Spending by weekday</h2></div>${wk ? `<div class="gbars wd">${wk.map((x, i) => `<div class="g ${wtop && x.d === wtop.d && x.v > 0 ? 'cur' : ''}"><div class="gb"><i style="--h:${(x.v / wmx * 100).toFixed(1)}%;--c:var(--accent);--i:${i}" title="${esc(money(x.v))} a day"></i></div><span>${names[x.d]}</span></div>`).join('')}</div><p class="muted sm" style="margin-top:10px">${wtop && wtop.v > 0 ? `${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][wtop.d]} is your priciest day, around <span class="amt num">${money(wtop.v)}</span> on average.` : ''}</p>` : noData('Not enough data yet', 'Spending patterns appear after you log some expenses.')}</section>
   </div><div class="col">
   <section class="panel" data-r="2" style="order:1"><div class="row">${ring(sc.total, { size: 88, sw: 11, center: `<b class="num" style="font-size:1.25rem">${sc.total}</b>` })}<div class="grow"><h2 style="font-size:1.1rem">Thrive score</h2><p class="muted sm" style="margin-top:3px">Out of 100, built from what you actually do.</p></div></div>
@@ -1365,7 +1384,7 @@ PAGES.settings = () => {
   ${sSec('sparkles', 'Appearance',
     sRow('Theme', 'System follows your device.', seg([['system', 'System', 'monitor'], ['light', 'Light', 'sun'], ['dark', 'Dark', 'moon']], S.theme, 's-theme', { sm: true, label: 'Theme' }), { stack: 1 }) +
     sRow('Accent colour', 'Buttons, highlights and charts.', `<div class="swatches">${Object.entries(ACCENTS).map(([k, v]) => swatch(k, v[0], v[1])).join('')}<label class="sw custom ${S.accent === 'custom' ? 'on' : ''}" style="--c:${S.customAccent};--on:#fff" aria-label="Custom accent colour"><input type="color" value="${S.customAccent}" data-ch="s-custom"></label></div>`, { stack: 1 }) +
-    sRow('Card style', 'How panels look: soft, frosted glass, liquid glass, flat or outlined.', seg([['soft', 'Soft'], ['glass', 'Glass'], ['liquid', 'Liquid'], ['solid', 'Solid'], ['outline', 'Outline']], S.card, 's-card', { sm: true, label: 'Card style' }), { stack: 1 }) +
+    sRow('Card style', 'How panels look: soft, liquid glass, flat or outlined.', seg([['soft', 'Soft'], ['glass', 'Glass'], ['solid', 'Solid'], ['outline', 'Outline']], S.card, 's-card', { sm: true, label: 'Card style' }), { stack: 1 }) +
     sRow('Blur strength', 'How frosted glass, the tab bar, sheets and menus look. 0 turns blur off.', `<div class="range"><input type="range" min="0" max="48" step="2" value="${S.blur}" data-in="s-blur" aria-label="Blur strength"><b class="num" id="blurV">${S.blur}</b></div>`, { kw: 'frosted glass backdrop' }) +
     sRow('Layout density', 'Comfortable has more air. Compact fits more on screen.', seg([['comfortable', 'Comfortable'], ['compact', 'Compact']], S.density, 's-density', { sm: true, label: 'Density' }), { stack: 1 }) +
     sRow('Text size', '', seg([['90', 'Small'], ['100', 'Default'], ['112', 'Large']], String(S.textSize), 's-text', { sm: true, label: 'Text size' }), { stack: 1 }))}
@@ -1884,7 +1903,7 @@ function registerSW() {
   applyTheme();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (S.theme === 'system') { applyTheme(); } });
   const posted = runRecurring(); if (posted) persist();
-  document.documentElement.classList.add('boot'); setTimeout(() => document.documentElement.classList.remove('boot'), 1800);
+  document.documentElement.classList.add('boot'); setTimeout(() => document.documentElement.classList.remove('boot'), 1000);
   let h = location.hash.slice(1); UI.route = ROUTES.includes(h) ? h : 'dashboard';
   UI.first = false; render();
   if (h === 'add') { history.replaceState(null, '', '#' + UI.route); openTx(); }
