@@ -1,8 +1,9 @@
-/* Thrive service worker: offline-first, updates cleanly */
-const VERSION = 'thrive-7.3.1';
+/* Thrive service worker: offline-first, updates itself */
+const VERSION = 'thrive-7.4.7';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => Promise.all(CORE.map(u => c.add(u).catch(() => null)))));
+  self.skipWaiting();
+  e.waitUntil(caches.open(VERSION).then(c => Promise.all(CORE.map(u => c.add(new Request(u, { cache: 'reload' })).catch(() => null)))));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -12,7 +13,7 @@ self.addEventListener('fetch', e => {
   const r = e.request; if (r.method !== 'GET') return;
   const url = new URL(r.url);
   if (r.mode === 'navigate') {
-    e.respondWith(fetch(r).then(res => { const cp = res.clone(); caches.open(VERSION).then(c => c.put('./index.html', cp)); return res; }).catch(() => caches.match('./index.html')));
+    e.respondWith(fetch(new Request(r.url, { cache: 'reload' })).then(res => { const cp = res.clone(); caches.open(VERSION).then(c => c.put('./index.html', cp)); return res; }).catch(() => caches.match('./index.html')));
     return;
   }
   const font = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);

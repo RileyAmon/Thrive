@@ -1,7 +1,10 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
+<script>if(/[?&]reset\b/.test(location.search)){(async function(){try{var r=await navigator.serviceWorker.getRegistrations();await Promise.all(r.map(function(x){return x.unregister()}));var k=await caches.keys();await Promise.all(k.map(function(x){return caches.delete(x)}))}catch(e){}location.replace(location.pathname+"?v="+Date.now()+location.hash)})()}</script>
+<meta name="color-scheme" content="dark light"><meta name="supported-color-schemes" content="dark light">
+<script>try{var _s=JSON.parse(localStorage.getItem("thrive_7")||"{}"),_t=_s.theme||"dark",_d=_t==="dark"||(_t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=_d?"dark":"light"}catch(e){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Thrive</title>
 <meta name="description" content="Thrive tells you what you can spend today. A private, offline money planner for students.">
@@ -44,6 +47,7 @@ html[data-density=compact]{--pad:15px;--gap:12px;--row:9px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{font-size:calc(16px*var(--fs));-webkit-text-size-adjust:100%;color-scheme:light;scroll-behavior:smooth}
 html[data-theme=dark]{color-scheme:dark}
+html[data-theme=light]{color-scheme:light}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 .9375rem/1.45 var(--font);-webkit-font-smoothing:antialiased;min-height:100dvh;overflow-x:hidden;transition:background-color .4s var(--ease),color .4s var(--ease)}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit}
@@ -524,17 +528,8 @@ body{min-height:100vh;min-height:100dvh;background:var(--bg)}
 html[data-card=glass] .tabs{box-shadow:var(--grim),0 2px 10px -6px rgba(0,0,0,.3)!important}
 .fab{box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
 html[data-card=glass] .fab{box-shadow:inset 0 1.5px 0 rgba(255,255,255,calc(.4 + .55*var(--g))),inset 0 -2px 5px rgba(0,0,0,.2)}
-/* installed-app only: blend the area around the system home bar */
-@media (display-mode: standalone){
-  html,body{background:var(--bg)}
-  body::after{content:'';position:fixed;left:0;right:0;bottom:0;height:var(--sab);background:var(--bg);z-index:25;pointer-events:none}
-  .view{padding-bottom:calc(120px + var(--sab))}
-}
-/* installed app: fade the whole bottom into flat bg so the system bar has no visible edge */
-@media (display-mode: standalone){
-  body::before{content:'';position:fixed;left:0;right:0;bottom:0;height:calc(150px + var(--sab));z-index:24;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--bg) 78%)}
-  .aura::after{display:none}
-}
+/* installed app: no overlays near the tab bar */
+@media (display-mode: standalone){ html,body{background:var(--bg)} .aura::after{display:none} }
 /* ===== backdrops ===== */
 .aura{transition:opacity .6s}
 html[data-bd]:not([data-bd=none]) .aura::before,html[data-bd]:not([data-bd=none]) .aura::after{display:none}
@@ -606,6 +601,24 @@ html[data-card=glass] .panel::before{background:radial-gradient(130% 48% at calc
 .bio-ov.bad .bio-art,.bio-ov.bad .bio-art .br{stroke:#FF7078;animation:shake .45s}.bio-ov.bad .bio-art .scan,.bio-ov.bad .bio-ring{display:none}
 @keyframes chk{to{stroke-dashoffset:0}}
 .bio-btn{margin-top:-4px}
+.cal-h,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cal-h span{text-align:center;font-size:.72rem;font-weight:700;color:var(--muted);padding-bottom:6px}
+.cal-d{position:relative;aspect-ratio:1/1.05;border-radius:14px;display:grid;align-content:center;justify-items:center;gap:1px;background:var(--surface2);border:1.5px solid transparent;transition:transform .25s var(--spring),border-color .2s}
+.cal-d:active{transform:scale(.92)}.cal-d b{font:800 .95rem var(--font-d)}.cal-d span{font-size:.62rem;color:var(--muted);font-weight:700;min-height:.8em}
+.cal-d.l1{background:color-mix(in srgb,var(--accent) 16%,var(--surface2))}.cal-d.l2{background:color-mix(in srgb,var(--accent) 30%,var(--surface2))}.cal-d.l3{background:color-mix(in srgb,var(--accent) 46%,var(--surface2))}.cal-d.l4{background:color-mix(in srgb,var(--accent) 62%,var(--surface2))}
+.cal-d.now{border-color:var(--ink2)}.cal-d.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.due{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--warn-bg)}.due.inl{position:static;display:inline-block;margin-right:8px}
+.selbar{position:sticky;bottom:calc(92px + var(--sab));display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:var(--surface);border:1.5px solid var(--accent-line);box-shadow:var(--shadow-m);z-index:20}.selbar:empty{display:none}
+.r .ckb{width:24px;height:24px;border-radius:8px;border:2px solid var(--line2);display:grid;place-items:center;flex:none}.r .ckb.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.forecast .big{font-size:2.2rem}
+.sec-h>.btn:last-child{margin-left:auto}
+/* keep tab bar above the installed-app bottom fade */
+.app{z-index:auto}
+.tabs{z-index:50;isolation:isolate}
+[hidden]{display:none!important}
+/* installed app: solid tab bar (no backdrop blur at the screen edge) */
+html.standalone .tabs,html.standalone[data-card] .tabs{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--surface)!important;box-shadow:inset 0 0 0 1px var(--line2)!important;opacity:1!important}
+html.standalone .tabs *{opacity:1}
+@media (display-mode: standalone){.tabs,html[data-card] .tabs{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--surface)!important;box-shadow:inset 0 0 0 1px var(--line2)!important}}
 
 </style>
 </head>
@@ -638,7 +651,7 @@ html[data-card=glass] .panel::before{background:radial-gradient(130% 48% at calc
 /* ============================================================
    Thrive 7 — core: helpers, state, migration, cycle maths
    ============================================================ */
-const VERSION = '7.0';
+const VERSION = '7.4.7';
 const KEY = 'thrive_7', OLD_KEY = 'thrive_6';
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -687,7 +700,7 @@ const defaults = () => ({
   hideAmounts: false,
   income: 0, budget: 0, cycleDay: 1, alertAt: 80, rollover: false,
   lock: { on: false, hash: '', salt: '', after: 30, bio: '' },
-  mainWallet: '', savesBudget: 'ask',
+  mainWallet: '', savesBudget: 'ask', roundUp: { on: false, to: 5, goal: '' },
   cats: defCats(), wallets: defWallets(), goals: [], tx: [], rec: [],
   dismissed: [], lastBackup: 0, lastWallet: 'cash', created: Date.now()
 });
@@ -764,7 +777,7 @@ function sanitize(s) {
   s.goals = (Array.isArray(s.goals) ? s.goals : []).map(g => ({
     id: String(g.id || uid()), name: String(g.name || 'Goal'), icon: g.icon || '🎯', target: Math.max(0, num(g.target)), current: Math.max(0, num(g.current)),
     deadline: isDate(g.deadline) ? g.deadline : '', done: !!g.done,
-    log: (Array.isArray(g.log) ? g.log : []).map(l => ({ d: isDate(l.d) ? l.d : today(), a: num(l.a), w: wid.has(l.w) ? l.w : '', b: !!l.b })).filter(l => l.a !== 0)
+    log: (Array.isArray(g.log) ? g.log : []).map(l => ({ d: isDate(l.d) ? l.d : today(), a: num(l.a), w: wid.has(l.w) ? l.w : '', b: !!l.b, r: l.r ? String(l.r) : '' })).filter(l => l.a !== 0)
   }));
   s.rec = (Array.isArray(s.rec) ? s.rec : []).filter(r => r && num(r.amount) > 0 && isDate(r.next)).map(r => ({
     id: String(r.id || uid()), type: r.type === 'income' ? 'income' : 'expense', amount: num(r.amount), desc: String(r.desc || 'Recurring'),
@@ -775,6 +788,7 @@ function sanitize(s) {
   if (!wid.has(s.lastWallet)) s.lastWallet = s.wallets[0].id;
   if (!['ask', 'always', 'never'].includes(s.savesBudget)) s.savesBudget = 'ask';
   if (!wid.has(s.mainWallet)) s.mainWallet = s.wallets[0].id;
+  s.roundUp = { on: !!(s.roundUp && s.roundUp.on), to: [1, 5, 10].includes(+(s.roundUp && s.roundUp.to)) ? +s.roundUp.to : 5, goal: String((s.roundUp && s.roundUp.goal) || '') };
   s.lock = { bio: String((s.lock && s.lock.bio) || ''), on: !!(s.lock && s.lock.on && s.lock.hash), hash: String((s.lock && s.lock.hash) || ''), salt: String((s.lock && s.lock.salt) || ''), after: [0, 30, 120, 600].includes(+(s.lock && s.lock.after)) ? +s.lock.after : 30 };
   return s;
 }
@@ -1412,7 +1426,7 @@ PAGES.budget = () => {
     <div class="rows hov">${S.cats.map(k => {
     const sp = p.byCat[k.id] || 0, q = pct(sp, k.budget), tone = toneFor(sp, k.budget);
     return `<button class="r cat" data-act="cat-edit" data-arg="${esc(k.id)}"><span class="tile" style="--c:${k.color}">${esc(k.icon)}</span><span class="grow"><span class="row"><span class="t grow">${esc(k.name)}</span><span class="num amt">${money(sp)}${k.budget > 0 ? `<span class="muted"> / ${money(k.budget, { d: 0 })}</span>` : ''}</span></span>${k.budget > 0 ? `${bar(q, { cls: tone, c: k.color })}<span class="m"><span>${k.budget - sp >= 0 ? money(k.budget - sp) + ' left' : money(sp - k.budget) + ' over'}</span><span>${Math.round(q)}%</span></span>` : `<span class="m"><span>No limit set</span></span>`}</span></button>`;
-  }).join('')}</div></section>
+  }).join('')}</div><button class="btn sm block" style="margin-top:12px" data-act="suggest">${ic('sparkles', 15)}Suggest limits from my history</button></section>
   <div class="col">${planPanel}
   <section class="panel" data-r="3"><div class="sec-h"><h2>Repeating</h2><button class="btn sm" data-act="rec-new">${ic('plus', 15, 2.4)}Add</button></div>
     ${S.rec.length ? `<div class="rows">${S.rec.slice().sort((a, b) => a.next.localeCompare(b.next)).map(r => { const k = r.type === 'income' ? incSrc(r.cat) : catById(r.cat); return `<div class="r rec ${r.on ? '' : 'off'}"><button class="rec-main" data-act="rec-edit" data-arg="${esc(r.id)}"><span class="tile sm" style="--c:${k.color}">${k.icon}</span><span class="grow"><span class="t">${esc(r.desc)}</span><span class="m"><span>${r.every === 'weekly' ? 'Weekly' : 'Monthly'}</span><span>${r.on ? 'Next ' + esc(fmtDate(r.next, { day: 'numeric', month: 'short' })) : 'Paused'}</span></span></span><span class="num amt ${r.type === 'income' ? 'pos' : ''}">${r.type === 'income' ? '+' : '−'}${money(r.amount)}</span></button>${sw(r.on, 'rec-tog', r.id, (r.on ? 'Pause ' : 'Resume ') + r.desc)}</div>`; }).join('')}</div><p class="muted sm" style="margin-top:10px">${recSummary()}</p>` : `<p class="muted sm">Add rent, data bundles, subscriptions or your allowance once and Thrive logs them for you on time.</p>`}</section></div></div></div>`;
@@ -1495,6 +1509,7 @@ PAGES.insights = () => {
   <section class="panel" data-r="6" style="order:6"><div class="sec-h"><h2>Spending by weekday</h2></div>${wk ? `<div class="gbars wd">${wk.map((x, i) => `<div class="g ${wtop && x.d === wtop.d && x.v > 0 ? 'cur' : ''}"><div class="gb"><i style="--h:${(x.v / wmx * 100).toFixed(1)}%;--c:var(--accent);--i:${i}" title="${esc(money(x.v))} a day"></i></div><span>${names[x.d]}</span></div>`).join('')}</div><p class="muted sm" style="margin-top:10px">${wtop && wtop.v > 0 ? `${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][wtop.d]} is your priciest day, around <span class="amt num">${money(wtop.v)}</span> on average.` : ''}</p>` : noData('Not enough data yet', 'Spending patterns appear after you log some expenses.')}</section>
   ${heatmapHTML()}
   </div><div class="col">
+  ${forecastPanel(c, p)}
   <section class="panel" data-r="2" style="order:1"><div class="row">${ring(sc.total, { size: 88, sw: 11, center: `<b class="num" style="font-size:1.25rem">${sc.total}</b>` })}<div class="grow"><h2 style="font-size:1.1rem">Thrive score</h2><p class="muted sm" style="margin-top:3px">Out of 100, built from what you actually do.</p></div></div>
     <div class="rows" style="margin-top:12px">${sc.parts.map(x => `<div class="r sp"><span class="grow"><span class="row"><span class="t grow">${x.k}</span><span class="num muted">${x.pts}/${x.max}</span></span>${bar(x.pts / x.max * 100, { cls: x.pts >= x.max ? '' : '' })}<span class="m"><span>${esc(x.tip)}</span></span></span></div>`).join('')}</div></section>
   <section class="panel" data-r="3" style="order:2"><div class="sec-h"><h2>Smart moves</h2></div><div class="rows">${tips.map(t => `<div class="r tip"><span class="tile sm">${ic(t.i, 17)}</span><span class="grow"><span class="t" style="white-space:normal">${esc(t.t)}</span><span class="m" style="white-space:normal;display:block">${esc(t.b)}</span></span></div>`).join('')}</div></section></div></div>`;
@@ -1549,6 +1564,8 @@ PAGES.settings = () => {
     sRow('Carry over what’s left', 'Unspent budget from last cycle is added to this one.', sw(S.rollover, 's-tog', 'rollover', 'Carry over unspent budget'), { kw: 'rollover' }) +
     sRow('Main account', 'Money you save into goals comes out of this wallet.', `<select class="select" data-ch="s-main" aria-label="Main account">${S.wallets.map(w => `<option value="${esc(w.id)}" ${S.mainWallet === w.id ? 'selected' : ''}>${esc(w.icon + ' ' + w.name)}</option>`).join('')}</select>`, { kw: 'savings wallet' }) +
     sRow('Savings and your budget', 'When you add to a goal, should it count against this cycle’s budget?', `<select class="select" data-ch="s-savesb" aria-label="Savings and budget"><option value="ask" ${S.savesBudget === 'ask' ? 'selected' : ''}>Ask me each time</option><option value="always" ${S.savesBudget === 'always' ? 'selected' : ''}>Always count it</option><option value="never" ${S.savesBudget === 'never' ? 'selected' : ''}>Never count it</option></select>`, { kw: 'goal contribution' }) +
+    sRow('Round-up savings', 'Round each new spending up to the next 1, 5 or 10 and put the change into a goal.', sw(S.roundUp.on, 's-ru', '', 'Round-up savings'), { kw: 'roundup change save automatically' }) +
+    sRow('Round up to', 'Pick the step and the goal that receives it.', `<div class="chips"><select class="select" data-ch="s-ru-to" aria-label="Round up to">${[1, 5, 10].map(n => `<option value="${n}" ${S.roundUp.to === n ? 'selected' : ''}>Next ${n}</option>`).join('')}</select><select class="select" data-ch="s-ru-goal" aria-label="Goal for round-ups"><option value="">Choose a goal</option>${S.goals.filter(g => !g.done).map(g => `<option value="${esc(g.id)}" ${S.roundUp.goal === g.id ? 'selected' : ''}>${esc(g.icon + ' ' + g.name)}</option>`).join('')}</select></div>`) +
     sRow('Categories', `${S.cats.length} categories with their own limits.`, `<button class="btn sm" data-act="cats">Manage</button>`) +
     sRow('Wallets', `${S.wallets.length} wallets for cash, mobile money and banks.`, `<button class="btn sm" data-act="wallets">Manage</button>`))}
   ${sSec('shield', 'Privacy & security',
@@ -1567,6 +1584,7 @@ PAGES.settings = () => {
   ${sSec('phone', 'App',
     (isStandalone() ? sRow('Install Thrive', 'Thrive is installed on this device.', `<span class="tag good">${ic('check', 12)}Installed</span>`) : sRow('Install Thrive', window.__bip ? 'Add it to your home screen. It opens fast and works offline.' : isIOS() ? 'In Safari tap Share, then Add to Home Screen.' : 'Open your browser menu and choose Install app or Add to Home screen.', window.__bip ? `<button class="btn sm pri" data-act="install">${ic('download', 15)}Install</button>` : `<button class="btn sm" data-act="install">How</button>`, { kw: 'home screen pwa app' })) +
     sRow('Connection', navigator.onLine ? 'Thrive works fully offline.' : 'You’re offline. Everything still works.', `<span class="tag ${navigator.onLine ? 'good' : 'warn'}" id="netTag">${navigator.onLine ? 'Online' : 'Offline'}</span>`) +
+    sRow('Force update', 'Clears Thrive’s saved app files and reloads the newest version. Your data is not touched.', `<button class="btn sm" data-act="force-update">${ic('refresh', 15)}Refresh app</button>`, { kw: 'cache stuck old version reset' }) +
     sRow('Updates', 'Version ' + VERSION, `<button class="btn sm" data-act="update">${ic('refresh', 15)}Check</button>`) +
     sRow('Tutorial', 'Replay the welcome tour. Your data stays as it is.', `<button class="btn sm" data-act="tour">${ic('play', 14)}Replay</button>`, { kw: 'onboarding welcome' }) +
     sRow('Keyboard shortcuts', 'Press ? any time.', `<button class="btn sm" data-act="keys">View</button>`))}
@@ -1617,6 +1635,8 @@ ACT['s-fonts'] = (a, el) => { S.fonts = a; segSet(el, segIdx(el)); persist(); if
 
 CHG['s-main'] = v => { S.mainWallet = v; persist(); toast('Savings will come out of ' + walletById(v).name, { tone: 'good' }); };
 CHG['s-savesb'] = v => { S.savesBudget = v; persist(); };
+
+ACT['force-update'] = async () => { try { const r = await navigator.serviceWorker.getRegistrations(); await Promise.all(r.map(x => x.unregister())); const k = await caches.keys(); await Promise.all(k.map(x => caches.delete(x))); } catch (e) { } location.replace(location.pathname + '?v=' + Date.now() + location.hash); };
 
 /* ============================================================
    Thrive 7 — sheets & forms
@@ -1690,16 +1710,17 @@ function saveTx(again) {
   if (F.type !== 'transfer') t.cat = F.cat; else t.to = F.to;
   if ((F.note || '').trim()) t.note = F.note.trim();
   if (F.rec) t.rec = F.rec;
-  const edit = F.mode === 'edit'; let recId = null;
+  const edit = F.mode === 'edit'; let recId = null, ruAmt = 0;
   if (edit) { const i = S.tx.findIndex(x => x.id === t.id); if (i >= 0) S.tx[i] = t; else S.tx.push(t); }
   else {
     if (F.rep !== 'none' && F.type !== 'transfer') { const day = parseYmd(F.date).getDate(); const r = { id: uid(), type: F.type, amount: t.amount, desc: t.desc, cat: t.cat, w: t.w, every: F.rep, day, next: nextOcc(F.date, F.rep, day), on: true }; S.rec.push(r); t.rec = r.id; recId = r.id; }
     S.tx.push(t);
+    if (t.type === 'expense' && S.roundUp.on) ruAmt = applyRoundUp(t);
   }
   if (F.type !== 'transfer') S.lastWallet = F.w;
   save(); buzz(14);
   const label = { expense: 'Spending added', income: 'Income added', transfer: 'Money moved' }[F.type];
-  toast(edit ? 'Changes saved' : label, { tone: 'good', action: edit ? '' : 'Undo', fn: () => { S.tx = S.tx.filter(x => x.id !== t.id); if (recId) S.rec = S.rec.filter(r => r.id !== recId); save(); } });
+  toast(edit ? 'Changes saved' : label + (ruAmt ? `. ${money(ruAmt)} saved by round-up` : ''), { tone: 'good', action: edit ? '' : 'Undo', fn: () => { unRoundUp(t.id); S.tx = S.tx.filter(x => x.id !== t.id); if (recId) S.rec = S.rec.filter(r => r.id !== recId); save(); } });
   const pa = pace(c0);
   if (t.type === 'expense' && pa.budget > 0) { const th = S.alertAt / 100; if (before < 1 && pa.spentPct >= 1) setTimeout(() => toast('You’re over budget for this cycle', { tone: 'bad', ms: 4200 }), 500); else if (before < th && pa.spentPct >= th) setTimeout(() => toast(`You’ve used ${Math.round(pa.spentPct * 100)}% of your budget`, { tone: 'warn', ms: 4200 }), 500); }
   if (again && !edit) { const k = { ...F }; F = { mode: 'new', type: k.type, amount: '', desc: '', cat: k.cat, w: k.w, to: k.to, date: k.date, note: '', rep: 'none', catTouched: true }; renderTxForm(); setTimeout(() => $('#f-amt') && $('#f-amt').focus(), 50); }
@@ -1709,7 +1730,7 @@ ACT['f-save'] = () => saveTx(false); ACT['f-again'] = () => saveTx(true);
 ACT['f-dup'] = () => { F.mode = 'new'; delete F.id; delete F.rec; F.date = today(); F.catTouched = true; $('#layer-sheet .sheet-head h2').textContent = 'New transaction'; renderTxForm(); toast('Duplicated. Adjust and save.', { ms: 1800 }); };
 ACT['f-del'] = () => {
   const i = S.tx.findIndex(x => x.id === F.id); if (i < 0) return; const old = S.tx[i];
-  S.tx.splice(i, 1); closeSheet(); save(); buzz(14);
+  unRoundUp(old.id); S.tx.splice(i, 1); closeSheet(); save(); buzz(14);
   toast('Transaction deleted', { action: 'Undo', fn: () => { S.tx.splice(Math.min(i, S.tx.length), 0, old); save(); } });
 };
 ACT['tx-edit'] = id => openTx({ id });
@@ -1935,6 +1956,7 @@ function alertList() {
     S.cats.forEach(x => { const sp = p.byCat[x.id] || 0; if (x.budget > 0 && sp > x.budget) out.push({ key: `cat:${x.id}:${k}`, tone: 'warn', icon: 'tag', title: `${x.name} is over its limit`, body: `${money(sp - x.budget)} over ${money(x.budget, { d: 0 })}.` }); });
     S.rec.filter(r => r.on && r.type === 'expense').forEach(r => { const d = daysBetween(t, r.next); if (d >= 0 && d <= 3) out.push({ key: `rec:${r.id}:${r.next}`, tone: 'info', icon: 'repeat', title: `${r.desc} is due ${d === 0 ? 'today' : d === 1 ? 'tomorrow' : 'in ' + d + ' days'}`, body: money(r.amount) }); });
     S.goals.forEach(g => { if (g.done || !g.deadline) return; const d = daysBetween(t, g.deadline); if (d >= 0 && d <= 14 && g.current < g.target) out.push({ key: `goal:${g.id}:${g.deadline}`, tone: 'info', icon: 'target', title: `${g.name} is due in ${d} day${d === 1 ? '' : 's'}`, body: `${money(g.target - g.current)} to go.` }); });
+    if (S.tx.length > 5 && new Date().getHours() >= 8 && !S.tx.some(x => x.date === addDays(t, -1))) out.push({ key: `log:${t}`, tone: 'info', icon: 'calendar', title: 'Did you spend anything yesterday?', body: 'Add it so today’s allowance stays accurate.' });
     const ns = noSpendStats(c); if (ns.streak >= 3) out.push({ key: `streak:${k}:${ns.streak}`, tone: 'good', icon: 'flame', title: `${ns.streak}-day no-spend streak`, body: 'Keep it going.' });
     if (S.tx.length > 10 && Date.now() - (S.lastBackup || S.created) > 14 * 864e5) out.push({ key: `backup:${t.slice(0, 7)}`, tone: 'info', icon: 'download', title: 'Time for a backup', body: 'Export your data so a cleared browser can’t take it.' });
     return out.filter(a => !S.dismissed.includes(a.key));
@@ -2070,7 +2092,7 @@ ACT.update = async () => { if (!swReg) return toast('Updates aren’t available 
 function showUpdate() { toast('A new version is ready', { action: 'Reload', ms: 12000, fn: () => { swReg.waiting && swReg.waiting.postMessage('SKIP_WAITING'); } }); }
 function registerSW() {
   if (!('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
-  navigator.serviceWorker.register('./sw.js').then(r => { swReg = r; if (r.waiting && navigator.serviceWorker.controller) showUpdate(); r.addEventListener('updatefound', () => { const n = r.installing; n && n.addEventListener('statechange', () => { if (n.state === 'installed' && navigator.serviceWorker.controller) showUpdate(); }); }); }).catch(() => { });
+  navigator.serviceWorker.register('./sw.js').then(r => { swReg = r; r.update().catch(() => { }); if (r.waiting && navigator.serviceWorker.controller) showUpdate(); r.addEventListener('updatefound', () => { const n = r.installing; n && n.addEventListener('statechange', () => { if (n.state === 'installed' && navigator.serviceWorker.controller) showUpdate(); }); }); }).catch(() => { });
   let reloaded = false; navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloaded) return; reloaded = true; location.reload(); });
 }
 
@@ -2371,8 +2393,82 @@ ACT['s-bio'] = async (a, el) => {
   if (ok && id) { S.lock.bio = id; persist(); el.setAttribute('aria-checked', 'true'); toast('Biometric unlock is on', { tone: 'good' }); } else toast('Biometric unlock wasn’t set up.', { tone: 'warn' });
 };
 
+/* ============================================================
+   Thrive 7 — calendar, forecast, round-up, suggestions, bulk edit
+   ============================================================ */
+UI.tx.view = 'list'; UI.tx.sel = new Set(); UI.tx.selMode = false; UI.tx.day = '';
+function recOccurrences(from, to) {
+  const out = []; S.rec.forEach(r => { if (!r.on) return; let d = r.next, g = 0; while (d <= to && g++ < 120) { if (d >= from) out.push({ r, date: d }); d = nextOcc(d, r.every, r.day); } }); return out;
+}
+/* ---------- forecast ---------- */
+function forecastPanel(c, p) {
+  if (!p.isCurrent || p.left < 1) return '';
+  const t = today(), up = recOccurrences(addDays(t, 1), c.e), upInc = up.filter(x => x.r.type === 'income').reduce((a, x) => a + x.r.amount, 0), upOut = up.filter(x => x.r.type === 'expense').reduce((a, x) => a + x.r.amount, 0);
+  const nonRec = p.txs.filter(x => x.type === 'expense' && !x.rec).reduce((a, x) => a + x.amount, 0), daily = p.elapsed ? nonRec / p.elapsed : 0, daysAhead = Math.max(0, p.left - 1), eve = daily * daysAhead;
+  const now = totalBalance(), end = now + upInc - upOut - eve;
+  return `<section class="panel forecast" data-r="2" style="order:1"><div class="sec-h"><h2>Forecast</h2><span class="tag ${end < 0 ? 'bad' : 'good'}">${end < 0 ? 'Heads up' : 'Looking fine'}</span></div><span class="lbl">Balance on ${esc(fmtDate(c.e, { day: 'numeric', month: 'short' }))}</span><div class="big num amt ${end < 0 ? 'neg' : ''}" style="margin:2px 0 12px">${money(end)}</div>
+  <div class="rows"><div class="r"><span class="grow t">Available now</span><span class="num amt">${money(now)}</span></div>${upInc ? `<div class="r"><span class="grow t">Income due</span><span class="num amt pos">+${money(upInc)}</span></div>` : ''}${upOut ? `<div class="r"><span class="grow t">Bills due</span><span class="num amt">−${money(upOut)}</span></div>` : ''}<div class="r"><span class="grow"><span class="t">Everyday spending</span><span class="m"><span>about ${money(daily)} a day for ${daysAhead} more day${daysAhead === 1 ? '' : 's'}</span></span></span><span class="num amt">−${money(eve)}</span></div></div></section>`;
+}
+/* ---------- round-up ---------- */
+function applyRoundUp(t) {
+  const g = S.goals.find(x => x.id === S.roundUp.goal && !x.done); if (!g) return 0;
+  const st = S.roundUp.to, diff = round2(Math.ceil(t.amount / st - 1e-9) * st - t.amount); if (diff <= 0.004 || diff >= st) return 0;
+  g.current = round2(g.current + diff); g.log.push({ d: t.date, a: diff, w: t.w, b: false, r: t.id });
+  if (g.target > 0 && g.current >= g.target) { g.done = true; setTimeout(confetti, 300); } return diff;
+}
+function unRoundUp(id) { S.goals.forEach(g => { const rm = g.log.filter(l => l.r === id); if (!rm.length) return; rm.forEach(l => { g.current = round2(Math.max(0, g.current - l.a)); }); g.log = g.log.filter(l => l.r !== id); if (g.current < g.target) g.done = false; }); }
+ACT['s-ru'] = (a, el) => {
+  if (!S.roundUp.on && !S.goals.some(g => !g.done)) return toast('Create a goal first, then turn this on.', { tone: 'warn' });
+  S.roundUp.on = !S.roundUp.on; if (S.roundUp.on && !S.goals.some(g => g.id === S.roundUp.goal && !g.done)) S.roundUp.goal = S.goals.find(g => !g.done).id;
+  el.setAttribute('aria-checked', S.roundUp.on); persist(); buzz(8); if (S.roundUp.on) { toast(`Round-ups go to ${S.goals.find(g => g.id === S.roundUp.goal).name}`, { tone: 'good' }); render(); }
+};
+CHG['s-ru-to'] = v => { S.roundUp.to = +v; persist(); }; CHG['s-ru-goal'] = v => { S.roundUp.goal = v; persist(); };
+/* ---------- suggest limits ---------- */
+ACT.suggest = async () => {
+  const sums = {}; let n = 0; for (let i = 1; i <= 3; i++) { const st = stats(shiftCycle(cycleNow(), -i)); if (st.spent > 0) { n++; Object.entries(st.byCat).forEach(([k, v]) => sums[k] = (sums[k] || 0) + v); } }
+  if (!n) return toast('Log a full cycle first, then I can suggest limits.', { tone: 'warn', ms: 3500 });
+  const next = S.cats.map(k => ({ id: k.id, v: sums[k.id] ? Math.max(5, Math.round(sums[k.id] / n * 1.05 / 5) * 5) : k.budget }));
+  const ok = await ask({ title: 'Set limits from your history?', body: `Each category gets its average from your last ${n} cycle${n > 1 ? 's' : ''}, plus a 5% cushion. You can undo this.`, ok: 'Set limits' }); if (!ok) return;
+  const old = S.cats.map(k => k.budget); next.forEach(x => { S.cats.find(k => k.id === x.id).budget = x.v; }); save();
+  toast('Limits updated', { tone: 'good', action: 'Undo', fn: () => { S.cats.forEach((k, i) => k.budget = old[i]); save(); } });
+};
+/* ---------- activity: calendar + bulk edit ---------- */
+const _txPage = PAGES.transactions;
+function viewSeg() { return `<div class="row" data-r="0">${seg([['list', 'List', 'swap'], ['cal', 'Calendar', 'calendar']], UI.tx.view, 'tx-view', { sm: true, label: 'View' })}${UI.tx.view === 'list' ? `<button class="btn sm ${UI.tx.selMode ? 'pri' : ''}" data-act="tx-select">${UI.tx.selMode ? 'Done' : 'Select'}</button>` : ''}</div>`; }
+PAGES.transactions = () => {
+  if (UI.tx.view === 'cal') return `<div class="col" style="max-width:860px;margin:0 auto">${viewSeg()}${cycleBar()}${calHTML()}</div>`;
+  let h = _txPage(); h = h.replace('margin:0 auto">', 'margin:0 auto">' + viewSeg()); return h.replace(/<\/div>$/, `<div id="selBar">${selBarHTML()}</div></div>`);
+};
+ACT['tx-view'] = (a, el) => { UI.tx.view = a; UI.tx.selMode = false; UI.tx.sel.clear(); render(); };
+function calHTML() {
+  const c = cycleAt(UI.off), p = pace(c), t = today(), lead = (parseYmd(c.s).getDay() + 6) % 7, mx = Math.max(...p.byDay, 1), due = {};
+  recOccurrences(c.s, c.e).forEach(x => { (due[x.date] = due[x.date] || []).push(x.r); });
+  const sel = UI.tx.day && UI.tx.day >= c.s && UI.tx.day <= c.e ? UI.tx.day : (t >= c.s && t <= c.e ? t : c.s);
+  const cells = Array.from({ length: lead }, () => '<i class="cal-e"></i>').join('') + p.byDay.map((v, i) => { const d = addDays(c.s, i), lvl = v <= 0 ? 0 : Math.min(4, Math.ceil(v / mx * 4)); return `<button class="cal-d l${lvl} ${d === sel ? 'sel' : ''} ${d === t ? 'now' : ''}" data-act="cal-day" data-arg="${d}" aria-label="${esc(fmtDate(d) + ', ' + money(v))}"><b>${parseYmd(d).getDate()}</b><span class="amt">${v ? short(v) : ''}</span>${due[d] ? '<i class="due"></i>' : ''}</button>`; }).join('');
+  const dayTx = S.tx.filter(x => x.date === sel), dd = due[sel] || [];
+  return `<section class="panel" data-r="1"><div class="cal-h">${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => `<span>${d}</span>`).join('')}</div><div class="cal">${cells}</div><p class="muted sm" style="margin-top:12px"><span class="due inl"></span>Bill or income due</p></section>
+  <section class="panel" data-r="2"><div class="sec-h"><h2>${esc(dayLabel(sel))}</h2><button class="btn sm" data-act="cal-add" data-arg="${sel}">${ic('plus', 15, 2.4)}Add</button></div>${dd.length ? `<div class="rows">${dd.map(r => `<div class="r"><span class="tile sm">${ic('repeat', 16)}</span><span class="grow t">${esc(r.desc)} <span class="muted sm">due</span></span><span class="num amt ${r.type === 'income' ? 'pos' : ''}">${r.type === 'income' ? '+' : '−'}${money(r.amount)}</span></div>`).join('')}</div>` : ''}${dayTx.length ? `<div class="rows hov">${dayTx.map(x => txRow(x)).join('')}</div>` : (dd.length ? '' : '<p class="muted sm">Nothing on this day.</p>')}</section>`;
+}
+ACT['cal-day'] = a => { UI.tx.day = a; render(); };
+ACT['cal-add'] = a => openTx({ prefill: { date: a } });
+const _txRow = txRow;
+txRow = function (t, o) { const h = _txRow(t, o); if (!UI.tx.selMode) return h; return h.replace('data-act="tx-edit"', 'data-act="tx-sel"').replace('<span class="tile"', `<span class="ckb ${UI.tx.sel.has(t.id) ? 'on' : ''}">${UI.tx.sel.has(t.id) ? ic('check', 14, 3) : ''}</span><span class="tile"`); };
+function selBarHTML() { if (!UI.tx.selMode) return ''; const n = UI.tx.sel.size; return `<div class="selbar"><b>${n} selected</b><span class="grow"></span><button class="btn sm" data-act="tx-selall">All shown</button><button class="btn sm pri" data-act="tx-bulk" ${n ? '' : 'disabled'}>Edit</button></div>`; }
+const updateSel = () => { const b = $('#selBar'); if (b) b.innerHTML = selBarHTML(); refreshTxList(); };
+ACT['tx-select'] = () => { UI.tx.selMode = !UI.tx.selMode; UI.tx.sel.clear(); render(); };
+ACT['tx-sel'] = id => { UI.tx.sel.has(id) ? UI.tx.sel.delete(id) : UI.tx.sel.add(id); buzz(5); updateSel(); };
+ACT['tx-selall'] = () => { txFiltered().slice(0, UI.tx.lim).forEach(t => UI.tx.sel.add(t.id)); updateSel(); };
+ACT['tx-bulk'] = () => {
+  const n = UI.tx.sel.size; if (!n) return;
+  openSheet(`${sheetHead(`Edit ${n} selected`)}<div class="sheet-body"><label class="field"><span>Change category (spending only)</span><select class="select" id="bk-cat"><option value="">Keep as is</option>${S.cats.map(c => `<option value="${esc(c.id)}">${esc(c.icon + ' ' + c.name)}</option>`).join('')}</select></label><label class="field"><span>Change wallet</span><select class="select" id="bk-w"><option value="">Keep as is</option>${S.wallets.map(w => `<option value="${esc(w.id)}">${esc(w.icon + ' ' + w.name)}</option>`).join('')}</select></label><div class="sheet-foot"><button class="btn danger" data-act="bulk-del" aria-label="Delete selected">${ic('trash', 17)}</button><button class="btn pri" data-act="bulk-apply" data-submit>Apply</button></div></div>`, { label: 'Edit selected' });
+};
+const bulkDone = (msg, snap) => { UI.tx.sel.clear(); UI.tx.selMode = false; closeSheet(true); save(); toast(msg, { tone: 'good', action: 'Undo', fn: () => { S.tx = JSON.parse(snap); save(); } }); };
+ACT['bulk-apply'] = () => { const c = $('#bk-cat').value, w = $('#bk-w').value; if (!c && !w) return closeSheet(); const snap = JSON.stringify(S.tx); S.tx.forEach(t => { if (!UI.tx.sel.has(t.id)) return; if (c && t.type === 'expense') t.cat = c; if (w && t.type !== 'transfer') { t.w = w; } }); bulkDone('Updated ' + UI.tx.sel.size + ' transactions', snap); };
+ACT['bulk-del'] = async () => { const n = UI.tx.sel.size, ok = await ask({ title: `Delete ${n} transaction${n > 1 ? 's' : ''}?`, body: 'You can undo right after.', ok: 'Delete', danger: true }); if (!ok) return; const snap = JSON.stringify(S.tx); S.tx.filter(t => UI.tx.sel.has(t.id)).forEach(t => unRoundUp(t.id)); S.tx = S.tx.filter(t => !UI.tx.sel.has(t.id)); bulkDone('Deleted ' + n, snap); };
+
 /* boot */
 (function boot() {
+  if (matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches || matchMedia('(display-mode: minimal-ui)').matches || navigator.standalone) document.documentElement.classList.add('standalone');
   applyTheme();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (S.theme === 'system') { applyTheme(); } });
   const posted = runRecurring(); if (posted) persist();
