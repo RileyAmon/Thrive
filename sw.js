@@ -1,5 +1,5 @@
 /* Thrive service worker: offline-first, updates cleanly */
-const VERSION = 'thrive-7.0.2';
+const VERSION = 'thrive-7.3.1';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => Promise.all(CORE.map(u => c.add(u).catch(() => null)))));

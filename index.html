@@ -10,8 +10,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Thrive">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Figtree:wght@400..800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    Thrive 7 — design system
@@ -532,6 +530,82 @@ html[data-card=glass] .fab{box-shadow:inset 0 1.5px 0 rgba(255,255,255,calc(.4 +
   body::after{content:'';position:fixed;left:0;right:0;bottom:0;height:var(--sab);background:var(--bg);z-index:25;pointer-events:none}
   .view{padding-bottom:calc(120px + var(--sab))}
 }
+/* installed app: fade the whole bottom into flat bg so the system bar has no visible edge */
+@media (display-mode: standalone){
+  body::before{content:'';position:fixed;left:0;right:0;bottom:0;height:calc(150px + var(--sab));z-index:24;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--bg) 78%)}
+  .aura::after{display:none}
+}
+/* ===== backdrops ===== */
+.aura{transition:opacity .6s}
+html[data-bd]:not([data-bd=none]) .aura::before,html[data-bd]:not([data-bd=none]) .aura::after{display:none}
+html[data-bd=none] .aura{background:none}
+html[data-bd=aurora] .aura{background:radial-gradient(55% 42% at 12% 4%,rgba(20,184,132,.8),transparent 70%),radial-gradient(48% 38% at 92% 22%,rgba(116,87,255,.75),transparent 70%),radial-gradient(60% 44% at 45% 100%,rgba(18,179,198,.65),transparent 70%)}
+html[data-bd=sunset] .aura{background:radial-gradient(55% 42% at 10% 6%,rgba(255,122,69,.85),transparent 70%),radial-gradient(48% 40% at 95% 28%,rgba(229,68,109,.78),transparent 70%),radial-gradient(60% 44% at 40% 100%,rgba(116,87,255,.65),transparent 70%)}
+html[data-bd=ocean] .aura{background:radial-gradient(55% 42% at 90% 4%,rgba(47,115,240,.85),transparent 70%),radial-gradient(48% 40% at 8% 30%,rgba(18,179,198,.75),transparent 70%),radial-gradient(60% 44% at 55% 100%,rgba(92,107,192,.7),transparent 70%)}
+html[data-bd=haze] .aura{background:radial-gradient(55% 42% at 15% 5%,rgba(116,87,255,.85),transparent 70%),radial-gradient(48% 40% at 92% 30%,rgba(180,95,224,.75),transparent 70%),radial-gradient(60% 44% at 45% 100%,rgba(47,115,240,.65),transparent 70%)}
+html[data-bd=candy] .aura{background:radial-gradient(55% 42% at 10% 6%,rgba(229,68,109,.82),transparent 70%),radial-gradient(48% 40% at 95% 26%,rgba(245,165,36,.75),transparent 70%),radial-gradient(60% 44% at 45% 100%,rgba(180,95,224,.65),transparent 70%)}
+html[data-theme=light][data-bd]:not([data-bd=none]) .aura{opacity:.6}
+html[data-theme=dark][data-bd]:not([data-bd=none]) .aura{opacity:.9}
+/* tilt-reactive shine */
+html[data-card=glass] .panel::before{background:radial-gradient(130% 48% at calc(18% + var(--tx,0)*30%) calc(-12% + var(--ty,0)*14%),rgba(255,255,255,calc(.7*var(--g))),transparent 62%),radial-gradient(70% 45% at calc(105% + var(--tx,0)*-14%) calc(112% + var(--ty,0)*-10%),rgba(255,255,255,calc(.3*var(--g))),transparent 70%)}
+/* new components */
+.qbar{margin-bottom:0}.qbar input{font-weight:600}
+.verdict{display:grid;gap:4px;padding:16px;border-radius:20px;border:1.5px solid var(--line2);background:var(--surface2);margin-bottom:12px}
+.verdict b{font:800 1.4rem var(--font-d);letter-spacing:-.03em}.verdict p{color:var(--ink2)}
+.verdict.good{border-color:var(--accent-line);background:var(--accent-soft)}.verdict.warn{border-color:color-mix(in srgb,var(--warn-bg) 55%,transparent);background:color-mix(in srgb,var(--warn-bg) 16%,transparent)}.verdict.bad{border-color:color-mix(in srgb,var(--neg) 50%,transparent);background:color-mix(in srgb,var(--neg) 14%,transparent)}
+.stepper{display:flex;align-items:center;gap:14px}.stepper b{min-width:24px;text-align:center;font-size:1.2rem}
+.rew-b{display:flex;align-items:center;gap:14px;width:100%;text-align:left}.rew-l{font:800 1.2rem var(--font-d);display:block}.rew-b .bar-t{margin:6px 0 4px}.rew-b .m{display:flex;justify-content:space-between;font-size:.76rem;color:var(--muted)}
+.sprout{flex:none;filter:drop-shadow(0 8px 14px rgba(0,0,0,.25))}
+.mini .cell{padding:6px 10px}.mini b{font:800 1.3rem var(--font-d)}
+.chal{display:flex;align-items:center;gap:14px;padding:14px;border-radius:20px;background:var(--surface2);border:1px solid var(--line)}.chal .bar-t{margin:8px 0 4px}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.badge-i{display:grid;gap:3px;justify-items:center;text-align:center;padding:14px 8px;border-radius:20px;border:1px solid var(--line);background:var(--surface2);opacity:.45;filter:grayscale(1)}
+.badge-i.got{opacity:1;filter:none;border-color:var(--accent-line);background:var(--accent-soft)}.badge-i .be{font-size:1.9rem}.badge-i small{color:var(--muted);font-size:.7rem;line-height:1.25}
+.story{position:absolute;inset:0;display:grid;place-items:center;color:#fff;overflow:hidden;animation:fade .5s backwards}
+.story-bars{position:absolute;top:calc(14px + var(--sat));left:14px;right:60px;display:flex;gap:5px;z-index:3}
+.story-bars i{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.28);overflow:hidden;position:relative}
+.story-bars i.done::after,.story-bars i.act::after{content:'';position:absolute;inset:0;background:#fff;transform-origin:left}
+.story-bars i.act::after{animation:bar linear forwards reverse;animation-duration:var(--d,.01s);animation-direction:normal;transform:scaleX(0);animation-name:fillbar}
+.story-bars i.act:last-child::after{transform:scaleX(1);animation:none}
+@keyframes fillbar{to{transform:scaleX(1)}}
+.story-x{position:absolute;top:calc(8px + var(--sat));right:12px;z-index:4;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.2);color:#fff}
+.story-body{display:grid;gap:14px;justify-items:center;text-align:center;padding:30px;max-width:520px;animation:storyIn .8s var(--ease) backwards}
+@keyframes storyIn{from{opacity:0;transform:translateY(30px) scale(.96)}}
+.story-l{font-weight:700;opacity:.8;font-size:1.05rem}.story-e{font-size:5.5rem;line-height:1}
+.story-b{font:800 clamp(2.6rem,12vw,4.6rem)/1.02 var(--font-d);letter-spacing:-.045em;overflow-wrap:anywhere}.story-s{font-size:1.1rem;opacity:.85;max-width:30ch}
+.story-prev,.story-next{position:absolute;top:70px;bottom:90px;width:36%;z-index:2}.story-prev{left:0}.story-next{right:0;width:64%}
+.story-end{position:absolute;bottom:calc(40px + var(--sab));z-index:4}
+.chip.on[data-act=sp-tip]{background:var(--accent);color:var(--on-accent)}
+.favs{margin:-4px 0}.favs .chip b{font-weight:800}
+.cmpbars{display:grid;gap:4px;margin-top:7px}.cmpbars i{display:block;height:7px;width:var(--w);border-radius:9px;background:var(--c);transition:width 1s var(--ease)}.cmpbars i.prev{background:var(--surface3)}.enter .cmpbars i{width:0!important;transition:none}
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:4px}
+.hm{display:block;aspect-ratio:1;border-radius:6px;background:var(--surface3)}.heat .hm{width:100%}
+.hm.l1{background:color-mix(in srgb,var(--accent) 28%,var(--surface3))}.hm.l2{background:color-mix(in srgb,var(--accent) 52%,var(--surface3))}.hm.l3{background:color-mix(in srgb,var(--accent) 76%,var(--surface3))}.hm.l4{background:var(--accent)}.hm.lf{background:transparent;border:1px dashed var(--line)}
+.heatkey{display:inline-flex;gap:4px}.heatkey .hm{width:14px;height:14px;border-radius:4px}
+.iou.off{opacity:.55}
+/* biometric scan */
+.bio-ov{position:fixed;inset:0;z-index:300;display:grid;place-items:center;background:rgba(3,10,8,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0;transition:opacity .35s var(--ease)}
+.bio-ov.on{opacity:1}
+.bio-card{position:relative;display:grid;justify-items:center;gap:18px;color:#EAF6F0}
+.bio-card p{font-weight:700;letter-spacing:-.01em}
+.bio-art{width:128px;height:128px;fill:none;stroke:#EAF6F0;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1;transition:stroke .4s}
+.bio-art.fing{stroke-width:1.3;width:120px;height:120px}
+.bio-art .br{stroke:var(--accent);stroke-width:4;animation:brk 1.6s var(--ease) infinite alternate}
+.bio-art .scan{stroke:var(--accent);stroke-width:3;filter:drop-shadow(0 0 6px var(--accent));animation:scan 1.5s ease-in-out infinite alternate}
+.bio-art .fc{stroke-dasharray:140;stroke-dashoffset:140;animation:drawfc 1.4s var(--ease) infinite alternate}
+.bio-art .chk{stroke:var(--accent);stroke-width:5;stroke-dasharray:80;stroke-dashoffset:80;opacity:0}
+.bio-art.fing .chk{stroke-width:2.2;stroke-dasharray:30;stroke-dashoffset:30}
+.bio-ring{position:absolute;top:50%;left:50%;width:128px;height:128px;transform:translate(-50%,-62%)}
+.bio-ring i{position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);opacity:0;animation:ringp 1.8s ease-out infinite}.bio-ring i+i{animation-delay:.9s}
+@keyframes scan{from{transform:translateY(0)}to{transform:translateY(64px)}}
+@keyframes brk{to{transform:scale(1.04);transform-origin:60px 60px}}
+@keyframes drawfc{to{stroke-dashoffset:0}}
+@keyframes ringp{0%{transform:scale(.7);opacity:.7}100%{transform:scale(1.7);opacity:0}}
+.bio-ov.ok .bio-art .fc,.bio-ov.ok .bio-art .scan,.bio-ov.ok .bio-ring{display:none}
+.bio-ov.ok .bio-art .chk{opacity:1;animation:chk .6s var(--ease) forwards}.bio-ov.ok .bio-art .br{animation:none;stroke:var(--accent)}
+.bio-ov.bad .bio-art,.bio-ov.bad .bio-art .br{stroke:#FF7078;animation:shake .45s}.bio-ov.bad .bio-art .scan,.bio-ov.bad .bio-ring{display:none}
+@keyframes chk{to{stroke-dashoffset:0}}
+.bio-btn{margin-top:-4px}
 
 </style>
 </head>
@@ -556,6 +630,7 @@ html[data-card=glass] .fab{box-shadow:inset 0 1.5px 0 rgba(255,255,255,calc(.4 +
 </div>
 <div class="layer" id="layer-sheet"></div><div class="layer" id="layer-dialog" style="z-index:80"></div><div class="layer" id="layer-palette" style="z-index:70"></div>
 <div class="layer" id="layer-onboard" style="z-index:100"></div><div class="layer" id="layer-lock" style="z-index:110"></div>
+<div class="layer" id="layer-story" style="z-index:105"></div>
 <div id="toasts" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas>
 <noscript><p style="padding:24px">Thrive needs JavaScript to run.</p></noscript>
 <script>
@@ -607,11 +682,12 @@ const defWallets = () => [
 const defaults = () => ({
   v: 7, firstRun: true, demo: false,
   name: '', currency: 'GHS', symbolStyle: 'symbol', decimals: true,
-  theme: 'dark', accent: 'emerald', customAccent: '#14B884', card: 'soft', blur: 24, gloss: 70, tint: 30, round: 'default', reduceTrans: false, startPage: 'dashboard', density: 'comfortable', textSize: 100,
+  theme: 'dark', accent: 'emerald', customAccent: '#14B884', fonts: 'thrive', debts: [], card: 'soft', backdrop: 'aurora', tilt: true, cycleType: 'month', cycleDow: 1, cycleAnchor: '', chal: null, wins: 0, blur: 24, gloss: 70, tint: 30, round: 'default', reduceTrans: false, startPage: 'dashboard', density: 'comfortable', textSize: 100,
   animations: true, reduceMotion: false, followSystemMotion: true, countUp: true, pageFx: true, haptics: true, confetti: true,
   hideAmounts: false,
   income: 0, budget: 0, cycleDay: 1, alertAt: 80, rollover: false,
-  lock: { on: false, hash: '', salt: '', after: 30 },
+  lock: { on: false, hash: '', salt: '', after: 30, bio: '' },
+  mainWallet: '', savesBudget: 'ask',
   cats: defCats(), wallets: defWallets(), goals: [], tx: [], rec: [],
   dismissed: [], lastBackup: 0, lastWallet: 'cash', created: Date.now()
 });
@@ -652,6 +728,13 @@ function sanitize(s) {
   if (!ACCENTS[s.accent] && s.accent !== 'custom') s.accent = 'emerald';
   if (!/^#[0-9a-f]{6}$/i.test(s.customAccent)) s.customAccent = '#14B884';
   s.income = Math.max(0, num(s.income)); s.budget = Math.max(0, num(s.budget));
+  if (!['month','week','fortnight'].includes(s.cycleType)) s.cycleType = 'month';
+  s.cycleDow = clamp(Math.round(num(s.cycleDow)), 0, 6);
+  if (!isDate(s.cycleAnchor)) s.cycleAnchor = anchorFor(s.cycleDow);
+  if (!['none','aurora','sunset','ocean','haze','candy'].includes(s.backdrop)) s.backdrop = 'aurora';
+  if (!['thrive', 'system'].includes(s.fonts)) s.fonts = 'thrive';
+  s.debts = (Array.isArray(s.debts) ? s.debts : []).filter(d => d && num(d.amount) > 0).map(d => ({ id: String(d.id || uid()), who: String(d.who || 'Someone').slice(0, 40), amount: num(d.amount), dir: d.dir === 'owe' ? 'owe' : 'owed', note: String(d.note || '').slice(0, 80), date: isDate(d.date) ? d.date : today(), paid: !!d.paid }));
+  s.wins = Math.max(0, Math.round(num(s.wins)));
   s.cycleDay = clamp(Math.round(num(s.cycleDay)) || 1, 1, 28);
   s.alertAt = clamp(Math.round(num(s.alertAt)) || 80, 50, 100);
   s.gloss = clamp(Math.round(num(s.gloss)), 0, 100); s.tint = clamp(Math.round(num(s.tint)), 0, 100);
@@ -681,7 +764,7 @@ function sanitize(s) {
   s.goals = (Array.isArray(s.goals) ? s.goals : []).map(g => ({
     id: String(g.id || uid()), name: String(g.name || 'Goal'), icon: g.icon || '🎯', target: Math.max(0, num(g.target)), current: Math.max(0, num(g.current)),
     deadline: isDate(g.deadline) ? g.deadline : '', done: !!g.done,
-    log: (Array.isArray(g.log) ? g.log : []).map(l => ({ d: isDate(l.d) ? l.d : today(), a: num(l.a) })).filter(l => l.a !== 0)
+    log: (Array.isArray(g.log) ? g.log : []).map(l => ({ d: isDate(l.d) ? l.d : today(), a: num(l.a), w: wid.has(l.w) ? l.w : '', b: !!l.b })).filter(l => l.a !== 0)
   }));
   s.rec = (Array.isArray(s.rec) ? s.rec : []).filter(r => r && num(r.amount) > 0 && isDate(r.next)).map(r => ({
     id: String(r.id || uid()), type: r.type === 'income' ? 'income' : 'expense', amount: num(r.amount), desc: String(r.desc || 'Recurring'),
@@ -690,7 +773,9 @@ function sanitize(s) {
   }));
   s.dismissed = Array.isArray(s.dismissed) ? s.dismissed.slice(-200) : [];
   if (!wid.has(s.lastWallet)) s.lastWallet = s.wallets[0].id;
-  s.lock = { on: !!(s.lock && s.lock.on && s.lock.hash), hash: String((s.lock && s.lock.hash) || ''), salt: String((s.lock && s.lock.salt) || ''), after: [0, 30, 120, 600].includes(+(s.lock && s.lock.after)) ? +s.lock.after : 30 };
+  if (!['ask', 'always', 'never'].includes(s.savesBudget)) s.savesBudget = 'ask';
+  if (!wid.has(s.mainWallet)) s.mainWallet = s.wallets[0].id;
+  s.lock = { bio: String((s.lock && s.lock.bio) || ''), on: !!(s.lock && s.lock.on && s.lock.hash), hash: String((s.lock && s.lock.hash) || ''), salt: String((s.lock && s.lock.salt) || ''), after: [0, 30, 120, 600].includes(+(s.lock && s.lock.after)) ? +s.lock.after : 30 };
   return s;
 }
 
@@ -732,18 +817,25 @@ function short(n) {
 }
 
 /* ---------- budget cycles ---------- */
+function anchorFor(dow) { let d = new Date(); d = new Date(d.getFullYear(), d.getMonth(), d.getDate()); while (d.getDay() !== dow) d.setDate(d.getDate() - 1); return ymd(d); }
+const cycleLen = () => S.cycleType === 'week' ? 7 : S.cycleType === 'fortnight' ? 14 : 0;
 function cycleOf(date, startDay = S.cycleDay) {
+  if (cycleLen()) {
+    const L = cycleLen(), a = parseYmd(S.cycleAnchor), d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const k = Math.floor(Math.round((d - a) / 864e5) / L), start = new Date(a.getFullYear(), a.getMonth(), a.getDate() + k * L), end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + L - 1);
+    return { start, end, s: ymd(start), e: ymd(end), key: ymd(start) };
+  }
   const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   let y = d.getFullYear(), m = d.getMonth();
   if (d.getDate() < startDay) { m--; if (m < 0) { m = 11; y--; } }
   const start = new Date(y, m, startDay), end = new Date(y, m + 1, startDay - 1);
   return { start, end, s: ymd(start), e: ymd(end), key: ymd(start) };
 }
-const shiftCycle = (c, n) => cycleOf(new Date(c.start.getFullYear(), c.start.getMonth() + n, S.cycleDay), S.cycleDay);
+const shiftCycle = (c, n) => cycleLen() ? cycleOf(new Date(c.start.getFullYear(), c.start.getMonth(), c.start.getDate() + n * cycleLen())) : cycleOf(new Date(c.start.getFullYear(), c.start.getMonth() + n, S.cycleDay), S.cycleDay);
 const cycleNow = () => cycleOf(new Date());
 const cycleAt = off => off ? shiftCycle(cycleNow(), off) : cycleNow();
 function cycleLabel(c) {
-  if (S.cycleDay === 1) return c.start.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  if (!cycleLen() && S.cycleDay === 1) return c.start.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
   const f = d => d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
   return `${f(c.start)} – ${f(c.end)}`;
 }
@@ -770,7 +862,7 @@ function txCat(t) {
 /* ---------- derived numbers (memoised per save) ---------- */
 function memoize(k, fn) { if (memo.has(k)) return memo.get(k); const v = fn(); memo.set(k, v); return v; }
 function stats(c) {
-  return memoize('st' + c.key + S.cycleDay, () => {
+  return memoize('st' + c.key + S.cycleDay + S.cycleType + S.cycleAnchor, () => {
     const txs = S.tx.filter(t => t.date >= c.s && t.date <= c.e);
     const len = daysBetween(c.s, c.e) + 1;
     const byDay = Array(len).fill(0), incDay = Array(len).fill(0), byCat = {};
@@ -783,7 +875,8 @@ function stats(c) {
         if (!big || t.amount > big.amount) big = t;
       } else if (t.type === 'income') { inc += t.amount; if (i >= 0 && i < len) incDay[i] += t.amount; }
     }
-    return { txs, len, byDay, incDay, byCat, spent, inc, big, n };
+    let sv = 0; S.goals.forEach(g => g.log.forEach(l => { if (l.b && l.a > 0 && l.d >= c.s && l.d <= c.e) { sv += l.a; spent += l.a; const i = daysBetween(c.s, l.d); if (i >= 0 && i < len) byDay[i] += l.a; } }));
+    return { txs, len, byDay, incDay, byCat, spent, inc, big, n, sv };
   });
 }
 function budgetFor(c) {
@@ -817,6 +910,7 @@ function walletBalance(id) {
       else if (t.type === 'expense' && t.w === id) b -= t.amount;
       else if (t.type === 'transfer') { if (t.w === id) b -= t.amount; if (t.to === id) b += t.amount; }
     }
+    S.goals.forEach(g => g.log.forEach(l => { if (l.w === id) b -= l.a; }));
     return b;
   });
 }
@@ -925,7 +1019,7 @@ function applyTheme() {
   const dark = S.theme === 'dark' || (S.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   const h = document.documentElement, [c, on] = accentPair();
   h.dataset.theme = dark ? 'dark' : 'light'; h.dataset.card = S.card; h.dataset.density = S.density;
-  h.style.setProperty('--fs', S.textSize / 100); h.style.setProperty('--blur', S.blur + 'px'); h.style.setProperty('--gloss', S.gloss / 100); h.style.setProperty('--tint', S.tint); h.dataset.round = S.round; h.dataset.transp = S.reduceTrans ? 'reduced' : 'normal';
+  h.style.setProperty('--fs', S.textSize / 100); h.style.setProperty('--blur', S.blur + 'px'); h.style.setProperty('--gloss', S.gloss / 100); h.style.setProperty('--tint', S.tint); h.dataset.round = S.round; h.dataset.bd = S.backdrop; h.dataset.transp = S.reduceTrans ? 'reduced' : 'normal';
   h.style.setProperty('--accent', c); h.style.setProperty('--on-accent', on);
   h.classList.toggle('reduce', !motionOn());
   h.classList.toggle('hide-amt', !!S.hideAmounts);
@@ -1106,6 +1200,7 @@ function render() {
   if (v.classList.contains('enter')) requestAnimationFrame(() => requestAnimationFrame(() => v.classList.remove('enter')));
   UI.fresh = false;
   if (AFTER[UI.route]) AFTER[UI.route]();
+  if (typeof chalCheck === 'function') chalCheck();
 }
 ACT.reload = () => location.reload();
 function save() {
@@ -1116,6 +1211,7 @@ function save() {
 function onHash() {
   let h = location.hash.slice(1);
   if (h === 'add') { history.replaceState(null, '', '#' + UI.route); openTx(); return; }
+  if (h === 'today') { history.replaceState(null, '', '#' + UI.route); openToday(); return; }
   if (!ROUTES.includes(h)) h = 'dashboard';
   if (h === UI.route && !UI.first) return;
   const apply = () => { UI.route = h; UI.fresh = true; window.scrollTo(0, 0); render(); };
@@ -1203,7 +1299,7 @@ function checklist() {
 }
 PAGES.dashboard = () => {
   const c = cycleAt(UI.off), p = pace(c);
-  const cats = S.cats.map(k => ({ k, v: p.byCat[k.id] || 0 })).filter(x => x.v > 0).sort((a, b) => b.v - a.v);
+  const cats = S.cats.map(k => ({ k, v: p.byCat[k.id] || 0 })).filter(x => x.v > 0).concat(p.sv > 0 ? [{ k: { id: '__sv', name: 'Savings', color: '#7B8DA0', icon: '🎯', budget: 0 }, v: p.sv }] : []).sort((a, b) => b.v - a.v);
   const top = cats.slice(0, 5), rest = cats.slice(5).reduce((a, x) => a + x.v, 0);
   const segs = cats.map(x => ({ v: x.v, c: x.k.color }));
   const net = p.inc - p.spent;
@@ -1213,6 +1309,8 @@ PAGES.dashboard = () => {
   <div class="dash">
   <div class="col">
     ${cycleBar()}
+    <div class="inline-in qbar" data-r="0">${ic('bolt', 18)}<input data-ch="q-add" placeholder="Quick add: lunch 18 momo" aria-label="Quick add" autocomplete="off"></div>
+    ${favsHTML()}
     ${heroHTML(c)}
     ${checklist()}
     <section class="panel ledger" style="order:2" data-r="2">
@@ -1229,7 +1327,7 @@ PAGES.dashboard = () => {
   </div>
   <div class="col">
     <section class="panel" style="order:3" data-r="3"><div class="sec-h"><h2>Wallets</h2><button class="link" data-act="wallets">Manage</button></div>
-      <div class="total"><span class="lbl">Total balance</span>${cnt(totalBalance(), { k: 'bal', cls: 'big' })}</div>
+      <div class="total"><span class="lbl">Available</span>${cnt(totalBalance(), { k: 'bal', cls: 'big' })}${goalsSaved() > 0 ? `<small class="muted amt">${money(goalsSaved(), { d: 0 })} set aside in goals</small>` : ''}</div>
       <div class="rows">${S.wallets.map(w => { const b = walletBalance(w.id); return `<button class="r" data-act="wallet-edit" data-arg="${esc(w.id)}"><span class="tile sm">${esc(w.icon)}</span><span class="grow t">${esc(w.name)}</span><span class="num amt ${b < 0 ? 'neg' : ''}">${money(b)}</span></button>`; }).join('')}</div>
       <button class="btn sm block" style="margin-top:12px" data-act="add-transfer">${ic('transfer', 16)}Move money</button></section>
     <section class="panel" style="order:5" data-r="4"><div class="sec-h"><h2>Goals</h2><a class="link" href="#goals">All goals</a></div>
@@ -1238,7 +1336,8 @@ PAGES.dashboard = () => {
     <section class="panel" style="order:7" data-r="5"><div class="sec-h"><h2>Coming up</h2><a class="link" href="#budget">Manage</a></div>
       ${up.length ? `<div class="rows">${up.map(r => { const d = daysBetween(today(), r.next), k = r.type === 'income' ? incSrc(r.cat) : catById(r.cat); return `<div class="r"><span class="tile sm" style="--c:${k.color}">${k.icon}</span><span class="grow"><span class="t">${esc(r.desc)}</span><span class="m"><span>${d <= 0 ? 'Due today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days'}</span><span>${r.every === 'weekly' ? 'Weekly' : 'Monthly'}</span></span></span><span class="num amt ${r.type === 'income' ? 'pos' : ''}">${r.type === 'income' ? '+' : '−'}${money(r.amount)}</span></div>`; }).join('')}</div>`
       : `<p class="muted sm">Repeating bills and allowances show up here. Turn on “Repeat” when you add a transaction.</p>`}</section>
-    <section class="panel score" style="order:8" data-r="5"><div class="row">${ring(sc.total, { size: 74, sw: 11, center: `<b class="num">${sc.total}</b>` })}<div class="grow"><h2 style="font-size:1.05rem">Thrive score</h2><p class="muted sm" style="margin-top:3px">${sc.total === 0 ? 'Starts at zero. Every good habit adds points.' : esc(weak.tip)}</p></div></div></section>
+    <section class="panel tools" style="order:6" data-r="5"><div class="sec-h"><h2>Smart tools</h2></div><div class="rows hov"><button class="r" data-act="afford"><span class="tile sm">${ic('help', 18)}</span><span class="grow t">Can I afford this?</span>${ic('chevR', 18)}</button><button class="r" data-act="split"><span class="tile sm">${ic('transfer', 18)}</span><span class="grow t">Split a bill</span>${ic('chevR', 18)}</button><button class="r" data-act="ious"><span class="tile sm">${ic('wallet', 18)}</span><span class="grow"><span class="t">IOUs</span>${iouSummary() ? `<span class="m"><span class="amt">${iouSummary()}</span></span>` : ''}</span>${ic('chevR', 18)}</button><button class="r" data-act="recap"><span class="tile sm">${ic('sparkles', 18)}</span><span class="grow t">Recap of this cycle</span>${ic('chevR', 18)}</button></div></section>
+    <section class="panel rew" style="order:8" data-r="5">${(() => { const g = gameStats(); return `<button class="rew-b" data-act="rewards">${sprout(sproutStage(sc.total), 84)}<span class="grow"><b class="rew-l">Level ${g.level}</b><span class="m">${g.logStreak ? g.logStreak + '-day logging streak' : 'Log today to start a streak'}</span>${bar(g.pct)}<span class="m"><span>${g.got} of ${g.badges.length} badges</span><span>Score ${sc.total}</span></span></span>${ic('chevR', 18)}</button>`; })()}</section>
   </div></div>`;
 };
 ACT['add-exp'] = () => openTx({ type: 'expense' });
@@ -1307,7 +1406,7 @@ PAGES.budget = () => {
       <div class="alloc" role="img" aria-label="Budget assigned to categories">${S.cats.filter(k => k.budget > 0).map(k => `<i style="--w:${(k.budget / denom * 100).toFixed(2)}%;--c:${k.color}" title="${esc(k.name)}"></i>`).join('')}${un > 0 ? `<i class="free" style="--w:${(un / denom * 100).toFixed(2)}%"></i>` : ''}</div>
       <p class="sm ${un < 0 ? 'neg' : 'muted'}" style="margin-top:10px">${un < 0 ? `Categories add up to ${money(-un)} more than your budget.` : un === 0 ? 'Every part of your budget has a job.' : `${money(un)} of your budget isn’t assigned to a category yet.`}</p>
       ${carry > 0 ? `<p class="sm muted" style="margin-top:6px">Includes ${money(carry)} carried over from last cycle.</p>` : ''}
-      ${S.cycleDay > 1 ? `<p class="sm muted" style="margin-top:6px">Your cycle starts on day ${S.cycleDay} of the month.</p>` : ''}</section>`;
+      ${S.cycleType === 'month' && S.cycleDay > 1 ? `<p class="sm muted" style="margin-top:6px">Your cycle starts on day ${S.cycleDay} of the month.</p>` : ''}</section>`;
   return `<div class="col" style="max-width:1080px;margin:0 auto">${cycleBar()}<div class="two">
   <section class="panel" data-r="2"><div class="sec-h"><h2>Categories</h2><button class="btn sm" data-act="cat-new">${ic('plus', 15, 2.4)}Add</button></div>
     <div class="rows hov">${S.cats.map(k => {
@@ -1316,7 +1415,7 @@ PAGES.budget = () => {
   }).join('')}</div></section>
   <div class="col">${planPanel}
   <section class="panel" data-r="3"><div class="sec-h"><h2>Repeating</h2><button class="btn sm" data-act="rec-new">${ic('plus', 15, 2.4)}Add</button></div>
-    ${S.rec.length ? `<div class="rows">${S.rec.slice().sort((a, b) => a.next.localeCompare(b.next)).map(r => { const k = r.type === 'income' ? incSrc(r.cat) : catById(r.cat); return `<div class="r rec ${r.on ? '' : 'off'}"><button class="rec-main" data-act="rec-edit" data-arg="${esc(r.id)}"><span class="tile sm" style="--c:${k.color}">${k.icon}</span><span class="grow"><span class="t">${esc(r.desc)}</span><span class="m"><span>${r.every === 'weekly' ? 'Weekly' : 'Monthly'}</span><span>${r.on ? 'Next ' + esc(fmtDate(r.next, { day: 'numeric', month: 'short' })) : 'Paused'}</span></span></span><span class="num amt ${r.type === 'income' ? 'pos' : ''}">${r.type === 'income' ? '+' : '−'}${money(r.amount)}</span></button>${sw(r.on, 'rec-tog', r.id, (r.on ? 'Pause ' : 'Resume ') + r.desc)}</div>`; }).join('')}</div>` : `<p class="muted sm">Add rent, data bundles, subscriptions or your allowance once and Thrive logs them for you on time.</p>`}</section></div></div></div>`;
+    ${S.rec.length ? `<div class="rows">${S.rec.slice().sort((a, b) => a.next.localeCompare(b.next)).map(r => { const k = r.type === 'income' ? incSrc(r.cat) : catById(r.cat); return `<div class="r rec ${r.on ? '' : 'off'}"><button class="rec-main" data-act="rec-edit" data-arg="${esc(r.id)}"><span class="tile sm" style="--c:${k.color}">${k.icon}</span><span class="grow"><span class="t">${esc(r.desc)}</span><span class="m"><span>${r.every === 'weekly' ? 'Weekly' : 'Monthly'}</span><span>${r.on ? 'Next ' + esc(fmtDate(r.next, { day: 'numeric', month: 'short' })) : 'Paused'}</span></span></span><span class="num amt ${r.type === 'income' ? 'pos' : ''}">${r.type === 'income' ? '+' : '−'}${money(r.amount)}</span></button>${sw(r.on, 'rec-tog', r.id, (r.on ? 'Pause ' : 'Resume ') + r.desc)}</div>`; }).join('')}</div><p class="muted sm" style="margin-top:10px">${recSummary()}</p>` : `<p class="muted sm">Add rent, data bundles, subscriptions or your allowance once and Thrive logs them for you on time.</p>`}</section></div></div></div>`;
 };
 ACT['rec-tog'] = (id, el) => { const r = S.rec.find(x => x.id === id); if (!r) return; r.on = !r.on; el.setAttribute('aria-checked', r.on); buzz(8); persist(); setTimeout(() => { if (UI.route === 'budget') render(); }, 380); };
 
@@ -1377,7 +1476,7 @@ function insightTips(p) {
 PAGES.insights = () => {
   const c = cycleAt(UI.off), p = pace(c), ns = noSpendStats(c), sc = scoreBreakdown();
   const rate = p.inc > 0 ? Math.round((p.inc - p.spent) / p.inc * 100) : null;
-  const cats = S.cats.map(k => ({ k, v: p.byCat[k.id] || 0 })).filter(x => x.v > 0).sort((a, b) => b.v - a.v);
+  const cats = S.cats.map(k => ({ k, v: p.byCat[k.id] || 0 })).filter(x => x.v > 0).concat(p.sv > 0 ? [{ k: { id: '__sv', name: 'Savings', color: '#7B8DA0', icon: '🎯', budget: 0 }, v: p.sv }] : []).sort((a, b) => b.v - a.v);
   const dailyB = p.budget > 0 ? p.budget / p.len : 0, mx = Math.max(...p.byDay, dailyB * 1.15, 1);
   const tr = trendCycles(6), tmx = Math.max(...tr.map(x => Math.max(x.spent, x.inc)), 1);
   const wk = weekdayAvg(), wmx = wk ? Math.max(...wk.map(x => x.v), 1) : 1, wtop = wk ? wk.reduce((a, x) => x.v > a.v ? x : a, wk[0]) : null;
@@ -1390,9 +1489,11 @@ PAGES.insights = () => {
     <div class="cell"><span class="lbl">Savings rate</span>${rate === null ? '<b class="num">None</b>' : cnt(rate, { f: 'p', k: 'i-rate', cls: rate < 0 ? 'neg' : '' })}<small>${rate === null ? 'Needs income logged' : 'Income kept after spending'}</small></div></section>
   <section class="panel" data-r="2" style="order:2"><div class="sec-h"><h2>Spending pace</h2>${p.budget > 0 ? `<span class="tag ${p.status === 'over' ? 'bad' : p.status === 'ahead' ? 'warn' : 'good'}">${{ on: 'On track', ahead: 'Ahead of pace', over: 'Over budget', none: '' }[p.status]}</span>` : ''}</div>${pacePlot(p, c)}${p.budget > 0 ? `<p class="muted sm" style="margin-top:10px">The dashed line is an even pace to your budget. Stay under it and you’re ahead of plan.</p>` : ''}</section>
   <section class="panel" data-r="3" style="order:3"><div class="sec-h"><h2>By category</h2></div>${cats.length ? `<div class="split">${donut(cats.map(x => ({ v: x.v, c: x.k.color })), { size: 168, center: `<b class="amt num">${money(p.spent, { d: 0 })}</b><small>${cats.length} categories</small>` })}<div class="legend rows">${cats.map(x => `<div class="r lg"><i class="dot" style="--c:${x.k.color}"></i><span class="grow t">${esc(x.k.name)}</span><span class="num amt">${money(x.v)}</span><span class="pc num">${Math.round(x.v / p.spent * 100)}%</span></div>`).join('')}</div></div>` : noData('No spending in this cycle', 'Categories appear once you log an expense.')}</section>
+  ${comparePanel(c, p)}
   <section class="panel" data-r="4" style="order:4"><div class="sec-h"><h2>Day by day</h2></div><div class="bars" style="--n:${p.len}">${p.byDay.map((v, i) => `<i class="${p.isCurrent && i === p.elapsed - 1 ? 'today' : ''} ${p.isCurrent && i >= p.elapsed ? 'fut' : ''}" style="--h:${Math.max(v > 0 ? 3 : 0, v / mx * 100).toFixed(1)}%;--i:${i}" title="${esc(fmtDate(addDays(c.s, i)) + ': ' + money(v))}"></i>`).join('')}${dailyB > 0 ? `<span class="bline" style="bottom:${(dailyB / mx * 100).toFixed(1)}%"><em>Daily budget</em></span>` : ''}</div><div class="axis"><span>${esc(fmtDate(c.s, { day: 'numeric', month: 'short' }))}</span><span>${esc(fmtDate(c.e, { day: 'numeric', month: 'short' }))}</span></div></section>
-  <section class="panel" data-r="5" style="order:5"><div class="sec-h"><h2>Last 6 cycles</h2><span class="lkey"><i style="--c:var(--accent)"></i>Income <i style="--c:#7457FF"></i>Spent</span></div><div class="gbars">${tr.map((x, i) => `<div class="g ${i === tr.length - 1 ? 'cur' : ''}"><div class="gb"><i style="--h:${(x.inc / tmx * 100).toFixed(1)}%;--c:var(--accent);--i:${i}" title="Income ${esc(money(x.inc))}"></i><i style="--h:${(x.spent / tmx * 100).toFixed(1)}%;--c:#7457FF;--i:${i}" title="Spent ${esc(money(x.spent))}"></i></div><span>${esc(x.c.start.toLocaleDateString(undefined, { month: 'short' }))}</span></div>`).join('')}</div></section>
+  <section class="panel" data-r="5" style="order:5"><div class="sec-h"><h2>Last 6 cycles</h2><span class="lkey"><i style="--c:var(--accent)"></i>Income <i style="--c:#7457FF"></i>Spent</span></div><div class="gbars">${tr.map((x, i) => `<div class="g ${i === tr.length - 1 ? 'cur' : ''}"><div class="gb"><i style="--h:${(x.inc / tmx * 100).toFixed(1)}%;--c:var(--accent);--i:${i}" title="Income ${esc(money(x.inc))}"></i><i style="--h:${(x.spent / tmx * 100).toFixed(1)}%;--c:#7457FF;--i:${i}" title="Spent ${esc(money(x.spent))}"></i></div><span>${esc(x.c.start.toLocaleDateString(undefined, S.cycleType === 'month' ? { month: 'short' } : { day: 'numeric', month: 'short' }))}</span></div>`).join('')}</div></section>
   <section class="panel" data-r="6" style="order:6"><div class="sec-h"><h2>Spending by weekday</h2></div>${wk ? `<div class="gbars wd">${wk.map((x, i) => `<div class="g ${wtop && x.d === wtop.d && x.v > 0 ? 'cur' : ''}"><div class="gb"><i style="--h:${(x.v / wmx * 100).toFixed(1)}%;--c:var(--accent);--i:${i}" title="${esc(money(x.v))} a day"></i></div><span>${names[x.d]}</span></div>`).join('')}</div><p class="muted sm" style="margin-top:10px">${wtop && wtop.v > 0 ? `${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][wtop.d]} is your priciest day, around <span class="amt num">${money(wtop.v)}</span> on average.` : ''}</p>` : noData('Not enough data yet', 'Spending patterns appear after you log some expenses.')}</section>
+  ${heatmapHTML()}
   </div><div class="col">
   <section class="panel" data-r="2" style="order:1"><div class="row">${ring(sc.total, { size: 88, sw: 11, center: `<b class="num" style="font-size:1.25rem">${sc.total}</b>` })}<div class="grow"><h2 style="font-size:1.1rem">Thrive score</h2><p class="muted sm" style="margin-top:3px">Out of 100, built from what you actually do.</p></div></div>
     <div class="rows" style="margin-top:12px">${sc.parts.map(x => `<div class="r sp"><span class="grow"><span class="row"><span class="t grow">${x.k}</span><span class="num muted">${x.pts}/${x.max}</span></span>${bar(x.pts / x.max * 100, { cls: x.pts >= x.max ? '' : '' })}<span class="m"><span>${esc(x.tip)}</span></span></span></div>`).join('')}</div></section>
@@ -1423,6 +1524,8 @@ PAGES.settings = () => {
     sRow('Accent colour', 'Buttons, highlights and charts.', `<div class="swatches">${Object.entries(ACCENTS).map(([k, v]) => swatch(k, v[0], v[1])).join('')}<label class="sw custom ${S.accent === 'custom' ? 'on' : ''}" style="--c:${S.customAccent};--on:#fff" aria-label="Custom accent colour"><input type="color" value="${S.customAccent}" data-ch="s-custom"></label></div>`, { stack: 1 }) +
     sRow('Card style', 'How panels look: soft, liquid glass, flat or outlined.', seg([['soft', 'Soft'], ['glass', 'Glass'], ['solid', 'Solid'], ['outline', 'Outline']], S.card, 's-card', { sm: true, label: 'Card style' }), { stack: 1 }) +
     sRow('Blur strength', 'How frosted glass, the tab bar, sheets and menus look. 0 turns blur off.', `<div class="range"><input type="range" min="0" max="48" step="2" value="${S.blur}" data-in="s-blur" aria-label="Blur strength"><b class="num" id="blurV">${S.blur}</b></div>`, { kw: 'frosted glass backdrop' }) +
+    sRow('Backdrop', 'Colour behind the glass. Glass looks best over a colourful backdrop.', `<div class="swatches">${[['none', 'None', 'var(--surface3)'], ['aurora', 'Aurora', 'linear-gradient(135deg,#14B884,#7457FF)'], ['sunset', 'Sunset', 'linear-gradient(135deg,#FF7A45,#E5446D)'], ['ocean', 'Ocean', 'linear-gradient(135deg,#2F73F0,#12B3C6)'], ['haze', 'Haze', 'linear-gradient(135deg,#7457FF,#B45FE0)'], ['candy', 'Candy', 'linear-gradient(135deg,#E5446D,#F5A524)']].map(b => `<button class="sw ${S.backdrop === b[0] ? 'on' : ''}" style="--c:${b[2]};background:${b[2]};--on:#fff" data-act="s-bd" data-arg="${b[0]}" aria-label="${b[1]} backdrop" aria-pressed="${S.backdrop === b[0]}">${ic('check', 18, 3)}</button>`).join('')}</div>`, { stack: 1, kw: 'background wallpaper colour' }) +
+    sRow('Tilt shine', 'The glass highlight moves as you tilt your phone or move your mouse.', sw(S.tilt, 's-tilt', '', 'Tilt shine'), { kw: 'motion gyro' }) +
     sRow('Glass gloss', 'How shiny the glass edges and highlights are (Glass style).', `<div class="range"><input type="range" min="0" max="100" step="5" value="${S.gloss}" data-in="s-gloss" aria-label="Glass gloss"><b class="num" id="glossV">${S.gloss}</b></div>`, { kw: 'shine liquid glass ios' }) +
     sRow('Glass tint', 'Tints the glass with your accent colour.', `<div class="range"><input type="range" min="0" max="100" step="5" value="${S.tint}" data-in="s-tint" aria-label="Glass tint"><b class="num" id="tintV">${S.tint}</b></div>`, { kw: 'colour color' }) +
     sRow('Reduce transparency', 'Makes glass solid. Easier to read, lighter on older phones.', sw(S.reduceTrans, 's-tog', 'reduceTrans', 'Reduce transparency'), { kw: 'solid performance accessibility' }) +
@@ -1440,15 +1543,20 @@ PAGES.settings = () => {
     sRow('Haptic feedback', navigator.vibrate ? 'A light tap on key actions.' : 'Not supported on this device.', sw(S.haptics, 's-tog', 'haptics', 'Haptic feedback'), { kw: 'vibration' }))}
   ${sSec('pie', 'Budget rules',
     sRow('Monthly plan', `Income ${money(S.income, { d: 0 })}, budget ${money(S.budget, { d: 0 })}.`, `<button class="btn sm" data-act="plan">${ic('edit', 15)}Edit plan</button>`) +
-    sRow('Cycle starts on', 'Match it to when your allowance or pay arrives.', `<select class="select" data-ch="s-cycle" aria-label="Cycle start day">${Array.from({ length: 28 }, (_, i) => `<option value="${i + 1}" ${S.cycleDay === i + 1 ? 'selected' : ''}>${i === 0 ? '1st (calendar month)' : ordinal(i + 1)}</option>`).join('')}</select>`, { kw: 'payday month' }) +
+    sRow('Budget cycle', 'How often your budget resets. Your plan amounts apply to each cycle.', seg([['month', 'Monthly'], ['fortnight', 'Fortnightly'], ['week', 'Weekly']], S.cycleType, 's-ctype', { sm: true, label: 'Budget cycle' }), { stack: 1, kw: 'weekly fortnight month period' }) +
+    (S.cycleType !== 'month' ? sRow('Cycle starts on', 'The weekday your allowance or pay arrives.', `<select class="select" data-ch="s-dow" aria-label="Week start">${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((d, i) => `<option value="${i}" ${S.cycleDow === i ? 'selected' : ''}>${d}</option>`).join('')}</select>`) : sRow('Cycle starts on', 'Match it to when your allowance or pay arrives.', `<select class="select" data-ch="s-cycle" aria-label="Cycle start day">${Array.from({ length: 28 }, (_, i) => `<option value="${i + 1}" ${S.cycleDay === i + 1 ? 'selected' : ''}>${i === 0 ? '1st (calendar month)' : ordinal(i + 1)}</option>`).join('')}</select>`, { kw: 'payday month' })) +
     sRow('Warn me at', 'Get an alert when spending reaches this share of a budget.', `<div class="range"><input type="range" min="50" max="100" step="5" value="${S.alertAt}" data-in="s-alert" aria-label="Warning level"><b class="num" id="alertV">${S.alertAt}%</b></div>`) +
     sRow('Carry over what’s left', 'Unspent budget from last cycle is added to this one.', sw(S.rollover, 's-tog', 'rollover', 'Carry over unspent budget'), { kw: 'rollover' }) +
+    sRow('Main account', 'Money you save into goals comes out of this wallet.', `<select class="select" data-ch="s-main" aria-label="Main account">${S.wallets.map(w => `<option value="${esc(w.id)}" ${S.mainWallet === w.id ? 'selected' : ''}>${esc(w.icon + ' ' + w.name)}</option>`).join('')}</select>`, { kw: 'savings wallet' }) +
+    sRow('Savings and your budget', 'When you add to a goal, should it count against this cycle’s budget?', `<select class="select" data-ch="s-savesb" aria-label="Savings and budget"><option value="ask" ${S.savesBudget === 'ask' ? 'selected' : ''}>Ask me each time</option><option value="always" ${S.savesBudget === 'always' ? 'selected' : ''}>Always count it</option><option value="never" ${S.savesBudget === 'never' ? 'selected' : ''}>Never count it</option></select>`, { kw: 'goal contribution' }) +
     sRow('Categories', `${S.cats.length} categories with their own limits.`, `<button class="btn sm" data-act="cats">Manage</button>`) +
     sRow('Wallets', `${S.wallets.length} wallets for cash, mobile money and banks.`, `<button class="btn sm" data-act="wallets">Manage</button>`))}
   ${sSec('shield', 'Privacy & security',
     sRow('Hide amounts', 'Blurs money on screen. Handy in class or on the bus. Also on the eye button up top.', sw(S.hideAmounts, 's-tog', 'hideAmounts', 'Hide amounts')) +
-    sRow('App lock', 'Ask for a 4-digit PIN when Thrive opens. This keeps casual snoopers out; it does not encrypt your data.', sw(S.lock.on, 's-lock', '', 'App lock'), { kw: 'pin passcode' }) + lockRows +
-    sRow('Where your data lives', 'Everything stays on this device. Nothing is uploaded or shared.', `<span class="tag good">${ic('lock', 12)}Private</span>`))}
+    sRow('App lock', 'Ask for a 4-digit PIN when Thrive opens. This keeps casual snoopers out; it does not encrypt your data.', sw(S.lock.on, 's-lock', '', 'App lock'), { kw: 'pin passcode' }) +
+    sRow('Face or fingerprint unlock', S.lock.on ? 'Uses your phone’s own face or fingerprint unlock. Thrive never sees your biometrics. Your PIN stays as backup.' : 'Turn on App lock above first. Then switch this on.', sw(!!S.lock.bio, 's-bio', '', 'Biometric unlock'), { kw: 'biometric face id fingerprint touch' }) + lockRows +
+    sRow('Fonts', 'System font means Thrive makes no outside requests at all. Thrive font loads from Google Fonts once, then works offline.', seg([['thrive', 'Thrive'], ['system', 'System']], S.fonts, 's-fonts', { sm: true, label: 'Fonts' }), { kw: 'privacy network google' }) +
+    sRow('Where your data lives', 'Everything stays on this device. No account, no server, no tracking. Thrive never reads your messages.', `<span class="tag good">${ic('lock', 12)}Private</span>`))}
   ${sSec('db', 'Data & backup',
     sRow('Back up', S.lastBackup ? `Last backup ${esc(new Date(S.lastBackup).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }))}.` : 'You haven’t backed up yet. Do it before changing phones or clearing your browser.', `<div class="chips"><button class="btn sm pri" data-act="export">${ic('download', 15)}Export</button><button class="btn sm" data-act="import">${ic('upload', 15)}Import</button></div>`, { kw: 'json restore' }) +
     sRow('Spreadsheet', 'Download every transaction as a CSV file.', `<button class="btn sm" data-act="csv-all">${ic('download', 15)}CSV</button>`, { kw: 'excel csv' }) +
@@ -1498,6 +1606,18 @@ INP['s-tint'] = v => { S.tint = +v; $('#tintV').textContent = v; document.docume
 ACT['s-round'] = (a, el) => { S.round = a; segSet(el, segIdx(el)); persist(); applyTheme(); };
 CHG['s-start'] = v => { S.startPage = v; persist(); toast('Thrive will open on ' + { dashboard: 'Home', transactions: 'Activity', budget: 'Budget', goals: 'Goals', insights: 'Insights' }[v], { tone: 'good', ms: 2000 }); };
 
+ACT['s-bd'] = (a, el) => { S.backdrop = a; $$('.swatches .sw[data-act="s-bd"]').forEach(x => { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); }); el.classList.add('on'); el.setAttribute('aria-pressed', 'true'); persist(); applyTheme(); buzz(8); };
+ACT['s-tilt'] = async (a, el) => { S.tilt = !S.tilt; el.setAttribute('aria-checked', S.tilt); persist(); if (S.tilt) await tiltEnable(); };
+function setCycleType(t, dow) { S.cycleType = t; if (dow !== undefined) S.cycleDow = dow; S.cycleAnchor = anchorFor(S.cycleDow); UI.off = 0; persist(); render(); }
+ACT['s-ctype'] = a => { setCycleType(a); toast(a === 'month' ? 'Monthly budget cycle' : a === 'week' ? 'Weekly budget cycle. Your budget now applies each week.' : 'Fortnightly budget cycle. Your budget now applies every 2 weeks.', { tone: 'good', ms: 3500 }); };
+CHG['s-dow'] = v => setCycleType(S.cycleType, +v);
+
+function loadFonts() { if (S.fonts !== 'thrive' || $('#gf') || !navigator.onLine && false) return; const l = document.createElement('link'); l.id = 'gf'; l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Figtree:wght@400..800&display=swap'; document.head.appendChild(l); }
+ACT['s-fonts'] = (a, el) => { S.fonts = a; segSet(el, segIdx(el)); persist(); if (a === 'thrive') loadFonts(); else { const l = $('#gf'); if (l) l.remove(); toast('Using system fonts. No outside requests.', { tone: 'good' }); } };
+
+CHG['s-main'] = v => { S.mainWallet = v; persist(); toast('Savings will come out of ' + walletById(v).name, { tone: 'good' }); };
+CHG['s-savesb'] = v => { S.savesBudget = v; persist(); };
+
 /* ============================================================
    Thrive 7 — sheets & forms
    ============================================================ */
@@ -1515,6 +1635,7 @@ function openTx(o = {}) {
   else {
     F = { mode: 'new', type: o.type || 'expense', amount: '', desc: '', cat: S.cats[0].id, w: S.lastWallet, to: '', date: today(), note: '', rep: 'none', catTouched: false };
     fixTxType();
+    if (o.prefill) { Object.assign(F, o.prefill, { catTouched: true }); fixTxType(); }
   }
   openSheet(`${sheetHead(ex ? 'Edit transaction' : 'New transaction')}<div class="sheet-body" id="fbody"></div>`, { label: 'Transaction' });
   renderTxForm();
@@ -1531,7 +1652,7 @@ function renderTxForm() {
   const walletRow = isT
     ? `<div class="fgrid"><label class="field"><span>From</span><select class="select" data-ch="f-w">${S.wallets.map(w => `<option value="${esc(w.id)}" ${F.w === w.id ? 'selected' : ''}>${esc(w.icon + ' ' + w.name)}</option>`).join('')}</select></label><label class="field"><span>To</span><select class="select" data-ch="f-to">${S.wallets.map(w => `<option value="${esc(w.id)}" ${F.to === w.id ? 'selected' : ''}>${esc(w.icon + ' ' + w.name)}</option>`).join('')}</select></label></div>`
     : `<div class="field"><span>${F.type === 'income' ? 'Paid into' : 'Paid from'}</span><div class="chips">${S.wallets.map(w => chip('f-w', w.id, w.name, { on: F.w === w.id, e: w.icon })).join('')}</div></div>`;
-  $('#fbody').innerHTML = `${seg([['expense', 'Spending'], ['income', 'Income'], ['transfer', 'Move']], F.type, 'f-type', { label: 'Type' })}
+  $('#fbody').innerHTML = `${F.mode === 'new' ? `<label class="field"><span>Quick add</span><div class="inline-in">${ic('bolt', 18)}<input data-ch="f-quick" placeholder="Try: lunch 18 momo" aria-label="Quick add" autocomplete="off"></div></label>` : ''}${seg([['expense', 'Spending'], ['income', 'Income'], ['transfer', 'Move']], F.type, 'f-type', { label: 'Type' })}
   <div><div class="amt-box"><span class="cur">${esc(sym())}</span><input id="f-amt" class="amt-in num" inputmode="decimal" autocomplete="off" placeholder="0" value="${esc(F.amount)}" data-in="f-amt" aria-label="Amount" ${F.mode === 'new' ? 'autofocus' : ''}></div><div class="errmsg" id="f-err" role="alert" style="text-align:center"></div>
   <div class="quick">${[5, 10, 20, 50].map(n => `<button type="button" class="chip" data-act="f-add" data-arg="${n}">+${n}</button>`).join('')}</div></div>
   ${catRow}
@@ -1707,11 +1828,13 @@ ACT['g-del'] = async () => { const ok = await ask({ title: `Delete “${GF.name}
 ACT['goal-new'] = a => openGoal(null, a); ACT['goal-edit'] = id => openGoal(id);
 let GM = {};
 function openGoalMove(id, sign) {
-  const g = S.goals.find(x => x.id === id); if (!g) return; GM = { id, sign, v: '' };
+  const g = S.goals.find(x => x.id === id); if (!g) return; GM = { id, sign, v: '', w: S.mainWallet, b: S.savesBudget === 'always' };
   const left = Math.max(0, g.target - g.current), quick = sign > 0 ? [5, 10, 20, 50].concat(left > 0 ? [Math.ceil(left)] : []) : [];
   openSheet(`${sheetHead((sign > 0 ? 'Add to ' : 'Withdraw from ') + esc(g.name))}<div class="sheet-body"><div><div class="amt-box"><span class="cur">${esc(sym())}</span><input id="gm-amt" class="amt-in num" inputmode="decimal" placeholder="0" autofocus data-in="gm-amt" aria-label="Amount"></div><div class="errmsg" id="gm-err" role="alert" style="text-align:center"></div>
   <div class="quick">${quick.map((n, i) => `<button type="button" class="chip" data-act="gm-q" data-arg="${n}">${i === 4 ? 'Finish · ' + esc(money(n, { d: 0 })) : '+' + n}</button>`).join('')}${sign < 0 ? `<button type="button" class="chip" data-act="gm-q" data-arg="${g.current}">All ${esc(money(g.current, { d: 0 }))}</button>` : ''}</div></div>
   <p class="muted sm" style="text-align:center">${sign > 0 ? `${money(left)} to go` : `${money(g.current)} saved so far`}</p>
+  <label class="field"><span>${sign > 0 ? 'Take it from' : 'Put it back into'}</span><select class="select" data-ch="gm-w">${S.wallets.map(w => `<option value="${esc(w.id)}" ${GM.w === w.id ? 'selected' : ''}>${esc(w.icon + ' ' + w.name)} (${esc(money(walletBalance(w.id)))})</option>`).join('')}</select></label>
+  ${sign > 0 && S.savesBudget === 'ask' ? `<div class="setting" style="padding:0"><div class="grow"><b>Count against this cycle’s budget</b><p>Turn on if you’re saving out of your spending money.</p></div>${sw(false, 'gm-b', '', 'Count against budget')}</div>` : ''}
   <div class="sheet-foot"><button class="btn pri" data-act="gm-save" data-submit>${sign > 0 ? 'Add money' : 'Withdraw'}</button></div></div>`, { label: 'Goal contribution' });
 }
 INP['gm-amt'] = v => { GM.v = v; $('#gm-amt').classList.remove('err'); $('#gm-err').textContent = ''; };
@@ -1719,7 +1842,8 @@ ACT['gm-q'] = a => { const cur = num(GM.v); GM.v = String(round2(GM.sign > 0 ? c
 ACT['gm-save'] = () => {
   const g = S.goals.find(x => x.id === GM.id), a = round2(num(GM.v)); if (!(a > 0)) { $('#gm-amt').classList.add('err'); $('#gm-err').textContent = 'Enter an amount above zero.'; buzz([20, 40, 20]); return; }
   if (GM.sign < 0 && a > g.current) { $('#gm-err').textContent = `You only have ${money(g.current)} in this goal.`; return; }
-  const was = g.done; g.current = round2(Math.max(0, g.current + GM.sign * a)); g.log.push({ d: today(), a: GM.sign * a }); g.done = g.target > 0 && g.current >= g.target;
+  const was = g.done; g.current = round2(Math.max(0, g.current + GM.sign * a)); if (GM.sign > 0 && walletBalance(GM.w) < a) toast(`${walletById(GM.w).name} will go negative`, { tone: 'warn', ms: 3500 });
+  g.log.push({ d: today(), a: GM.sign * a, w: GM.w, b: GM.sign > 0 && !!GM.b }); g.done = g.target > 0 && g.current >= g.target;
   closeSheet(); save(); buzz(16);
   if (g.done && !was) { setTimeout(confetti, 250); toast(`Goal reached: ${g.name}`, { tone: 'good', ms: 5000 }); }
   else toast(GM.sign > 0 ? `Added ${money(a)} to ${g.name}` : `Withdrew ${money(a)}`, { tone: 'good' });
@@ -1791,6 +1915,11 @@ ACT.persist = async () => {
   const b = $('#persistBtn');
   try { const ok = navigator.storage && navigator.storage.persist ? await navigator.storage.persist() : false; if (b) b.textContent = ok ? 'Protected' : 'Not granted'; toast(ok ? 'Thrive’s data is protected' : 'Your browser didn’t grant it. Back up regularly.', { tone: ok ? 'good' : 'warn' }); } catch (e) { toast('Not supported here', { tone: 'warn' }); }
 };
+
+CHG['f-quick'] = v => { if (!v.trim()) return; const q = parseQuick(v); if (!q) return toast('I couldn’t find an amount. Try “lunch 18 momo”.', { tone: 'warn' }); Object.assign(F, q, { catTouched: true }); fixTxType(); renderTxForm(); toast('Filled in. Check it and save.', { ms: 1800 }); };
+
+CHG['gm-w'] = v => { GM.w = v; };
+ACT['gm-b'] = (a, el) => { GM.b = !GM.b; el.setAttribute('aria-checked', GM.b); buzz(8); };
 
 /* ============================================================
    Thrive 7 — alerts, palette, tour, lock, sample data, PWA
@@ -1915,11 +2044,11 @@ ACT.pin = a => { if (!LK || LK.pin.length >= 4) return; LK.pin += a; buzz(6); pi
 ACT['pin-del'] = () => { if (LK) { LK.pin = LK.pin.slice(0, -1); pinDots(); } };
 ACT['pin-x'] = async () => { if (LK && LK.reset) { const ok = await ask({ title: 'Forgot your PIN?', body: 'The only way in is to erase Thrive’s data on this device. Restore from a backup afterwards.', ok: 'Erase and unlock', danger: true }); if (ok) { S = sanitize(defaults()); persist(); unlockUI(); UI.fresh = true; render(); startTour(); } } };
 function unlockUI() { const L = $('#layer-lock'); L.classList.remove('open'); L.innerHTML = ''; LK = null; $('#app').removeAttribute('inert'); }
-function lockNow() { if (!S.lock.on) return; closeSheet(true); $('#app').setAttribute('inert', ''); pinPad('Enter PIN', 'Thrive is locked', async p => { if (await hashPin(p, S.lock.salt) === S.lock.hash) { buzz(10); unlockUI(); } else { buzz([30, 50, 30]); $('#lk-s').textContent = 'Wrong PIN. Try again.'; pinDots(true); } }, 'Forgot'); LK.reset = true; }
+function lockNow() { if (!S.lock.on) return; closeSheet(true); $('#app').setAttribute('inert', ''); pinPad('Enter PIN', 'Thrive is locked', async p => { if (await hashPin(p, S.lock.salt) === S.lock.hash) { buzz(10); unlockUI(); } else { buzz([30, 50, 30]); $('#lk-s').textContent = 'Wrong PIN. Try again.'; pinDots(true); } }, 'Forgot'); LK.reset = true; if (S.lock.bio) { const k = $('.keypad'); if (k) k.insertAdjacentHTML('beforebegin', `<button class="btn bio-btn" data-act="bio-try">${isIOS() ? ic('user', 18) : ic('lock', 18)}Use ${isIOS() ? 'Face ID' : 'fingerprint or face'}</button>`); setTimeout(bioUnlock, 400); } }
 ACT['lock-now'] = lockNow;
 function setPin(then) {
   closeSheet(true); let first = '';
-  const step1 = () => pinPad('Choose a PIN', '4 digits you’ll remember', p => { first = p; step2(); }, 'Cancel'), step2 = () => pinPad('Confirm PIN', 'Enter it once more', async p => { if (p !== first) { $('#lk-s').textContent = 'They didn’t match. Start again.'; pinDots(true); setTimeout(step1, 600); return; } const salt = uid(); S.lock = { on: true, hash: await hashPin(p, salt), salt, after: S.lock.after || 30 }; persist(); unlockUI(); toast('App lock is on', { tone: 'good' }); then && then(); }, 'Cancel');
+  const step1 = () => pinPad('Choose a PIN', '4 digits you’ll remember', p => { first = p; step2(); }, 'Cancel'), step2 = () => pinPad('Confirm PIN', 'Enter it once more', async p => { if (p !== first) { $('#lk-s').textContent = 'They didn’t match. Start again.'; pinDots(true); setTimeout(step1, 600); return; } const salt = uid(); S.lock = { on: true, hash: await hashPin(p, salt), salt, after: S.lock.after || 30, bio: S.lock.bio || '' }; persist(); unlockUI(); toast('App lock is on', { tone: 'good' }); then && then(); }, 'Cancel');
   step1(); const oldX = ACT['pin-x']; ACT['pin-x'] = () => { ACT['pin-x'] = oldX; unlockUI(); if (UI.route === 'settings') render(); };
 }
 ACT['s-lock'] = () => { if (S.lock.on) { pinPad('Enter PIN to turn off', 'Confirm it’s you', async p => { if (await hashPin(p, S.lock.salt) === S.lock.hash) { S.lock = { on: false, hash: '', salt: '', after: S.lock.after }; persist(); unlockUI(); render(); toast('App lock is off'); } else { pinDots(true); $('#lk-s').textContent = 'Wrong PIN.'; } }, 'Cancel'); const o = ACT['pin-x']; ACT['pin-x'] = () => { ACT['pin-x'] = o; unlockUI(); render(); }; } else setPin(() => render()); };
@@ -1945,6 +2074,303 @@ function registerSW() {
   let reloaded = false; navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloaded) return; reloaded = true; location.reload(); });
 }
 
+/* ============================================================
+   Thrive 7 — rewards, sprout, recap, smart tools, tilt
+   ============================================================ */
+/* ---------- sprout mascot ---------- */
+const sproutStage = sc => sc >= 80 ? 4 : sc >= 55 ? 3 : sc >= 30 ? 2 : sc >= 10 ? 1 : 0;
+function sprout(stage, size = 96) {
+  const lf = (x, y, a, s = 1, c = 'var(--accent)') => `<ellipse cx="${x}" cy="${y}" rx="${9 * s}" ry="${4.6 * s}" transform="rotate(${a} ${x} ${y})" fill="${c}"/>`;
+  const L = 'color-mix(in srgb,var(--accent) 65%,#fff)';
+  const stems = ['', 'M50 86V68', 'M50 86V52', 'M50 86V38', 'M50 86V34'][stage];
+  let g = '';
+  if (stage === 0) g = `<ellipse cx="50" cy="80" rx="8" ry="5.5" fill="#B08A5E"/><path d="M47 77q3-3 6 0" stroke="#7A5A3A" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+  if (stage >= 1) g += lf(42, 70, -28, 1) + lf(58, 70, 28, 1, L);
+  if (stage >= 2) g += lf(40, 56, -32, 1.2, L) + lf(60, 56, 32, 1.2);
+  if (stage >= 3) g += lf(38, 44, -36, 1.35) + lf(62, 44, 36, 1.35, L);
+  if (stage >= 4) g += [0, 72, 144, 216, 288].map(a => `<ellipse cx="50" cy="20" rx="5" ry="8" transform="rotate(${a} 50 28) translate(0 -2)" fill="#FFB3C7"/>`).join('') + `<circle cx="50" cy="28" r="5.5" fill="#FFD166"/>`;
+  return `<svg class="sprout" width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="90" rx="30" ry="7" fill="#6B4A32" opacity=".9"/><ellipse cx="50" cy="88" rx="26" ry="5" fill="#8A6445"/>${stems ? `<path d="${stems}" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" fill="none"/>` : ''}${g}</svg>`;
+}
+const stageName = n => ['Seed', 'Sprout', 'Sapling', 'Growing strong', 'In bloom'][n];
+
+/* ---------- levels, streaks, badges ---------- */
+function logStreak() { const days = new Set(S.tx.map(t => t.date)); let d = today(); if (!days.has(d)) d = addDays(d, -1); let n = 0; while (days.has(d) && n < 4000) { n++; d = addDays(d, -1); } return n; }
+function allNoSpend() {
+  if (!S.tx.length) return 0; const ex = new Set(S.tx.filter(t => t.type === 'expense').map(t => t.date)), first = S.tx.reduce((m, t) => t.date < m ? t.date : m, today());
+  let d = today(), n = 0; while (d >= first && !ex.has(d) && n < 4000) { n++; d = addDays(d, -1); } return n;
+}
+function underBudgetBefore() { if (S.budget <= 0) return false; for (let i = 1; i <= 8; i++) { const st = stats(shiftCycle(cycleNow(), -i)); if (st.spent > 0 && st.spent <= S.budget) return true; } return false; }
+function badgeList() {
+  return [['🌱', 'First step', 'Log your first transaction', S.tx.length >= 1], ['✍️', 'Getting serious', 'Log 50 transactions', S.tx.length >= 50], ['🔥', 'On fire', 'Log 7 days in a row', logStreak() >= 7],
+  ['🧘', 'Quiet three', '3 no-spend days in a row', allNoSpend() >= 3], ['🎯', 'Goal setter', 'Create a savings goal', S.goals.length > 0], ['🏆', 'Goal crusher', 'Reach a goal', S.goals.some(g => g.done)],
+  ['🛡️', 'Under budget', 'Finish a cycle under budget', underBudgetBefore()], ['⚔️', 'Challenger', 'Win a challenge', S.wins > 0], ['👛', 'Juggler', 'Use 3 wallets', new Set(S.tx.map(t => t.w)).size >= 3], ['💾', 'Backed up', 'Export a backup', !!S.lastBackup]]
+    .map(b => ({ i: b[0], n: b[1], d: b[2], got: !!b[3] }));
+}
+function gameStats() {
+  return memoize('game', () => {
+    const bl = badgeList(), got = bl.filter(b => b.got).length;
+    const xp = S.tx.length * 5 + S.goals.reduce((a, g) => a + g.log.length * 10 + (g.done ? 100 : 0), 0) + got * 50 + S.wins * 80;
+    const level = Math.floor(Math.sqrt(xp / 30)) + 1, lo = 30 * (level - 1) ** 2, hi = 30 * level ** 2;
+    return { xp, level, lo, hi, pct: (xp - lo) / (hi - lo) * 100, badges: bl, got, logStreak: logStreak(), ns: allNoSpend() };
+  });
+}
+/* ---------- challenges ---------- */
+const CHALS = { ns3: { i: '🧘', n: '3 no-spend days', days: 3, d: 'Spend nothing for three days in a row.' }, ns7: { i: '🌿', n: 'No-spend week', days: 7, d: 'A whole week without spending.' }, cap7: { i: '📉', n: '7 days under your allowance', days: 7, d: 'Keep every day under your daily allowance.' } };
+function chalState() {
+  const c = S.chal; if (!c || !CHALS[c.type]) return null; const def = CHALS[c.type], t = today(); let failed = false, done = 0;
+  for (let i = 0; i < def.days; i++) { const d = addDays(c.start, i); if (d > t) break; const sp = S.tx.filter(x => x.type === 'expense' && x.date === d).reduce((a, x) => a + x.amount, 0); if (c.type === 'cap7' ? sp > c.cap : sp > 0) { failed = true; break; } if (d < t) done++; }
+  const end = addDays(c.start, def.days - 1); return { def, c, failed, won: !failed && t > end, done, left: Math.max(0, daysBetween(t, end) + 1) };
+}
+function chalCheck() {
+  const s = chalState(); if (!s || s.c.fin) return;
+  if (s.failed) { S.chal.fin = 'lost'; persist(); toast('Challenge failed. You can start another any time.', { tone: 'warn', ms: 4500 }); }
+  else if (s.won) { S.chal.fin = 'won'; S.wins++; persist(); confetti(); buzz([20, 40, 20]); toast(`Challenge won: ${s.def.n}`, { tone: 'good', ms: 5000 }); }
+}
+ACT['chal-start'] = a => {
+  let cap = 0; if (a === 'cap7') { cap = Math.round(pace(cycleNow()).allowance || 0); if (!(cap > 0)) return toast('Set a budget first so Thrive knows your allowance.', { tone: 'warn' }); }
+  S.chal = { type: a, start: today(), cap }; persist(); openRewards(); buzz(10); toast('Challenge started. You’ve got this.', { tone: 'good' });
+};
+ACT['chal-quit'] = () => { S.chal = null; persist(); openRewards(); };
+function openRewards() {
+  const g = gameStats(), sc = scoreBreakdown().total, st = sproutStage(sc), cs = chalState();
+  const chal = cs && !cs.c.fin ? `<div class="chal"><span class="tile">${cs.def.i}</span><div class="grow"><b>${cs.def.n}</b><p class="muted sm">${cs.def.d}</p>${bar(cs.done / cs.def.days * 100, { lg: 1 })}<span class="m sm muted">${cs.left} day${cs.left === 1 ? '' : 's'} left${cs.c.type === 'cap7' ? ' · ' + money(cs.c.cap, { d: 0 }) + ' a day' : ''}</span></div><button class="ibtn sm bare" data-act="chal-quit" aria-label="Give up challenge">${ic('x', 16)}</button></div>`
+    : `${cs && cs.c.fin ? `<p class="sm ${cs.c.fin === 'won' ? 'pos' : 'muted'}" style="font-weight:700">${cs.c.fin === 'won' ? 'Last challenge: won 🎉' : 'Last challenge: not this time.'}</p>` : ''}<div class="rows hov">${Object.entries(CHALS).map(([k, c]) => `<button class="r" data-act="chal-start" data-arg="${k}"><span class="tile sm">${c.i}</span><span class="grow"><span class="t">${c.n}</span><span class="m"><span>${c.d}</span></span></span>${ic('chevR', 18)}</button>`).join('')}</div>`;
+  openSheet(`${sheetHead('Rewards')}<div class="sheet-body"><div class="row" style="gap:16px">${sprout(st, 104)}<div class="grow"><h2 style="font-size:1.5rem">Level ${g.level}</h2><p class="muted sm">${stageName(st)}. Your sprout grows with your Thrive score.</p>${bar(g.pct, { lg: 1 })}<span class="m sm muted">${g.xp} XP · ${Math.max(0, g.hi - g.xp)} to level ${g.level + 1}</span></div></div>
+  <div class="ledger l3 mini"><div class="cell"><span class="lbl">Logging streak</span><b class="num">${g.logStreak}d</b></div><div class="cell"><span class="lbl">No-spend streak</span><b class="num">${g.ns}d</b></div><div class="cell"><span class="lbl">Challenges won</span><b class="num">${S.wins}</b></div></div>
+  <div><h3 style="margin-bottom:10px">Challenge</h3>${chal}</div>
+  <div><h3 style="margin-bottom:10px">Badges</h3><div class="badges">${g.badges.map(b => `<div class="badge-i ${b.got ? 'got' : ''}" title="${esc(b.d)}"><span class="be">${b.i}</span><b>${esc(b.n)}</b><small>${esc(b.d)}</small></div>`).join('')}</div></div></div>`, { label: 'Rewards', wide: 1 });
+}
+ACT.rewards = openRewards;
+
+/* ---------- recap story ---------- */
+let ST = null;
+function recapSlides() {
+  const c = cycleAt(UI.off), p = pace(c), ns = noSpendStats(c), sc = scoreBreakdown().total, g = gameStats();
+  const top = S.cats.map(k => ({ k, v: p.byCat[k.id] || 0 })).sort((a, b) => b.v - a.v)[0];
+  return [
+    { e: '✨', l: 'Your Thrive recap', b: cycleLabel(c), s: p.n ? `${p.n} spending moments to look back on` : 'Not much logged yet' },
+    { e: '💸', l: 'You spent', b: money(p.spent), s: p.budget > 0 ? (p.spent <= p.budget ? `That’s ${money(p.budget - p.spent)} under your budget` : `That’s ${money(p.spent - p.budget)} over your budget`) : `across ${p.n} transactions` },
+    top && top.v > 0 ? { e: top.k.icon, l: 'Top category', b: top.k.name, s: `${Math.round(top.v / p.spent * 100)}% of your spending, ${money(top.v)}` } : null,
+    p.big ? { e: '💥', l: 'Biggest expense', b: money(p.big.amount), s: `${p.big.desc} on ${fmtDate(p.big.date, { weekday: 'long', day: 'numeric', month: 'short' })}` } : null,
+    { e: '🧘', l: 'No-spend days', b: ns.days + (ns.days === 1 ? ' day' : ' days'), s: ns.streak ? `with a ${ns.streak}-day streak still going` : 'Every one is a win' },
+    S.goals.length ? { e: '🎯', l: 'Saved toward goals', b: money(goalsSaved()), s: `across ${S.goals.length} goal${S.goals.length > 1 ? 's' : ''}${S.goals.some(x => x.done) ? ', and you reached one' : ''}` } : null,
+    { sp: sproutStage(sc), l: stageName(sproutStage(sc)), b: `Score ${sc}`, s: `You’re level ${g.level}. Keep it growing.` }
+  ].filter(Boolean);
+}
+const STORY_BG = ['linear-gradient(160deg,#0f5e45,#07110E)', 'linear-gradient(160deg,#3a2a8f,#07110E)', 'linear-gradient(160deg,#a8430f,#1a0d07)', 'linear-gradient(160deg,#a01f4a,#14070d)', 'linear-gradient(160deg,#0e5d77,#07110E)', 'linear-gradient(160deg,#5b2a8f,#0d0716)', 'linear-gradient(160deg,#0f5e45,#07110E)'];
+function openRecap() {
+  closeSheet(true); ST = { i: 0, s: recapSlides(), t: 0 }; $('#layer-story').classList.add('open'); storyGo(0);
+}
+function storyGo(i) {
+  if (!ST) return; clearTimeout(ST.t); if (i < 0) i = 0; if (i >= ST.s.length) return storyClose(); ST.i = i; const sl = ST.s[i], last = i === ST.s.length - 1;
+  $('#layer-story').innerHTML = `<div class="story" style="background:${STORY_BG[i % STORY_BG.length]}"><div class="story-bars">${ST.s.map((_, j) => `<i class="${j < i ? 'done' : j === i ? 'act' : ''}" ${j === i && !last ? 'style="--d:5s"' : ''}></i>`).join('')}</div><button class="ibtn sm story-x" data-act="story-x" aria-label="Close recap">${ic('x', 18, 2.4)}</button>
+    <div class="story-body" key="${i}"><div class="story-l">${esc(sl.l)}</div>${sl.sp !== undefined ? sprout(sl.sp, 150) : `<div class="story-e">${esc(sl.e)}</div>`}<div class="story-b amt">${esc(sl.b)}</div><p class="story-s">${esc(sl.s)}</p></div>
+    <button class="story-prev" data-act="story-prev" aria-label="Previous"></button><button class="story-next" data-act="story-next" aria-label="Next"></button>${last ? `<div class="story-end"><button class="btn pri" data-act="story-x">Done</button></div>` : ''}</div>`;
+  if (!last) ST.t = setTimeout(() => storyGo(i + 1), 5000); else { confetti(); }
+}
+function storyClose() { if (ST) clearTimeout(ST.t); ST = null; const L = $('#layer-story'); L.classList.remove('open'); L.innerHTML = ''; }
+ACT.recap = openRecap; ACT['story-x'] = storyClose; ACT['story-next'] = () => storyGo(ST.i + 1); ACT['story-prev'] = () => storyGo(ST.i - 1);
+document.addEventListener('keydown', e => { if (!ST) return; if (e.key === 'Escape') storyClose(); else if (e.key === 'ArrowRight') storyGo(ST.i + 1); else if (e.key === 'ArrowLeft') storyGo(ST.i - 1); });
+
+/* ---------- quick add parser ---------- */
+const KW = { food: ['food', 'lunch', 'dinner', 'breakfast', 'waakye', 'rice', 'jollof', 'kenkey', 'chicken', 'pizza', 'snack', 'groceries', 'banku', 'fufu', 'water', 'coffee', 'meal', 'canteen'], transport: ['trotro', 'bolt', 'uber', 'taxi', 'fuel', 'bus', 'ride', 'yango', 'transport', 'fare'], school: ['data', 'bundle', 'printing', 'book', 'notes', 'fees', 'school', 'textbook', 'airtime', 'wifi', 'photocopy'], fun: ['movie', 'movies', 'game', 'games', 'party', 'drinks', 'club', 'netflix', 'fun', 'hangout', 'outing'] };
+const INC_W = { allowance: 'allowance', salary: 'job', job: 'job', earned: 'job', tutoring: 'job', gift: 'gift', scholarship: 'scholarship', stipend: 'scholarship', income: 'other', received: 'other', got: 'other' };
+function parseQuick(text) {
+  const toks = String(text || '').trim().toLowerCase().split(/\s+/).filter(Boolean); if (!toks.length) return null;
+  let amt = null, plus = false, ai = -1;
+  toks.forEach((t, i) => { if (amt !== null) return; const m = t.replace(/^([+-]?)(ghs|gh[c₵]|₵|\$|£|€)?/, (x, s) => { if (s === '+') plus = true; return ''; }).replace(/,/g, ''); if (/^\d+(\.\d{1,2})?$/.test(m) && +m > 0) { amt = +m; ai = i; } });
+  if (amt === null) return null;
+  let rest = toks.filter((_, i) => i !== ai), date = today(), w = null, income = plus, src = 'other';
+  rest = rest.filter(t => { if (t === 'yesterday') { date = addDays(today(), -1); return false; } if (t === 'today') return false; const wm = S.wallets.find(x => x.id === t || x.name.toLowerCase().split(/\s+/).includes(t)) || (['momo', 'mtn', 'vodafone', 'telecel', 'airteltigo', 'mobile'].includes(t) ? S.wallets.find(x => x.id === 'momo' || /mobile|momo/i.test(x.name)) : null); if (wm) { w = wm.id; return false; } return true; });
+  rest.forEach(t => { if (INC_W[t]) { income = true; src = INC_W[t]; } });
+  rest = rest.filter(t => !['from', 'on', 'at', 'with', 'via', 'using', 'for', 'in', 'to', 'by'].includes(t) && !(t === '+'));
+  const desc = rest.join(' ').replace(/^./, c => c.toUpperCase());
+  const o = { type: income ? 'income' : 'expense', amount: String(amt), desc, date }; if (w) o.w = w;
+  if (income) o.cat = src;
+  else {
+    const prev = S.tx.slice().reverse().find(t => t.type === 'expense' && t.desc.toLowerCase() === desc.toLowerCase());
+    if (prev) { o.cat = prev.cat; if (!w) o.w = prev.w; }
+    else { let hit = null; for (const [k, ws] of Object.entries(KW)) if (rest.some(t => ws.includes(t))) { hit = S.cats.find(c => c.id === k || c.name.toLowerCase().includes(k)); if (hit) break; } if (!hit) hit = S.cats.find(c => rest.some(t => t.length > 2 && c.name.toLowerCase().includes(t))); o.cat = (hit || S.cats[0]).id; }
+  }
+  return o;
+}
+CHG['q-add'] = (v, el) => { if (!v.trim()) return; const q = parseQuick(v); if (!q) return toast('I couldn’t find an amount. Try “lunch 18 momo”.', { tone: 'warn' }); el.value = ''; openTx({ prefill: q }); };
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches && e.target.matches('[data-ch=f-quick],[data-ch=q-add]')) { e.preventDefault(); e.stopPropagation(); CHG[e.target.dataset.ch](e.target.value, e.target); } }, true);
+
+/* ---------- can I afford this? ---------- */
+function openAfford() {
+  openSheet(`${sheetHead('Can I afford this?')}<div class="sheet-body"><div><div class="amt-box"><span class="cur">${esc(sym())}</span><input id="af-amt" class="amt-in num" inputmode="decimal" placeholder="0" autofocus data-in="af-amt" aria-label="Price"></div></div><label class="field"><span>What is it? (optional)</span><input class="input" id="af-name" placeholder="e.g. New sneakers" maxlength="60" autocomplete="off"></label><div id="af-res" aria-live="polite"></div></div>`, { label: 'Can I afford this' });
+}
+INP['af-amt'] = v => {
+  const a = num(v), res = $('#af-res'); if (!(a > 0)) { res.innerHTML = ''; return; }
+  const c = cycleNow(), p = pace(c), bal = totalBalance(); let tone = 'good', head = 'Yes, you can', lines = [];
+  if (p.budget <= 0) { tone = a <= bal ? 'good' : 'bad'; head = a <= bal ? 'You have the money' : 'More than you have'; lines.push('Set a monthly budget and I can tell you how it affects your daily allowance.'); }
+  else {
+    const rem = p.remaining - a, nA = p.left > 0 ? Math.max(0, rem) / p.left : 0;
+    if (a > p.remaining) { tone = 'bad'; head = 'Not this cycle'; lines.push(`It’s ${money(a - p.remaining)} more than you have left in your budget.`, `You could afford it after your next cycle starts on ${fmtDate(addDays(c.e, 1), { weekday: 'short', day: 'numeric', month: 'short' })}.`); }
+    else if (p.allowance > 0 && nA < p.allowance * .5) { tone = 'warn'; head = 'It’s tight'; lines.push(`Your daily allowance would drop from ${money(p.allowance)} to ${money(nA)}.`, `You’d have ${money(rem)} left for ${p.left} day${p.left === 1 ? '' : 's'}.`); }
+    else { lines.push(`Your daily allowance goes from ${money(p.allowance)} to ${money(nA)}.`, `You’d have ${money(rem)} left this cycle.`); }
+  }
+  if (a > bal) lines.push(`Heads up: that’s more than the ${money(bal)} in your wallets.`);
+  res.innerHTML = `<div class="verdict ${tone}"><b>${head}</b>${lines.map(l => `<p>${esc(l)}</p>`).join('')}</div><button class="btn block" data-act="af-log">Log it as spending</button>`;
+};
+ACT['af-log'] = () => { const a = $('#af-amt').value, d = ($('#af-name') || {}).value || ''; closeSheet(true); openTx({ prefill: { type: 'expense', amount: String(num(a)), desc: d.trim() } }); };
+ACT.afford = openAfford;
+
+/* ---------- split a bill ---------- */
+let SP = { total: '', n: 2, tip: 0, paid: 'me' };
+function openSplit() {
+  SP = { total: '', n: 2, tip: 0, paid: 'me' };
+  openSheet(`${sheetHead('Split a bill')}<div class="sheet-body"><div><div class="amt-box"><span class="cur">${esc(sym())}</span><input id="sp-amt" class="amt-in num" inputmode="decimal" placeholder="0" autofocus data-in="sp-amt" aria-label="Bill total"></div><p class="muted sm" style="text-align:center">Total bill</p></div>
+  <div class="row" style="justify-content:space-between"><b>People (including you)</b><div class="stepper"><button class="ibtn sm" data-act="sp-n" data-arg="-1" aria-label="Fewer people">−</button><b class="num" id="sp-n">2</b><button class="ibtn sm" data-act="sp-n" data-arg="1" aria-label="More people">+</button></div></div>
+  <div class="field"><span>Tip or service charge</span><div class="chips">${[0, 5, 10, 15].map(t => `<button class="chip ${t === 0 ? 'on' : ''}" data-act="sp-tip" data-arg="${t}">${t}%</button>`).join('')}</div></div>
+  <div class="field"><span>Who paid?</span>${seg([['me', 'I paid'], ['other', 'Someone else']], 'me', 'sp-paid', { sm: true, label: 'Who paid' })}</div>
+  <div id="sp-res" aria-live="polite"></div></div>`, { label: 'Split a bill' });
+}
+function spCalc() {
+  const t = num(SP.total), res = $('#sp-res'); if (!res) return; if (!(t > 0)) { res.innerHTML = ''; return; }
+  const full = t * (1 + SP.tip / 100), share = full / SP.n, owed = share * (SP.n - 1);
+  res.innerHTML = `<div class="verdict good"><b>${money(share)} each</b><p>${SP.n} people${SP.tip ? `, with ${SP.tip}% added` : ''}. Total ${money(full)}.</p>${SP.paid === 'me' ? `<p>You paid, so friends owe you <b>${money(owed)}</b> in total.</p>` : ''}</div><div class="sheet-foot" style="flex-wrap:wrap"><button class="btn pri" data-act="sp-log" data-arg="share">Log my share</button>${SP.paid === 'me' ? `<button class="btn" data-act="sp-log" data-arg="full">Log what I paid</button>` : ''}</div>`;
+}
+INP['sp-amt'] = v => { SP.total = v; spCalc(); };
+ACT['sp-n'] = a => { SP.n = clamp(SP.n + +a, 2, 30); $('#sp-n').textContent = SP.n; spCalc(); buzz(6); };
+ACT['sp-tip'] = (a, el) => { SP.tip = +a; choose(el); spCalc(); };
+ACT['sp-paid'] = (a, el) => { SP.paid = a; segSet(el, segIdx(el)); spCalc(); };
+ACT['sp-log'] = a => { const full = num(SP.total) * (1 + SP.tip / 100), amt = a === 'full' ? full : full / SP.n; closeSheet(true); openTx({ prefill: { type: 'expense', amount: String(round2(amt)), desc: a === 'full' ? `Bill split ${SP.n} ways (I paid)` : `My share of bill (split ${SP.n})` } }); };
+ACT.split = openSplit;
+
+/* ---------- tilt shine ---------- */
+let tiltOn = false;
+function tiltAttach() {
+  if (tiltOn) return; tiltOn = true; let px = 0, py = 0, raf = 0; const r = document.documentElement;
+  const upd = () => { raf = 0; r.style.setProperty('--tx', px.toFixed(3)); r.style.setProperty('--ty', py.toFixed(3)); };
+  addEventListener('deviceorientation', e => { if (!S.tilt || !motionOn() || e.gamma == null) return; px = clamp(e.gamma / 35, -1, 1); py = clamp((e.beta - 45) / 35, -1, 1); if (!raf) raf = requestAnimationFrame(upd); });
+  addEventListener('pointermove', e => { if (!S.tilt || !motionOn() || e.pointerType === 'touch') return; px = (e.clientX / innerWidth - .5) * 2; py = (e.clientY / innerHeight - .5) * 2; if (!raf) raf = requestAnimationFrame(upd); });
+}
+async function tiltEnable() {
+  try { if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') { const r = await DeviceOrientationEvent.requestPermission(); if (r !== 'granted') { toast('Motion access was denied, so tilt shine is off on this phone.', { tone: 'warn' }); } } } catch (e) { }
+  tiltAttach();
+}
+if (typeof DeviceOrientationEvent === 'undefined' || typeof DeviceOrientationEvent.requestPermission !== 'function') tiltAttach();
+
+/* palette + menu hooks */
+const _palCommands = palCommands;
+palCommands = function () { return [['Left to spend today', 'bolt', openToday], ['IOUs', 'wallet', openIous],['Can I afford this?', 'help', openAfford], ['Split a bill', 'transfer', openSplit], ['Recap of this cycle', 'sparkles', openRecap], ['Rewards and challenges', 'flame', openRewards], ..._palCommands()]; };
+const _palRender = palRender;
+palRender = function (q) {
+  _palRender(q); const qk = q.trim() ? parseQuick(q) : null;
+  if (qk) { palItems.unshift({ l: `Add ${qk.type === 'income' ? 'income' : 'spending'}: ${qk.desc || 'Untitled'}  ${money(+qk.amount)}`, i: 'bolt', f: () => openTx({ prefill: qk }) }); palSel = 0; $('#pal-l').innerHTML = palItems.map((x, i) => `<button class="pal-i ${i === palSel ? 'on' : ''}" data-act="pal-run" data-arg="${i}">${ic(x.i, 18)}<span>${esc(x.l)}</span>${x.k ? `<span class="kbd">${x.k}</span>` : ''}</button>`).join(''); }
+};
+
+/* ---------- left today (home-screen shortcut) ---------- */
+function openToday() {
+  const p = pace(cycleNow()); closeSheet(true);
+  const body = p.budget <= 0 ? `<p class="muted">Set a monthly budget to see what you can spend today.</p><button class="btn pri block" data-act="plan">Set up my plan</button>` : `<div style="text-align:center"><span class="lbl">${p.leftToday >= 0 ? 'Left to spend today' : 'Over today’s allowance by'}</span><div class="big amt num" style="font-size:3.4rem;margin:6px 0">${money(Math.abs(p.leftToday))}</div><p class="muted sm amt">${money(p.remaining)} left over ${p.left} day${p.left === 1 ? '' : 's'}</p></div>${bar(p.spentPct * 100, { lg: 1, cls: p.status === 'over' ? 'bad' : p.status === 'ahead' ? 'warn' : '' })}<button class="btn pri block" data-act="add-exp">${ic('plus', 18, 2.4)}Add spending</button>`;
+  openSheet(`${sheetHead('Today')}<div class="sheet-body">${body}</div>`, { label: 'Today' });
+}
+ACT.today = openToday;
+
+/* ---------- favourites ---------- */
+function favsHTML() {
+  const f = memoize('favs', () => { const from = addDays(today(), -75), m = {}; S.tx.forEach(t => { if (t.type !== 'expense' || t.date < from) return; const k = t.desc.toLowerCase() + '|' + t.amount; (m[k] = m[k] || { t, n: 0 }).n++; }); return Object.values(m).filter(x => x.n >= 2).sort((a, b) => b.n - a.n).slice(0, 6).map(x => x.t); });
+  if (!f.length) return '';
+  return `<div class="chips scroll favs" data-r="0" aria-label="Your usual spending">${f.map(t => `<button class="chip" data-act="fav" data-arg="${esc(t.id)}"><span class="e">${esc(catById(t.cat).icon)}</span>${esc(t.desc)} <b class="amt num">${money(t.amount, { d: 0 })}</b></button>`).join('')}</div>`;
+}
+ACT.fav = id => { const t = S.tx.find(x => x.id === id); if (t) openTx({ prefill: { type: 'expense', amount: String(t.amount), desc: t.desc, cat: t.cat, w: t.w } }); };
+
+/* ---------- repeating cost summary ---------- */
+function recSummary() {
+  const per = r => r.every === 'weekly' ? r.amount * 52 / 12 : r.amount, on = S.rec.filter(r => r.on);
+  const out = on.filter(r => r.type === 'expense').reduce((a, r) => a + per(r), 0), inc = on.filter(r => r.type === 'income').reduce((a, r) => a + per(r), 0);
+  return `Repeating bills cost about ${money(out, { d: 0 })} a month${inc > 0 ? `, and repeating income brings in about ${money(inc, { d: 0 })}` : ''}.`;
+}
+
+/* ---------- IOUs ---------- */
+const iouSummary = () => { const o = S.debts.filter(d => !d.paid); const owed = o.filter(d => d.dir === 'owed').reduce((a, d) => a + d.amount, 0), owe = o.filter(d => d.dir === 'owe').reduce((a, d) => a + d.amount, 0); return [owed > 0 ? `Owed to you ${money(owed, { d: 0 })}` : '', owe > 0 ? `You owe ${money(owe, { d: 0 })}` : ''].filter(Boolean).join(', '); };
+let IF = { dir: 'owed', who: '', amount: '', note: '' };
+function openIous() { IF = { dir: 'owed', who: '', amount: '', note: '' }; openSheet(`${sheetHead('IOUs')}<div class="sheet-body" id="iou-body"></div>`, { label: 'IOUs' }); renderIous(); }
+function renderIous() {
+  const el = $('#iou-body'); if (!el) return; const open = S.debts.filter(d => !d.paid), done = S.debts.filter(d => d.paid).slice(-3).reverse();
+  const row = d => `<div class="r iou ${d.paid ? 'off' : ''}"><span class="tile sm">${d.dir === 'owed' ? '⬇️' : '⬆️'}</span><span class="grow"><span class="t">${esc(d.who)}</span><span class="m"><span>${d.dir === 'owed' ? 'Owes you' : 'You owe'}</span>${d.note ? `<span>${esc(d.note)}</span>` : ''}<span>${esc(fmtDate(d.date, { day: 'numeric', month: 'short' }))}</span></span></span><span class="num amt ${d.dir === 'owed' ? 'pos' : ''}">${money(d.amount)}</span>${d.paid ? '' : `<button class="ibtn sm" data-act="iou-paid" data-arg="${esc(d.id)}" aria-label="Mark paid">${ic('check', 16, 2.6)}</button>`}<button class="ibtn sm bare" data-act="iou-del" data-arg="${esc(d.id)}" aria-label="Delete">${ic('trash', 15)}</button></div>`;
+  el.innerHTML = `${iouSummary() ? `<p class="sm" style="font-weight:700">${esc(iouSummary())}</p>` : ''}
+  <div class="panel" style="padding:14px;box-shadow:none;display:grid;gap:12px">${seg([['owed', 'They owe me'], ['owe', 'I owe them']], IF.dir, 'iou-dir', { sm: true, label: 'Direction' })}<div class="fgrid"><label class="field"><span>Who</span><input class="input" id="iou-who" value="${esc(IF.who)}" placeholder="Name" maxlength="40" data-in="iou-who" autocomplete="off"></label><label class="field"><span>Amount</span><div class="inline-in"><span class="pre">${esc(sym())}</span><input id="iou-amt" inputmode="decimal" value="${esc(IF.amount)}" placeholder="0" data-in="iou-amt"></div></label></div><label class="field"><span>For (optional)</span><input class="input" value="${esc(IF.note)}" placeholder="e.g. Lunch, textbook" maxlength="80" data-in="iou-note"></label><div class="errmsg" id="iou-err"></div><button class="btn pri" data-act="iou-add" data-submit>Add IOU</button></div>
+  ${open.length ? `<div class="rows">${open.map(row).join('')}</div>` : `<p class="muted sm" style="text-align:center">Nobody owes anybody. Keep it that way.</p>`}${done.length ? `<div><span class="lbl">Recently settled</span><div class="rows">${done.map(row).join('')}</div></div>` : ''}`;
+}
+INP['iou-who'] = v => { IF.who = v; }; INP['iou-amt'] = v => { IF.amount = v; }; INP['iou-note'] = v => { IF.note = v; };
+ACT['iou-dir'] = (a, el) => { IF.dir = a; segSet(el, segIdx(el)); };
+ACT['iou-add'] = () => { if (!IF.who.trim()) { $('#iou-err').textContent = 'Who is it?'; return; } if (!(num(IF.amount) > 0)) { $('#iou-err').textContent = 'Enter an amount above zero.'; return; } S.debts.push({ id: uid(), who: IF.who.trim(), amount: round2(num(IF.amount)), dir: IF.dir, note: IF.note.trim(), date: today(), paid: false }); persist(); IF = { dir: IF.dir, who: '', amount: '', note: '' }; renderIous(); render(); toast('IOU added', { tone: 'good' }); };
+ACT['iou-paid'] = id => { const d = S.debts.find(x => x.id === id); if (!d) return; d.paid = true; persist(); renderIous(); render(); buzz(12); toast(d.dir === 'owed' ? `${d.who} paid you back` : `You paid ${d.who} back`, { tone: 'good', action: 'Undo', fn: () => { d.paid = false; persist(); render(); if ($('#iou-body')) renderIous(); } }); };
+ACT['iou-del'] = id => { const i = S.debts.findIndex(x => x.id === id); if (i < 0) return; const old = S.debts.splice(i, 1)[0]; persist(); renderIous(); render(); toast('IOU deleted', { action: 'Undo', fn: () => { S.debts.splice(i, 0, old); persist(); render(); if ($('#iou-body')) renderIous(); } }); };
+ACT.ious = openIous;
+ACT['sp-iou'] = () => { const full = num(SP.total) * (1 + SP.tip / 100), share = full / SP.n; S.debts.push({ id: uid(), who: `Friends (${SP.n - 1})`, amount: round2(share * (SP.n - 1)), dir: 'owed', note: 'Bill split', date: today(), paid: false }); persist(); render(); toast('Added to IOUs', { tone: 'good' }); };
+const _spCalc = spCalc;
+spCalc = function () { _spCalc(); const f = $('#sp-res .sheet-foot'); if (f && SP.paid === 'me') f.insertAdjacentHTML('beforeend', `<button class="btn" data-act="sp-iou">Add to IOUs</button>`); };
+
+/* ---------- insights: compare + heatmap ---------- */
+function comparePanel(c, p) {
+  const prevC = shiftCycle(c, -1), prev = pace(prevC); if (!prev.n && !p.n) return '';
+  const upto = p.isCurrent ? p.elapsed : prev.len, pTx = prev.txs.filter(t => t.type === 'expense' && daysBetween(prevC.s, t.date) < upto);
+  const prevTot = pTx.reduce((a, t) => a + t.amount, 0), pc = {}; pTx.forEach(t => pc[t.cat] = (pc[t.cat] || 0) + t.amount);
+  const diff = p.spent - prevTot, pct_ = prevTot > 0 ? Math.round(Math.abs(diff) / prevTot * 100) : null;
+  const rows = S.cats.map(k => ({ k, a: p.byCat[k.id] || 0, b: pc[k.id] || 0 })).filter(x => x.a || x.b).sort((x, y) => Math.abs(y.a - y.b) - Math.abs(x.a - x.b)).slice(0, 5);
+  const mx = Math.max(...rows.map(x => Math.max(x.a, x.b)), 1);
+  return `<section class="panel" data-r="4" style="order:4"><div class="sec-h"><h2>Versus last cycle</h2><span class="tag ${diff > 0 ? 'warn' : 'good'}">${diff === 0 ? 'Same' : (diff > 0 ? '▲ ' : '▼ ') + (pct_ !== null ? pct_ + '%' : money(Math.abs(diff), { d: 0 }))}</span></div>
+  <p class="sm muted" style="margin-bottom:12px"><span class="amt">${diff > 0 ? `You’ve spent ${money(diff)} more` : diff < 0 ? `You’ve spent ${money(-diff)} less` : 'Spending is level'}</span> than at the same point last cycle (${money(prevTot)}).</p>
+  <div class="rows">${rows.map(x => `<div class="r cmp"><span class="tile sm" style="--c:${x.k.color}">${esc(x.k.icon)}</span><span class="grow"><span class="row"><span class="t grow">${esc(x.k.name)}</span><span class="num amt ${x.a > x.b ? 'neg' : x.a < x.b ? 'pos' : ''}">${x.a >= x.b ? '+' : '−'}${money(Math.abs(x.a - x.b), { d: 0 })}</span></span><span class="cmpbars"><i style="--w:${(x.a / mx * 100).toFixed(1)}%;--c:${x.k.color}"></i><i class="prev" style="--w:${(x.b / mx * 100).toFixed(1)}%"></i></span></span></div>`).join('')}</div></section>`;
+}
+function heatmapHTML() {
+  const t = today(), dow = (parseYmd(t).getDay() + 6) % 7, start = addDays(t, -dow - 77), by = {}; let max = 0, tot = 0;
+  S.tx.forEach(x => { if (x.type === 'expense') by[x.date] = (by[x.date] || 0) + x.amount; });
+  const cells = []; for (let i = 0; i < 84; i++) { const d = addDays(start, i), v = by[d] || 0; if (d <= t) { max = Math.max(max, v); tot += v; } cells.push([d, v]); }
+  if (!tot) return '';
+  return `<section class="panel" data-r="6" style="order:7"><div class="sec-h"><h2>Last 12 weeks</h2></div><div class="heat">${cells.map(([d, v]) => `<i class="hm l${d > t ? 'f' : v <= 0 ? 0 : Math.min(4, Math.ceil(v / max * 4))}" title="${esc(fmtDate(d) + ': ' + money(v))}"></i>`).join('')}</div><div class="axis"><span>Quiet</span><span class="heatkey"><i class="hm l0"></i><i class="hm l1"></i><i class="hm l2"></i><i class="hm l3"></i><i class="hm l4"></i></span><span>Busy</span></div></section>`;
+}
+
+/* ============================================================
+   Thrive 7 — biometric unlock (device fingerprint / face)
+   ============================================================ */
+const b64u = { enc: b => btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''), dec: s => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return Uint8Array.from(atob(s), c => c.charCodeAt(0)); } };
+const nativeBio = () => window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform() && Capacitor.Plugins && Capacitor.Plugins.BiometricAuth;
+async function bioAvailable() {
+  try { const n = nativeBio(); if (n) { const r = await n.checkBiometry(); return !!r.isAvailable; } if (!window.PublicKeyCredential || !window.isSecureContext) return false; return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(); } catch (e) { return false; }
+}
+const rnd = n => crypto.getRandomValues(new Uint8Array(n));
+async function bioEnroll() {
+  const n = nativeBio(); if (n) { await n.authenticate({ reason: 'Turn on biometric unlock', cancelTitle: 'Cancel' }); return 'native'; }
+  const c = await navigator.credentials.create({ publicKey: { challenge: rnd(32), rp: { name: 'Thrive' }, user: { id: rnd(16), name: 'thrive-user', displayName: 'Thrive' }, pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }], authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'discouraged' }, timeout: 60000 } });
+  return b64u.enc(c.rawId);
+}
+async function bioCheck() {
+  const n = nativeBio(); if (n) { await n.authenticate({ reason: 'Unlock Thrive', cancelTitle: 'Use PIN', allowDeviceCredential: false }); return true; }
+  await navigator.credentials.get({ publicKey: { challenge: rnd(32), allowCredentials: [{ type: 'public-key', id: b64u.dec(S.lock.bio), transports: ['internal'] }], userVerification: 'required', timeout: 60000 } }); return true;
+}
+/* animated scan overlay */
+const FACE = `<svg viewBox="0 0 120 120" class="bio-art" aria-hidden="true"><g class="br"><path d="M20 38V26a6 6 0 0 1 6-6h12M82 20h12a6 6 0 0 1 6 6v12M100 82v12a6 6 0 0 1-6 6H82M38 100H26a6 6 0 0 1-6-6V82"/></g><g class="fc"><rect x="40" y="34" width="40" height="52" rx="20"/><path d="M52 54v4M68 54v4M54 72q6 5 12 0"/></g><line class="scan" x1="28" x2="92" y1="28" y2="28"/><path class="chk" d="M42 62l13 13 24-28"/></svg>`;
+const FINGER = `<svg viewBox="0 0 24 24" class="bio-art fing" aria-hidden="true"><g class="fc"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4M14 13.12c0 2.38 0 6.38-1 8.88M17.29 21.02c.12-.6.43-2.3.5-3.02M2 12a10 10 0 0 1 18-6M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2M8.65 22c.21-.66.45-1.32.57-2M9 6.8a6 6 0 0 1 9 5.2v2M21.8 16c.2-2 .131-5.354 0-6"/></g><path class="chk" d="M7 12.5l3.5 3.5 7-8"/></svg>`;
+function bioOverlay(text) {
+  let el = $('#bio-ov'); if (el) el.remove();
+  el = document.createElement('div'); el.id = 'bio-ov'; el.className = 'bio-ov';
+  el.innerHTML = `<div class="bio-card"><div class="bio-ring"><i></i><i></i></div>${isIOS() ? FACE : FINGER}<p id="bio-t">${esc(text)}</p></div>`;
+  (document.querySelector('#layer-sheet.open,#layer-lock.open') || document.body).appendChild(el);
+  requestAnimationFrame(() => el.classList.add('on')); return el;
+}
+async function bioRun(text, fn) {
+  const el = bioOverlay(text), t = $('#bio-t');
+  const end = d => { el.classList.remove('on'); setTimeout(() => el.remove(), 350); };
+  try { await fn(); el.classList.add('ok'); t.textContent = 'Verified'; buzz([12, 30, 12]); await new Promise(r => setTimeout(r, motionOn() ? 900 : 100)); end(); return true; }
+  catch (e) { el.classList.add('bad'); t.textContent = 'Couldn’t verify'; buzz([30, 50, 30]); await new Promise(r => setTimeout(r, 900)); end(); return false; }
+}
+let bioBusy = false;
+async function bioUnlock() { if (bioBusy || !S.lock.bio || !$('#layer-lock .lock')) return; bioBusy = true; const ok = await bioRun(isIOS() ? 'Looking for you…' : 'Touch the sensor', bioCheck); bioBusy = false; if (ok) unlockUI(); }
+ACT['bio-try'] = bioUnlock;
+ACT['s-bio'] = async (a, el) => {
+  if (!S.lock.on) return toast('Turn on App lock first, then switch this on.', { tone: 'warn', ms: 3500 });
+  if (S.lock.bio) { S.lock.bio = ''; persist(); el.setAttribute('aria-checked', 'false'); toast('Biometric unlock is off'); return; }
+  if (!(await bioAvailable())) return toast('This device or browser doesn’t support biometric unlock here. Try the installed app over https.', { tone: 'warn', ms: 5000 });
+  let id = ''; const ok = await bioRun('Set up biometric unlock', async () => { id = await bioEnroll(); });
+  if (ok && id) { S.lock.bio = id; persist(); el.setAttribute('aria-checked', 'true'); toast('Biometric unlock is on', { tone: 'good' }); } else toast('Biometric unlock wasn’t set up.', { tone: 'warn' });
+};
+
 /* boot */
 (function boot() {
   applyTheme();
@@ -1954,6 +2380,8 @@ function registerSW() {
   let h = location.hash.slice(1); UI.route = ROUTES.includes(h) ? h : (S.startPage || 'dashboard');
   UI.first = false; render();
   if (h === 'add') { history.replaceState(null, '', '#' + UI.route); openTx(); }
+  if (h === 'today') { history.replaceState(null, '', '#' + UI.route); openToday(); }
+  loadFonts();
   if (S.lock.on) lockNow(); else if (S.firstRun) startTour();
   if (posted) setTimeout(() => toast(`Added ${posted} repeating item${posted > 1 ? 's' : ''}`, { tone: 'good' }), 700);
   if (!storageOK) setTimeout(() => toast('Storage is blocked. Changes won’t be saved.', { tone: 'bad', ms: 6000 }), 900);
