@@ -680,7 +680,7 @@ html[data-tab=solid] .tab-pill::before{background:var(--accent-soft)}
 /* ============================================================
    Thrive 7 — core: helpers, state, migration, cycle maths
    ============================================================ */
-const VERSION = '7.5.1';
+const VERSION = '7.6.0';
 const KEY = 'thrive_7', OLD_KEY = 'thrive_6';
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -724,7 +724,7 @@ const defWallets = () => [
 const defaults = () => ({
   v: 7, firstRun: true, demo: false,
   name: '', currency: 'GHS', symbolStyle: 'symbol', decimals: true,
-  theme: 'dark', accent: 'emerald', customAccent: '#14B884', fonts: 'thrive', debts: [], card: 'glass', tabStyle: 'auto', tabShrink: true, tabGlow: true, backdrop: 'aurora', tilt: true, cycleType: 'month', cycleDow: 1, cycleAnchor: '', chal: null, wins: 0, blur: 24, gloss: 70, tint: 30, round: 'default', reduceTrans: false, startPage: 'dashboard', density: 'comfortable', textSize: 100,
+  theme: 'dark', accent: 'emerald', customAccent: '#14B884', fonts: 'thrive', notif: { on: false, time: '08:00', daily: true, bills: true, over: true }, debts: [], card: 'glass', tabStyle: 'auto', tabShrink: true, tabGlow: true, backdrop: 'aurora', tilt: true, cycleType: 'month', cycleDow: 1, cycleAnchor: '', chal: null, wins: 0, blur: 24, gloss: 70, tint: 30, round: 'default', reduceTrans: false, startPage: 'dashboard', density: 'comfortable', textSize: 100,
   animations: true, reduceMotion: false, followSystemMotion: true, countUp: true, pageFx: true, haptics: true, confetti: true,
   hideAmounts: false,
   income: 0, budget: 0, cycleDay: 1, alertAt: 80, rollover: false,
@@ -775,6 +775,7 @@ function sanitize(s) {
   if (!isDate(s.cycleAnchor)) s.cycleAnchor = anchorFor(s.cycleDow);
   if (!['none','aurora','sunset','ocean','haze','candy'].includes(s.backdrop)) s.backdrop = 'aurora';
   if (!['thrive', 'system'].includes(s.fonts)) s.fonts = 'thrive';
+  s.notif = { on: !!(s.notif && s.notif.on), time: /^\d\d:\d\d$/.test(s.notif && s.notif.time) ? s.notif.time : '08:00', daily: !s.notif || s.notif.daily !== false, bills: !s.notif || s.notif.bills !== false, over: !s.notif || s.notif.over !== false };
   s.debts = (Array.isArray(s.debts) ? s.debts : []).filter(d => d && num(d.amount) > 0).map(d => ({ id: String(d.id || uid()), who: String(d.who || 'Someone').slice(0, 40), amount: num(d.amount), dir: d.dir === 'owe' ? 'owe' : 'owed', note: String(d.note || '').slice(0, 80), date: isDate(d.date) ? d.date : today(), paid: !!d.paid }));
   s.wins = Math.max(0, Math.round(num(s.wins)));
   s.cycleDay = clamp(Math.round(num(s.cycleDay)) || 1, 1, 28);
@@ -1606,14 +1607,29 @@ PAGES.settings = () => {
     sRow('App lock', 'Ask for a 4-digit PIN when Thrive opens. This keeps casual snoopers out; it does not encrypt your data.', sw(S.lock.on, 's-lock', '', 'App lock'), { kw: 'pin passcode' }) +
     sRow('Face or fingerprint unlock', S.lock.on ? 'Uses your phone’s own face or fingerprint unlock. Thrive never sees your biometrics. Your PIN stays as backup.' : 'Turn on App lock above first. Then switch this on.', sw(!!S.lock.bio, 's-bio', '', 'Biometric unlock'), { kw: 'biometric face id fingerprint touch' }) + lockRows +
     sRow('Fonts', 'System font means Thrive makes no outside requests at all. Thrive font loads from Google Fonts once, then works offline.', seg([['thrive', 'Thrive'], ['system', 'System']], S.fonts, 's-fonts', { sm: true, label: 'Fonts' }), { kw: 'privacy network google' }) +
-    sRow('Where your data lives', 'Everything stays on this device. No account, no server, no tracking. Thrive never reads your messages.', `<span class="tag good">${ic('lock', 12)}Private</span>`))}
+    sRow('Where your data lives', 'Everything stays on this device unless you turn on cloud backup, which is encrypted on your phone first. No Thrive account, no tracking, and Thrive never reads your messages.', `<span class="tag good">${ic('lock', 12)}Private</span>`))}
   ${sSec('db', 'Data & backup',
     sRow('Back up', S.lastBackup ? `Last backup ${esc(new Date(S.lastBackup).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }))}.` : 'You haven’t backed up yet. Do it before changing phones or clearing your browser.', `<div class="chips"><button class="btn sm pri" data-act="export">${ic('download', 15)}Export</button><button class="btn sm" data-act="import">${ic('upload', 15)}Import</button></div>`, { kw: 'json restore' }) +
+    sRow('Share backup', 'Send a backup file to Google Drive, WhatsApp, email or anywhere your phone can share to.', `<button class="btn sm" data-act="share-backup">${ic('upload', 15)}Share</button>`, { kw: 'drive whatsapp email send' }) +
     sRow('Spreadsheet', 'Download every transaction as a CSV file.', `<button class="btn sm" data-act="csv-all">${ic('download', 15)}CSV</button>`, { kw: 'excel csv' }) +
     sRow('Protect from browser cleanup', 'Ask the browser to keep Thrive’s data even when storage runs low.', `<button class="btn sm" data-act="persist" id="persistBtn">Request</button>`, { kw: 'storage persist' }) +
     sRow('Storage used', `${S.tx.length} transactions, ${S.goals.length} goals.`, `<span class="tag">${storageKB()} KB</span>`) +
     (S.demo ? sRow('Sample data', 'You’re viewing sample data.', `<button class="btn sm" data-act="demo-clear">Clear it</button>`) : (S.tx.length === 0 ? sRow('Sample data', 'See how Thrive looks with a few weeks of activity. You can clear it any time.', `<button class="btn sm" data-act="demo-load">${ic('sparkles', 15)}Load sample</button>`) : '')) +
     sRow('Reset Thrive', 'Erase everything on this device and start from zero.', `<button class="btn sm danger" data-act="reset">Reset</button>`, { kw: 'erase delete' }))}
+  ${sSec('bell', 'Notifications',
+    (!nativeNotif() ? sRow('Android app only', 'Reminders that arrive while the app is closed need the Thrive Android app (APK). Build it with the APK kit.', `<span class="tag warn">Not in browser</span>`) : '') +
+    sRow('Notifications', 'A daily “left to spend today” summary, bills due, and budget alerts.', sw(S.notif.on, 'n-on', '', 'Notifications'), { kw: 'reminders alerts push' }) +
+    sRow('Daily summary time', 'When your “left to spend today” arrives.', `<input type="time" class="input" value="${esc(S.notif.time)}" data-ch="n-time" aria-label="Daily summary time">`) +
+    sRow('Daily summary', 'Your allowance for the day, every day.', sw(S.notif.daily, 'n-tog', 'daily', 'Daily summary')) +
+    sRow('Bill reminders', 'The morning a repeating bill is due.', sw(S.notif.bills, 'n-tog', 'bills', 'Bill reminders')) +
+    sRow('Budget alerts', 'When spending crosses your warning level or the budget.', sw(S.notif.over, 'n-tog', 'over', 'Budget alerts')) +
+    sRow('Test', 'Send a notification now to check it works.', `<button class="btn sm" data-act="n-test">Send test</button>`))}
+  ${sSec('upload', 'Cloud backup',
+    sRow('How it works', 'Optional and off by default. Thrive encrypts your data on this phone with your passphrase, then saves it to a <b>private GitHub Gist you own</b>. GitHub only ever sees scrambled text. <a class="link" href="https://github.com/settings/tokens/new?scopes=gist&description=Thrive%20backup" target="_blank" rel="noopener">Create a token</a> and tick only “gist”.', '', { stack: 1, kw: 'sync github gist encrypted' }) +
+    sRow('GitHub token', 'Saved on this device only.', `<input type="password" class="input" value="${esc(cloud().token || '')}" placeholder="ghp_…" data-ch="c-token" autocomplete="off" aria-label="GitHub token">`) +
+    sRow('Passphrase', 'Needed to restore. If you forget it, the backup can’t be opened by anyone, including me.', `<input type="password" class="input" value="${esc(cloud().pass || '')}" placeholder="Choose a strong passphrase" data-ch="c-pass" autocomplete="new-password" aria-label="Backup passphrase">`) +
+    sRow('Back up or restore', cloud().last ? `Last cloud backup ${esc(new Date(cloud().last).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }))}.` : 'No cloud backup yet.', `<div class="chips"><button class="btn sm pri" data-act="c-backup">${ic('upload', 15)}Back up now</button><button class="btn sm" data-act="c-restore">${ic('download', 15)}Restore</button></div>`) +
+    sRow('Auto backup', 'Back up a few seconds after you make changes, when you’re online.', sw(!!cloud().auto, 'c-auto', '', 'Auto backup')))}
   ${sSec('phone', 'App',
     (isStandalone() ? sRow('Install Thrive', 'Thrive is installed on this device.', `<span class="tag good">${ic('check', 12)}Installed</span>`) : sRow('Install Thrive', window.__bip ? 'Add it to your home screen. It opens fast and works offline.' : isIOS() ? 'In Safari tap Share, then Add to Home Screen.' : 'Open your browser menu and choose Install app or Add to Home screen.', window.__bip ? `<button class="btn sm pri" data-act="install">${ic('download', 15)}Install</button>` : `<button class="btn sm" data-act="install">How</button>`, { kw: 'home screen pwa app' })) +
     sRow('Connection', navigator.onLine ? 'Thrive works fully offline.' : 'You’re offline. Everything still works.', `<span class="tag ${navigator.onLine ? 'good' : 'warn'}" id="netTag">${navigator.onLine ? 'Online' : 'Offline'}</span>`) +
@@ -1757,7 +1773,7 @@ function saveTx(again) {
   const label = { expense: 'Spending added', income: 'Income added', transfer: 'Money moved' }[F.type];
   toast(edit ? 'Changes saved' : label + (ruAmt ? `. ${money(ruAmt)} saved by round-up` : ''), { tone: 'good', action: edit ? '' : 'Undo', fn: () => { unRoundUp(t.id); S.tx = S.tx.filter(x => x.id !== t.id); if (recId) S.rec = S.rec.filter(r => r.id !== recId); save(); } });
   const pa = pace(c0);
-  if (t.type === 'expense' && pa.budget > 0) { const th = S.alertAt / 100; if (before < 1 && pa.spentPct >= 1) setTimeout(() => toast('You’re over budget for this cycle', { tone: 'bad', ms: 4200 }), 500); else if (before < th && pa.spentPct >= th) setTimeout(() => toast(`You’ve used ${Math.round(pa.spentPct * 100)}% of your budget`, { tone: 'warn', ms: 4200 }), 500); }
+  if (t.type === 'expense' && pa.budget > 0) { const th = S.alertAt / 100; if (before < 1 && pa.spentPct >= 1) { setTimeout(() => toast('You’re over budget for this cycle', { tone: 'bad', ms: 4200 }), 500); notifPush('You’re over budget', `You’ve spent ${money(pa.spent)} of ${money(pa.budget)} this cycle.`); } else if (before < th && pa.spentPct >= th) { setTimeout(() => toast(`You’ve used ${Math.round(pa.spentPct * 100)}% of your budget`, { tone: 'warn', ms: 4200 }), 500); notifPush(`${Math.round(pa.spentPct * 100)}% of your budget used`, `${money(pa.remaining)} left for ${pa.left} day${pa.left === 1 ? '' : 's'}.`); } }
   if (again && !edit) { const k = { ...F }; F = { mode: 'new', type: k.type, amount: '', desc: '', cat: k.cat, w: k.w, to: k.to, date: k.date, note: '', rep: 'none', catTouched: true }; renderTxForm(); setTimeout(() => $('#f-amt') && $('#f-amt').focus(), 50); }
   else closeSheet();
 }
@@ -2525,6 +2541,104 @@ ACT['bulk-del'] = async () => { const n = UI.tx.sel.size, ok = await ask({ title
   ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => tabs.addEventListener(ev, () => tabs.classList.remove('touch')));
   addEventListener('hashchange', () => tabs.classList.remove('min'));
 })();
+
+/* ============================================================
+   Thrive 7 — encrypted cloud backup (your own private GitHub Gist) + share
+   ============================================================ */
+const CK = 'thrive_cloud';
+const cloud = () => { try { return JSON.parse(localStorage.getItem(CK) || '{}'); } catch (e) { return {}; } };
+const setCloud = o => { try { localStorage.setItem(CK, JSON.stringify({ ...cloud(), ...o })); } catch (e) { } };
+const b64e = buf => { const a = new Uint8Array(buf); let s = ''; for (let i = 0; i < a.length; i += 0x8000) s += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000)); return btoa(s); };
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function aesKey(pass, salt) { const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']); return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']); }
+async function encPayload(obj, pass) { const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)), key = await aesKey(pass, salt); const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(obj))); return JSON.stringify({ thrive: 1, kdf: 'pbkdf2-sha256-200k', salt: b64e(salt), iv: b64e(iv), data: b64e(ct) }); }
+async function decPayload(text, pass) { const o = JSON.parse(text), key = await aesKey(pass, b64d(o.salt)); const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64d(o.iv) }, key, b64d(o.data)); return JSON.parse(new TextDecoder().decode(pt)); }
+async function gh(path, opt = {}) {
+  const c = cloud(); const r = await fetch('https://api.github.com' + path, { ...opt, headers: { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + c.token, 'Content-Type': 'application/json' } });
+  if (!r.ok) throw new Error(r.status === 401 ? 'GitHub rejected the token.' : (r.status === 403 || r.status === 404) ? 'The token needs the “gist” permission.' : 'GitHub error ' + r.status + '.');
+  return r.json();
+}
+async function cloudBackup() {
+  const c = cloud(); if (!c.token || !c.pass) throw new Error('Add your GitHub token and a passphrase first.');
+  const content = await encPayload({ app: 'thrive', saved: Date.now(), state: S }, c.pass), body = JSON.stringify({ description: 'Thrive encrypted backup', public: false, files: { 'thrive-backup.json': { content } } });
+  if (c.gist) { try { await gh('/gists/' + c.gist, { method: 'PATCH', body }); } catch (e) { if (/permission|Token/.test(e.message)) throw e; const r = await gh('/gists', { method: 'POST', body }); setCloud({ gist: r.id }); } }
+  else { const r = await gh('/gists', { method: 'POST', body }); setCloud({ gist: r.id }); }
+  setCloud({ last: Date.now() });
+}
+async function cloudFetch() {
+  const c = cloud(); if (!c.token || !c.pass) throw new Error('Add your GitHub token and a passphrase first.');
+  let id = c.gist;
+  if (!id) { const list = await gh('/gists?per_page=100'); const g = list.find(x => x.files && x.files['thrive-backup.json']); if (!g) throw new Error('No Thrive backup found on that account.'); id = g.id; setCloud({ gist: id }); }
+  const g = await gh('/gists/' + id), f = g.files['thrive-backup.json']; if (!f) throw new Error('That backup is empty.');
+  const text = f.truncated ? await (await fetch(f.raw_url)).text() : f.content;
+  try { return await decPayload(text, c.pass); } catch (e) { throw new Error('Wrong passphrase, or the backup is damaged.'); }
+}
+const cloudBusy = on => { $$('[data-act=c-backup],[data-act=c-restore]').forEach(b => b.disabled = on); };
+ACT['c-backup'] = async () => { cloudBusy(true); try { await cloudBackup(); toast('Backed up to your private Gist', { tone: 'good' }); if (UI.route === 'settings') render(); } catch (e) { toast(e.message || 'Backup failed', { tone: 'bad', ms: 5000 }); } cloudBusy(false); };
+ACT['c-restore'] = async () => {
+  cloudBusy(true); let data;
+  try { data = await cloudFetch(); } catch (e) { cloudBusy(false); return toast(e.message || 'Restore failed', { tone: 'bad', ms: 5000 }); }
+  cloudBusy(false); const next = sanitize(migrate(data.state)); next.firstRun = false;
+  const ok = await ask({ title: 'Replace your data?', body: `The backup has ${next.tx.length} transactions and ${next.goals.length} goals, saved ${esc(new Date(data.saved || 0).toLocaleDateString())}. It replaces what’s on this device. You can undo right after.`, ok: 'Restore' }); if (!ok) return;
+  const snap = JSON.stringify(S); S = next; save(); toast('Restored from cloud', { tone: 'good', action: 'Undo', fn: () => { S = sanitize(JSON.parse(snap)); save(); } });
+};
+CHG['c-token'] = v => { setCloud({ token: v.trim() }); toast('Token saved on this device', { tone: 'good', ms: 1600 }); };
+CHG['c-pass'] = v => { setCloud({ pass: v }); toast('Passphrase saved on this device', { tone: 'good', ms: 1600 }); };
+ACT['c-auto'] = (a, el) => { const c = cloud(); if (!c.auto && (!c.token || !c.pass)) return toast('Add your token and passphrase first.', { tone: 'warn' }); setCloud({ auto: !c.auto }); el.setAttribute('aria-checked', !c.auto); };
+let autoT = 0; const _persist = persist;
+persist = function () { const r = _persist(); const c = cloud(); if (c.auto && c.token && c.pass && navigator.onLine) { clearTimeout(autoT); autoT = setTimeout(() => cloudBackup().catch(() => { }), 6000); } return r; };
+ACT['share-backup'] = async () => {
+  const text = JSON.stringify(S, null, 2), file = new File([text], `thrive-backup-${today()}.json`, { type: 'application/json' });
+  try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Thrive backup' }); S.lastBackup = Date.now(); _persist(); toast('Backup shared', { tone: 'good' }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+  ACT.export();
+};
+
+/* ============================================================
+   Thrive 7 — native bridge: notifications + home-screen widget (Android app only)
+   ============================================================ */
+const nativeNotif = () => !!(window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.LocalNotifications);
+const LN = () => nativeNotif() ? Capacitor.Plugins.LocalNotifications : null;
+const nativeWidget = () => window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.ThriveWidget;
+let nChan = false;
+async function notifSetup() { const n = LN(); if (!n || nChan) return; try { await n.createChannel({ id: 'thrive', name: 'Thrive reminders', description: 'Daily allowance, bills and budget alerts', importance: 3, visibility: 0 }); nChan = true; } catch (e) { } }
+async function notifSchedule() {
+  const n = LN(); if (!n || !S.notif.on) return; await notifSetup();
+  try {
+    const pend = await n.getPending(); if (pend.notifications && pend.notifications.length) await n.cancel({ notifications: pend.notifications.filter(x => x.id < 3000).map(x => ({ id: x.id })) });
+    const items = [], c = cycleNow(), p = pace(c), [hh, mm] = S.notif.time.split(':').map(Number), base = { channelId: 'thrive', smallIcon: 'ic_stat_thrive', iconColor: '#14B884' };
+    if (S.notif.daily && p.budget > 0) for (let i = 0; i < 7; i++) {
+      const d = addDays(today(), i); if (d > c.e) break; const at = parseYmd(d); at.setHours(hh, mm, 0, 0); if (at <= new Date()) continue;
+      const left = daysBetween(d, c.e) + 1, allow = i === 0 ? Math.max(0, p.leftToday) : Math.max(0, p.remaining) / left;
+      items.push({ id: 1000 + i, title: 'Left to spend today', body: allow > 0 ? `About ${money(allow)} today. ${money(Math.max(0, p.remaining))} left this cycle.` : `Today’s allowance is used up. Tomorrow’s adjusts on its own.`, schedule: { at, allowWhileIdle: true }, ...base });
+    }
+    if (S.notif.bills) recOccurrences(today(), addDays(today(), 14)).filter(x => x.r.type === 'expense').slice(0, 20).forEach((x, k) => { const at = parseYmd(x.date); at.setHours(9, 0, 0, 0); if (at > new Date()) items.push({ id: 2000 + k, title: `${x.r.desc} is due today`, body: money(x.r.amount), schedule: { at, allowWhileIdle: true }, ...base }); });
+    if (items.length) await n.schedule({ notifications: items });
+  } catch (e) { console.warn('notif', e); }
+}
+async function notifPush(title, body) { const n = LN(); if (!n || !S.notif.on || !S.notif.over) return; try { await notifSetup(); await n.schedule({ notifications: [{ id: 3000 + Math.floor(Math.random() * 900), title, body, schedule: { at: new Date(Date.now() + 1500) }, channelId: 'thrive', smallIcon: 'ic_stat_thrive', iconColor: '#14B884' }] }); } catch (e) { } }
+ACT['n-on'] = async (a, el) => {
+  if (!S.notif.on) {
+    if (!nativeNotif()) return toast('Notifications work in the Thrive Android app.', { tone: 'warn', ms: 4000 });
+    try { const r = await LN().requestPermissions(); if (r.display !== 'granted') return toast('Notifications are blocked. Allow them in Android settings.', { tone: 'warn', ms: 4500 }); } catch (e) { return toast('Couldn’t ask for permission.', { tone: 'warn' }); }
+    S.notif.on = true; el.setAttribute('aria-checked', 'true'); persist(); await notifSchedule(); toast('Notifications are on', { tone: 'good' });
+  } else { S.notif.on = false; el.setAttribute('aria-checked', 'false'); persist(); try { const n = LN(); if (n) { const p = await n.getPending(); if (p.notifications.length) await n.cancel({ notifications: p.notifications.map(x => ({ id: x.id })) }); } } catch (e) { } }
+};
+ACT['n-tog'] = (k, el) => { S.notif[k] = !S.notif[k]; el.setAttribute('aria-checked', S.notif[k]); persist(); notifSchedule(); };
+CHG['n-time'] = v => { if (/^\d\d:\d\d$/.test(v)) { S.notif.time = v; persist(); notifSchedule(); toast('Daily summary at ' + v, { tone: 'good', ms: 1800 }); } };
+ACT['n-test'] = async () => {
+  const n = LN(); if (!n) return toast('Test notifications work in the Android app.', { tone: 'warn', ms: 3500 });
+  try { await notifSetup(); const r = await n.requestPermissions(); if (r.display !== 'granted') return toast('Allow notifications in Android settings first.', { tone: 'warn' }); const p = pace(cycleNow()); await n.schedule({ notifications: [{ id: 3999, title: 'Thrive test', body: p.budget > 0 ? `You can spend about ${money(Math.max(0, p.leftToday))} today.` : 'Notifications are working.', schedule: { at: new Date(Date.now() + 2000) }, channelId: 'thrive', smallIcon: 'ic_stat_thrive', iconColor: '#14B884' }] }); toast('Sent. It arrives in a moment.', { tone: 'good' }); } catch (e) { toast('Couldn’t send: ' + (e.message || 'error'), { tone: 'bad' }); }
+};
+/* ---------- widget ---------- */
+let wT = 0;
+function widgetPush() {
+  const w = nativeWidget(); if (!w) return; clearTimeout(wT);
+  wT = setTimeout(() => { try { const p = pace(cycleNow()); let o; if (p.budget <= 0) o = { title: 'Thrive', amount: 'Set a budget', sub: 'Tap to open', pct: 0 }; else o = { title: p.leftToday < 0 ? 'Over today by' : 'Left today', amount: S.hideAmounts ? '••••' : money(Math.abs(p.leftToday)), sub: S.hideAmounts ? 'Amounts hidden' : `${money(p.remaining, { d: 0 })} left, ${p.left} day${p.left === 1 ? '' : 's'}`, pct: Math.round(clamp(p.spentPct * 100, 0, 100)) }; w.update(o); } catch (e) { } }, 700);
+}
+const _render = render;
+render = function () { _render(); widgetPush(); };
+document.addEventListener('visibilitychange', () => { if (document.hidden) { notifSchedule(); widgetPush(); } else widgetPush(); });
+setTimeout(() => { notifSchedule(); widgetPush(); }, 1500);
 
 /* boot */
 (function boot() {
