@@ -1,0 +1,7 @@
+{
+  "appId": "com.thrive.money",
+  "appName": "Thrive",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "android": { "backgroundColor": "#040A08" }
+}
